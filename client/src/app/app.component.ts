@@ -7,19 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'The Dating App';
+  title = 'Shop';
   users:any;
 
   constructor(private htttp:HttpClient){
 
   }
   ngOnInit() {
-    this.getUsers();
+    //this.getUsers();
   }
   
-  getUsers(){
-    this.htttp.get('https://localhost:5001/api/users').subscribe(response=>{
-      this.users=response;
-    },error => {console.log(error);});
-  }
+  // getUsers(){
+  //   this.htttp.get('https://localhost:5001/api/users').subscribe(response=>{
+  //     this.users=response;
+  //   },error => {console.log(error);});
+  // }
 }
