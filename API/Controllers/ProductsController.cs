@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using API.Helpers;
+using API.Extensions;
 
 namespace API.Controllers
 {
@@ -19,7 +22,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public /*async Task<ActionResult>*/ActionResult GetProducts([ModelBinder(BinderType = typeof(DynamicModelBinder))]dynamic queries)
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts([ModelBinder(BinderType = typeof(DynamicModelBinder))]dynamic queries)
         {
             //var a=((List<KeyValuePair<string, object>>)queries);
             var a=(Dictionary<string, object>)queries;
@@ -27,7 +30,17 @@ namespace API.Controllers
 
             var options=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
             var json=JsonSerializer.Serialize(queries,options);
-            return Ok(json);
+
+            List<DynamicControl> controlList=new List<DynamicControl>();
+            DynamicControl d1=new DynamicControl("c1","number",5,null);
+            controlList.Add(d1);
+            Response.AddHeader(controlList,"Filter");
+            List<ProductDto> p=new List<ProductDto>(){
+                new ProductDto(){Id=1},
+                new ProductDto(){Id=2},
+            };
+
+            return Ok(p);
         }
 
         // [HttpGet("{id}")]
