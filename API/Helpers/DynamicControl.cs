@@ -8,16 +8,17 @@ namespace API.Helpers
         {
         }
 
-        public DynamicControl(string name, string type, object value, List<DynamicSelectOption> selectOptions)
+        public DynamicControl(string name, string label, object value, List<DynamicSelectOption> selectOptions)
         {
             Name = name;
-            Type = type;
+            Label = label;
             this.value = value;
             SelectOptions = selectOptions;
         }
 
         public string Name { get; set; }
         public string Type { get; set; }
+        public string Label { get; set; }
         public object value { get; set; }
         public List<DynamicSelectOption> SelectOptions { get; set; }=new List<DynamicSelectOption>();
     }

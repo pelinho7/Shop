@@ -1,11 +1,10 @@
-import { DynamicSelectOption } from "./DynamicSelectOption";
+import { DynamicSelectOption } from "./dynamicSelectOption";
 
 export class DynamicControl {
     name: string;
-    type:string;
+    label:string;
     value:any;
     selectOptions:DynamicSelectOption[]=[]
 
     constructor(){}
 }
-

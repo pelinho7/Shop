@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DynamicControl } from '../_models/DynamicControl';
-import { Product } from '../_models/Product';
+import { DynamicControl } from '../_models/dynamicControl';
+import { Product } from '../_models/product';
 import { ProductService } from '../_services/product.service';
 import { FormsModule, NgForm } from '@angular/forms';
+import { FilterAttribute } from '../_models/filterAttribute';
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
   products:Product[];
-  dynamicControls:DynamicControl[];
+  filterAttributes:FilterAttribute[];
+  //dynamicControls:DynamicControl[];
   @ViewChild('editForm') editForm:NgForm;
 
   constructor(private productService:ProductService) { }
@@ -21,13 +24,18 @@ export class HomeComponent implements OnInit {
   }
 
   loadProducts(){
-    this.productService.getProducts(this.dynamicControls).subscribe(products=>{
-      this.products=products;
-      this.dynamicControls=this.productService.getDynamicControls();
+    let dynamicControls:DynamicControl[]=[];
+    if(this.filterAttributes)
+      this.filterAttributes.map(x=>x.dynamicControls).forEach(x=>dynamicControls= [...dynamicControls, ...x]);
+
+    this.productService.getProducts(dynamicControls).subscribe(results=>{
+      this.products=results.products;
+      this.filterAttributes=results.filterAttributes;
     })
   }
 
   filterProducts(){
+    console.log(this.filterAttributes);
     this.loadProducts();
   }
 

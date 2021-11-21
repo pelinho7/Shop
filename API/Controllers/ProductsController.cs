@@ -31,10 +31,26 @@ namespace API.Controllers
             var options=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
             var json=JsonSerializer.Serialize(queries,options);
 
-            List<DynamicControl> controlList=new List<DynamicControl>();
-            DynamicControl d1=new DynamicControl("c1","number",5,null);
-            controlList.Add(d1);
-            Response.AddHeader(controlList,"Filter");
+            DynamicControl num1=new DynamicControl("c11","from",null,null);
+            DynamicControl num2=new DynamicControl("c22","to",null,null);
+            FilterAttribute f1=new FilterAttribute("lab1","number",new List<DynamicControl>(){num1,num2});
+
+            List<FilterAttribute> filterList=new List<FilterAttribute>();
+            filterList.Add(f1);
+
+            // List<DynamicControl> controlList=new List<DynamicControl>();
+            // List<DynamicSelectOption> options1=new List<DynamicSelectOption>();
+            // options1.Add(new DynamicSelectOption("1111",1));
+            // options1.Add(new DynamicSelectOption("222222",2));
+            // DynamicControl d1=new DynamicControl("c1","number","from",null,null);
+            // DynamicControl d2=new DynamicControl("c2","text","dsada",null,null);
+            // DynamicControl d3=new DynamicControl("c1","checkbox","label",true,null);
+            // DynamicControl d4=new DynamicControl("c1","select",null,2,options1);
+            // controlList.Add(d1);
+            // controlList.Add(d2);
+            // controlList.Add(d3);
+            // controlList.Add(d4);
+            Response.AddHeader(filterList,"Filter");
             List<ProductDto> p=new List<ProductDto>(){
                 new ProductDto(){Id=1},
                 new ProductDto(){Id=2},
