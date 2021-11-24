@@ -8,11 +8,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './_modules/shared.module';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
+import { ProductsListComponent } from './products/products-list/products-list.component';
+import { CrossNumericValidatorDirective } from './_validators/cross-numeric.validator';
+import { ProductsFilterComponent } from './products/products-filter/products-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    ProductsListComponent,
+    CrossNumericValidatorDirective,
+    ProductsFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -21,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     FormsModule,
     SharedModule,
+    //CrossNumericValidatorDirective
   ],
   providers: [],
   bootstrap: [AppComponent]
