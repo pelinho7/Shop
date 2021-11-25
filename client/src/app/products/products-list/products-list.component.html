@@ -1,4 +1,13 @@
-<div *ngIf="products">
+<div class="row">
+    <app-products-filter *ngIf="products"
+    class="col-3" 
+    [filterAttributes]="(filterAttributes)"
+    (filter)="onFilter($event)"></app-products-filter>
+</div>
+
+
+
+<!-- <div *ngIf="products">
     <form #editForm="ngForm" id="editForm" (ngSubmit)="filterProducts()">
         <ng-container *ngFor="let attribute of filterAttributes">
             <div class="form-group border rounded p-2">
@@ -13,7 +22,6 @@
                             placeholder="{{attribute.dynamicControls[0].label}}">
                         </div>
                         <div class="col-2 text-center">-</div>
-                        <!-- [ngModelOptions]="{updateOn: 'blur'}" - update model and valid on lost focus -->
                         <div class="col-5">
                             <input class="form-control" [ngModelOptions]="{updateOn: 'blur'}"
                             appCrossNumericValidator='{"from":"{{attribute.dynamicControls[0].name}}","to":"{{attribute.dynamicControls[1].name}}"}'
@@ -21,7 +29,6 @@
                             placeholder="{{attribute.dynamicControls[1].label}}">
                         </div>
                     </div>
-                    <!-- <div *ngIf="{{attribute.dynamicControls[0].name}}.errors.mustMatch">Passwords must match</div> -->
                 </ng-container>
                 <ng-container *ngIf="attribute.type!=='number'">
                     <ng-container *ngFor="let control of attribute.dynamicControls">
@@ -49,4 +56,4 @@
 
         <button class="btn btn-primary ml-1" type="submit">Apply Filters</button>
     </form>
-</div>
+</div> -->

@@ -39,4 +39,8 @@ export class ProductsListComponent implements OnInit {
     this.loadProducts();
   }
 
+  onFilter(event:any) {
+    console.log(this.filterAttributes)
+    //console.log(filterAttributes);
+}
 }

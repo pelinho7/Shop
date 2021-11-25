@@ -44,7 +44,9 @@ namespace API.Controllers
 
             DynamicControl ch1=new DynamicControl("ch1","label",true,null);
             DynamicControl ch2=new DynamicControl("ch2","label",true,null);
-            FilterAttribute f3=new FilterAttribute("ch","checkbox",new List<DynamicControl>(){ch1,ch2});
+            DynamicControl ch3=new DynamicControl("ch3","label",true,null);
+            DynamicControl ch4=new DynamicControl("ch4","label",true,null);
+            FilterAttribute f3=new FilterAttribute("ch","checkbox",new List<DynamicControl>(){ch1,ch2,ch4,ch4});
 
             List<DynamicSelectOption> options1=new List<DynamicSelectOption>();
             options1.Add(new DynamicSelectOption("1111",1));
