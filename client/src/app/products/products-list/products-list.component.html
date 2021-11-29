@@ -1,10 +1,17 @@
-<div class="row">
-    <app-products-filter *ngIf="products"
-    class="col-3" 
-    [filterAttributes]="(filterAttributes)"
-    (filter)="onFilter($event)"></app-products-filter>
-</div>
 
+
+
+    <div class="row">
+        <div class="col-3">
+            <app-products-filter *ngIf="products"
+            [filterAttributes]="(filterAttributes)"
+            (filter)="onFilter($event)"></app-products-filter>
+        </div>
+    
+    <div class="col-9">
+        <div class="row" style="height: 50px;" *ngFor="let product of products">{{product.id}}</div>
+    </div>
+</div>
 
 
 <!-- <div *ngIf="products">

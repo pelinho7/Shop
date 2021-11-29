@@ -1,55 +1,58 @@
 
-    <form #editForm="ngForm" id="editForm" (ngSubmit)="filterProducts()">
-        <ng-container *ngFor="let attribute of filterAttributes">
-            <!-- style="max-height: 90px;overflow-y: scroll;" -->
-            <div class="form-group border rounded p-2" >
-                <label class="font-weight-bold">{{attribute.label}}</label>
-
-                <ng-container *ngIf="attribute.type==='number'">
-                    <div class="row">
-                        <div class="col-5">
-                            <input class="form-control" [ngModelOptions]="{updateOn: 'blur'}"
-                            appCrossNumericValidator='{"from":"{{attribute.dynamicControls[0].name}}","to":"{{attribute.dynamicControls[1].name}}"}'
-                            [(ngModel)]="attribute.dynamicControls[0].value" name="{{attribute.dynamicControls[0].name}}" type="number"
-                            placeholder="{{attribute.dynamicControls[0].label}}">
+    <form #editForm="ngForm" id="filterForm" (ngSubmit)="filterProducts()">
+        <div id='form-main-panel'>
+            <button [ngStyle]="submitBtnStyles" id="submit-products-filter" class="btn btn-primary" style="width: 100%;" type="submit">Filter</button>
+            <ng-container *ngFor="let attribute of filterAttributes">
+                <!-- style="max-height: 90px;overflow-y: scroll;" -->
+                <div class="form-group border rounded p-2" >
+                    <label class="font-weight-bold">{{attribute.label}}</label>
+    
+                    <ng-container *ngIf="attribute.type==='number'">
+                        <div class="row">
+                            <div class="col-5">
+                                <input class="form-control" [ngModelOptions]="{updateOn: 'blur'}"
+                                appCrossNumericValidator='{"from":"{{attribute.dynamicControls[0].name}}","to":"{{attribute.dynamicControls[1].name}}"}'
+                                [(ngModel)]="attribute.dynamicControls[0].value" name="{{attribute.dynamicControls[0].name}}" type="number"
+                                placeholder="{{attribute.dynamicControls[0].label}}">
+                            </div>
+                            <div class="col-2 text-center">-</div>
+                            <!-- [ngModelOptions]="{updateOn: 'blur'}" - update model and valid on lost focus -->
+                            <div class="col-5">
+                                <input class="form-control" [ngModelOptions]="{updateOn: 'blur'}"
+                                appCrossNumericValidator='{"from":"{{attribute.dynamicControls[0].name}}","to":"{{attribute.dynamicControls[1].name}}"}'
+                                [(ngModel)]="attribute.dynamicControls[1].value" name="{{attribute.dynamicControls[1].name}}" type="number"
+                                placeholder="{{attribute.dynamicControls[1].label}}">
+                            </div>
                         </div>
-                        <div class="col-2 text-center">-</div>
-                        <!-- [ngModelOptions]="{updateOn: 'blur'}" - update model and valid on lost focus -->
-                        <div class="col-5">
-                            <input class="form-control" [ngModelOptions]="{updateOn: 'blur'}"
-                            appCrossNumericValidator='{"from":"{{attribute.dynamicControls[0].name}}","to":"{{attribute.dynamicControls[1].name}}"}'
-                            [(ngModel)]="attribute.dynamicControls[1].value" name="{{attribute.dynamicControls[1].name}}" type="number"
-                            placeholder="{{attribute.dynamicControls[1].label}}">
+                        <!-- <div *ngIf="{{attribute.dynamicControls[0].name}}.errors.mustMatch">Passwords must match</div> -->
+                    </ng-container>
+                    <ng-container *ngIf="attribute.type!=='number'">
+                        <div *ngFor="let control of attribute.dynamicControls let i = index">
+                            <div *ngIf="attribute.type==='checkbox'" class="form-check" [ngClass]="{'d-none' : i>visibleChecks-1}">
+                                <input type="checkbox" class="form-check-input"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="control.value">
+                                    <label>{{control.label}}+{{i}}</label>
+                            </div>
+                            <input *ngIf="attribute.type==='text' || attribute.type==='number'" class="form-control"
+                                [(ngModel)]="control.value" name="{{control.name}}" type="{{attribute.type}}"
+                                placeholder="{{control.label}}">
+                        
+                            <select *ngIf="attribute.type==='select'" name="gender" style="width: 130px;" class="form-control ml-1" [(ngModel)]="control.value">
+                                <option *ngFor="let option of control.selectOptions" [value]="option.value">
+                                    {{option.text}}
+                                </option>
+                            </select>
                         </div>
-                    </div>
-                    <!-- <div *ngIf="{{attribute.dynamicControls[0].name}}.errors.mustMatch">Passwords must match</div> -->
-                </ng-container>
-                <ng-container *ngIf="attribute.type!=='number'">
-                    <div *ngFor="let control of attribute.dynamicControls let i = index">
-                        <div *ngIf="attribute.type==='checkbox'" class="form-check" [ngClass]="{'d-none' : i>visibleChecks-1}">
-                            <input type="checkbox" class="form-check-input"
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="control.value">
-                                <label>{{control.label}}+{{i}}</label>
-                        </div>
-                        <input *ngIf="attribute.type==='text' || attribute.type==='number'" class="form-control"
-                            [(ngModel)]="control.value" name="{{control.name}}" type="{{attribute.type}}"
-                            placeholder="{{control.label}}">
-                    
-                        <select *ngIf="attribute.type==='select'" name="gender" style="width: 130px;" class="form-control ml-1" [(ngModel)]="control.value">
-                            <option *ngFor="let option of control.selectOptions" [value]="option.value">
-                                {{option.text}}
-                            </option>
-                        </select>
-                    </div>
-                    <a class="text-right more-checks-link" *ngIf="attribute.dynamicControls.length>visibleChecks"
-                        (click)="moreCheckboxes($event)">More</a>
-                </ng-container>
+                        <a class="text-right more-checks-link" *ngIf="attribute.dynamicControls.length>visibleChecks"
+                            (click)="moreCheckboxes($event)">More</a>
+                    </ng-container>
+    
+    
+                </div>
+                
+            </ng-container>
+        </div>
+        
 
-
-            </div>
-            
-        </ng-container>
-
-        <button class="btn btn-primary" style="width: 100%;" type="submit">Filter</button>
     </form>
 

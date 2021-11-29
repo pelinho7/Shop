@@ -75,9 +75,11 @@ namespace API.Controllers
             // controlList.Add(d4);
             Response.AddHeader(filterList,"Filter");
             List<ProductDto> p=new List<ProductDto>(){
-                new ProductDto(){Id=1},
-                new ProductDto(){Id=2},
             };
+
+            for(int i=0;i<20;i++){
+                p.Add(new ProductDto(){Id=i});
+            }
 
             return Ok(p);
         }
