@@ -5,6 +5,10 @@
 
 #submit-products-filter {
     -webkit-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.0s ease-in-out;
     z-index: 1;
+}
+
+.test {
+    z-index: 0;
 }

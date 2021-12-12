@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { CrossNumericValidatorDirective } from './_validators/cross-numeric.validator';
 import { ProductsFilterComponent } from './products/products-filter/products-filter.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { TopNavbarComponent } from './navbars/top-navbar/top-navbar.component';
+import { SideNavbarComponent } from './navbars/side-navbar/side-navbar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,11 @@ import { ProductsFilterComponent } from './products/products-filter/products-fil
     HomeComponent,
     ProductsListComponent,
     CrossNumericValidatorDirective,
-    ProductsFilterComponent
+    ProductsFilterComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
+    TopNavbarComponent,
+    SideNavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +38,9 @@ import { ProductsFilterComponent } from './products/products-filter/products-fil
     SharedModule,
     //CrossNumericValidatorDirective
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

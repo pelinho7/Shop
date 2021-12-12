@@ -4,6 +4,10 @@ namespace API.Helpers
 {
     public class FilterAttribute
     {
+        public FilterAttribute()
+        {
+        }
+
         public FilterAttribute(string label, string type, List<DynamicControl> dynamicControls)
         {
             Label = label;

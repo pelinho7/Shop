@@ -1,42 +1,28 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DynamicControl } from '../_models/dynamicControl';
-import { Product } from '../_models/product';
-import { ProductService } from '../_services/product.service';
-import { FormsModule, NgForm } from '@angular/forms';
-import { FilterAttribute } from '../_models/filterAttribute';
-import { map } from "rxjs/operators";
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { ResizeWindowWatcherService } from '../_services/resize-window-watcher.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css','./../shared/mobile-sidenav.css']
 })
 export class HomeComponent implements OnInit {
-  products:Product[];
-  filterAttributes:FilterAttribute[];
-  //dynamicControls:DynamicControl[];
-  @ViewChild('editForm') editForm:NgForm;
+  mobileScreen=false;
+  constructor(public resizeWindowWatcherService:ResizeWindowWatcherService) { }
 
-  constructor(private productService:ProductService) { }
+  // @HostListener('window:resize', ['$event'])onResize($event:any) {
+  //   if(992>$event.currentTarget.innerWidth){
+  //     this.mobileScreen=true;
+  //   }
+  //   else{
+  //     this.mobileScreen=false;
+  //   }
+  // }
 
   ngOnInit(): void {
-    this.loadProducts();
+   
   }
-
-  loadProducts(){
-    let dynamicControls:DynamicControl[]=[];
-    if(this.filterAttributes)
-      this.filterAttributes.map(x=>x.dynamicControls).forEach(x=>dynamicControls= [...dynamicControls, ...x]);
-
-    this.productService.getProducts(dynamicControls).subscribe(results=>{
-      this.products=results.products;
-      this.filterAttributes=results.filterAttributes;
-    })
-  }
-
-  filterProducts(){
-    console.log(this.filterAttributes);
-    this.loadProducts();
-  }
-
 }

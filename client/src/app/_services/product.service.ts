@@ -7,6 +7,8 @@ import { DynamicControl } from '../_models/dynamicControl';
 import { Product } from '../_models/product';
 import { GetProductsResult } from '../_models/getProductsResult';
 import { FilterAttribute } from '../_models/filterAttribute';
+import { ProductListData } from '../_models/productListData';
+import { Pagination } from '../_models/pagination';
 
 
 @Injectable({
@@ -54,15 +56,19 @@ export class ProductService {
           products=response.body;
 
         let filterAttributes:FilterAttribute[]=[]
-        if (response.headers.get('Filter') !== null) {
-          filterAttributes= JSON.parse(response.headers.get('Filter') || '{}');
+        let productListData:ProductListData;
+        let pagination:Pagination=new Pagination();
+        if (response.headers.get('ProductListData') !== null) {
+          productListData= JSON.parse(response.headers.get('ProductListData') || '{}');
           this.dynamicControls=[];
-          
+
+          filterAttributes=productListData.filterAttributes;
           filterAttributes.map(x=>x.dynamicControls).forEach(x=>this.dynamicControls= [...this.dynamicControls, ...x]);
+          pagination=productListData.pagination;
         }  
         
         this.products=products;
-        let result=new GetProductsResult(this.products,filterAttributes);
+        let result=new GetProductsResult(this.products,filterAttributes,pagination);
         return result;
       })
     )

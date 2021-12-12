@@ -1,9 +1,15 @@
-<h1>{{title}}</h1>
+<app-top-navbar></app-top-navbar>
 
-<div class="container">
-    <router-outlet></router-outlet>
+<div class="row">
+  <div id="side-navbar" 
+  [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'overlay-menu':'col-sm-3'">
+      <app-side-navbar></app-side-navbar>
+  </div>
+  <div [ngClass]="(resizeWindowWatcherService.mobileMode$|async)?'col-12':'col-9'">
+    <router-outlet ></router-outlet>
+  </div>
 </div>
 
-<!-- <ul>
-    <li *ngFor='let user of users'>{{user.id}} - {{user.userName}}</li>
-</ul> -->
+<!-- <div>
+    <router-outlet></router-outlet>
+</div> -->

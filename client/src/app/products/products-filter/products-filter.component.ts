@@ -10,6 +10,13 @@ export class ProductsFilterComponent implements OnInit {
 
   submitBtnStyles = new Map<string, string>();
 
+  @HostListener('window:resize', ['$event'])onResize($event:any) {
+    var mainPanel =document.getElementById('form-main-panel');
+    var buttonWidth = mainPanel?.getBoundingClientRect().width;
+    this.submitBtnStyles.set('width',buttonWidth+'px');
+    this.closeFilterPanel();
+  }
+
   @HostListener('window:scroll', ['$event']) onScrollEvent($event:any){
     const winScrollTop = window.pageYOffset 
     || document.documentElement.scrollTop 
@@ -18,10 +25,10 @@ export class ProductsFilterComponent implements OnInit {
     var mainPanel =document.getElementById('form-main-panel');
     var mainPanelHeight = mainPanel?.getBoundingClientRect().height
 
-    let position:string='absolute';
-    if(winScrollTop ===0){
-      position='relative'
-    }
+    let position:string='relative';
+    // if(winScrollTop ===0){
+    //   position='relative'
+    // }
 
     this.submitBtnStyles.set('position',position);
     this.submitBtnStyles.set('top',Math.min(<number>mainPanelHeight,winScrollTop)+'px');
@@ -40,6 +47,12 @@ export class ProductsFilterComponent implements OnInit {
 
   filterProducts(){
     this.filter.emit(null);
+  }
+
+  closeFilterPanel(){
+    (document.querySelector('#filter-products-panel') as HTMLElement).style.width = '0%';
+    var topNav=(document.querySelector('#top-navbar') as HTMLElement);
+    topNav.style.zIndex='';
   }
 
   moreCheckboxes(event:any){

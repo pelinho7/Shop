@@ -61,19 +61,12 @@ namespace API.Controllers
             filterList.Add(f4);
             filterList.Add(f1a);
 
-            // List<DynamicControl> controlList=new List<DynamicControl>();
-            // List<DynamicSelectOption> options1=new List<DynamicSelectOption>();
-            // options1.Add(new DynamicSelectOption("1111",1));
-            // options1.Add(new DynamicSelectOption("222222",2));
-            // DynamicControl d1=new DynamicControl("c1","number","from",null,null);
-            // DynamicControl d2=new DynamicControl("c2","text","dsada",null,null);
-            // DynamicControl d3=new DynamicControl("c1","checkbox","label",true,null);
-            // DynamicControl d4=new DynamicControl("c1","select",null,2,options1);
-            // controlList.Add(d1);
-            // controlList.Add(d2);
-            // controlList.Add(d3);
-            // controlList.Add(d4);
-            Response.AddHeader(filterList,"Filter");
+            ProductListData productListData=new ProductListData(filterList,new Pagination());
+            // var jo=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
+            // System.Console.WriteLine("aaaaa "+JsonSerializer.Serialize(productListData,jo));
+            // System.Console.WriteLine("bbbbb "+JsonSerializer.Serialize(productListData.FilterList,jo));
+            Response.AddHeader(productListData,"ProductListData");
+            //Response.AddHeader(filterList,"Filter");
             List<ProductDto> p=new List<ProductDto>(){
             };
 

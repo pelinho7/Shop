@@ -6,25 +6,31 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     BsDropdownModule.forRoot(),
+    BrowserAnimationsModule,
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
     ModalModule.forRoot(),
+    ToastrModule.forRoot(),
   ],
   exports:[
     BsDropdownModule,
+    BrowserAnimationsModule,
     TabsModule,
     BsDatepickerModule,
     PaginationModule,
     ButtonsModule,
     ModalModule,
+    ToastrModule,
   ]
 })
 export class SharedModule { }
