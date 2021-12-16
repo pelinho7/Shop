@@ -5,7 +5,7 @@
   [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'overlay-menu':'col-sm-3'">
       <app-side-navbar></app-side-navbar>
   </div>
-  <div [ngClass]="(resizeWindowWatcherService.mobileMode$|async)?'col-12':'col-9'">
+  <div [ngClass]="(resizeWindowWatcherService.mobileMode$|async) || !(routeWatcherService.sideMenuPage$|async)?'col-12':'col-9'">
     <router-outlet ></router-outlet>
   </div>
 </div>

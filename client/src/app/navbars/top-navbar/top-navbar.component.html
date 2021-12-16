@@ -5,12 +5,12 @@
 
 <nav id="top-navbar" class="navbar-expand-lg navbar-light bg-light border-bottom sticky-top container-fluid 
     p-2 pr-3 pl-3 row m-0">
-    <div class="col-3">
+    <div class="col-6 col-md-3 order-0">
         <button class="btn btn-outline-secondary" 
         [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'':'d-none'"
         (click)="openSideNavbar()"><i class="fa fa-bars" aria-hidden="true"></i></button>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-md-6 order-2 order-md-1">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
@@ -20,9 +20,9 @@
     </div>
 
 
-    <div class="col-3">
+    <div class="col-6 col-md-3 order-1 order-md-2">
       <div class="float-right">
-        <button class="btn btn-outline-success">Log In</button>
+        <button class="btn btn-outline-success" routerLink='account/login'>Log In</button>
         <div class="btn-group " dropdown>
           <button id="button-animated" dropdownToggle type="button" class="btn dropdown-toggle"
                   aria-controls="dropdown-animated">

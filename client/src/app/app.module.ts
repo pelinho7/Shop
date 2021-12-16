@@ -16,6 +16,8 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { TopNavbarComponent } from './navbars/top-navbar/top-navbar.component';
 import { SideNavbarComponent } from './navbars/side-navbar/side-navbar.component';
+import { LogInComponent } from './account/log-in/log-in.component';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { SideNavbarComponent } from './navbars/side-navbar/side-navbar.component
     NotFoundComponent,
     ServerErrorComponent,
     TopNavbarComponent,
-    SideNavbarComponent
+    SideNavbarComponent,
+    LogInComponent,
+    TextInputComponent
   ],
   imports: [
     BrowserModule,

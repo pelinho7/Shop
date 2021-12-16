@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { LogInComponent } from 'src/app/account/log-in/log-in.component';
 import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watcher.service';
 import { RouteWatcherService } from 'src/app/_services/route-watcher.service';
 
@@ -8,9 +11,11 @@ import { RouteWatcherService } from 'src/app/_services/route-watcher.service';
   styleUrls: ['./top-navbar.component.css']
 })
 export class TopNavbarComponent implements OnInit {
-
+  bsModalRef?: BsModalRef;
+  
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
-    ,public routeWatcherService:RouteWatcherService) { }
+    ,public routeWatcherService:RouteWatcherService
+    ,private modalService:BsModalService,private router:Router) { }
 
   ngOnInit(): void {
   }

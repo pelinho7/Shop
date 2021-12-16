@@ -9,6 +9,9 @@ import { ReplaySubject } from 'rxjs';
 export class RouteWatcherService {
   private homePage=new ReplaySubject <boolean>(1);
   homePage$=this.homePage.asObservable();
+
+  private sideMenuPage=new ReplaySubject <boolean>(1);
+  sideMenuPage$=this.sideMenuPage.asObservable();
   
   constructor(private router:Router) {
      //show side nav only on home page
@@ -19,6 +22,13 @@ export class RouteWatcherService {
        }
        else{
         this.homePage.next(false);
+       }
+
+       if(event.url==='/'|| event.url==='home'|| event.url==='products'){
+        this.sideMenuPage.next(true);
+       }
+       else{
+        this.sideMenuPage.next(false);
        }
      });
    }
