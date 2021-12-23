@@ -22,20 +22,28 @@
 
     <div class="col-6 col-md-3 order-1 order-md-2">
       <div class="float-right">
-        <button class="btn btn-outline-success" routerLink='account/login'>Log In</button>
-        <div class="btn-group " dropdown>
-          <button id="button-animated" dropdownToggle type="button" class="btn dropdown-toggle"
-                  aria-controls="dropdown-animated">
-                  <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
-          </button>
-          <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
-              role="menu" aria-labelledby="button-animated">
-            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Another action</a>
-            </li>
-            <li role="menuitem"><a class="dropdown-item" href="#">Something else
-              here</a></li>
-          </ul>
+        <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
+          <button class="btn btn-outline-success mr-1" routerLink='account/login'>Log In</button>
+          <button class="btn btn-outline-success" routerLink='account/login'>Register</button>
+        </div>
+        <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
+          <!-- <button class="btn btn-outline-success" (click)="logout()">Log Out</button> -->
+          <div class="btn-group " dropdown>
+            <button id="button-animated" dropdownToggle type="button" class="btn dropdown-toggle"
+                    aria-controls="dropdown-animated">
+                    <!-- <span>Hi {{(accountService.currentUser$|async).username}},</span> -->
+                    Hi {{(accountService.currentUser$|async)?.username}}
+                    <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+            </button>
+            <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
+                role="menu" aria-labelledby="button-animated">
+              <li role="menuitem"><a class="dropdown-item" (click)="logout()">Log Out</a></li>
+              <li role="menuitem"><a class="dropdown-item" href="#">Another action</a>
+              </li>
+              <li role="menuitem"><a class="dropdown-item" href="#">Something else
+                here</a></li>
+            </ul>
+          </div>
         </div>
       </div>
 

@@ -9,6 +9,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [],
@@ -23,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalModule.forRoot(),
     ToastrModule.forRoot(),
     ReactiveFormsModule,
+    NgxSpinnerModule,
   ],
   exports:[
     BsDropdownModule,
@@ -34,6 +36,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalModule,
     ToastrModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
   ]
 })
 export class SharedModule { }

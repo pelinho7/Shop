@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AccountService } from 'src/app/_services/account.service';
 
@@ -14,7 +15,8 @@ export class LogInComponent implements OnInit {
 
   constructor(
     private fb:FormBuilder
-    ,private accountService:AccountService) { }
+    ,private accountService:AccountService
+    ,private router:Router) { }
 
   ngOnInit(): void {
     this.logInForm=this.fb.group({
@@ -25,7 +27,7 @@ export class LogInComponent implements OnInit {
 
   logIn(){
     this.accountService.logIn(this.logInForm.value).subscribe(user=>{
-
+      this.router.navigateByUrl('/');
     })
   }
 }

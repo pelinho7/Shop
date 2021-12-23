@@ -41,7 +41,16 @@ export class ErrorInterceptor implements HttpInterceptor {
             break;
 
             case 401:
-              this.toastr.error(error.statusText,error.status);
+              console.log(error.error)
+              let message:string='';
+              if(error.error.title === undefined){
+                message=error.error;
+              }
+              else{
+                message=error.error.title;
+              }
+             
+              this.toastr.error(message,error.status);
               break;
 
             case 404:

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -18,6 +18,7 @@ import { TopNavbarComponent } from './navbars/top-navbar/top-navbar.component';
 import { SideNavbarComponent } from './navbars/side-navbar/side-navbar.component';
 import { LogInComponent } from './account/log-in/log-in.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { TextInputComponent } from './_forms/text-input/text-input.component';
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
+    {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true},
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
