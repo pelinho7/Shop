@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using API.DBAccess.Entities;
 using API.DTOs;
 using API.Extensions;
 using AutoMapper;
@@ -10,6 +11,9 @@ namespace API.Helpers
     {
         public AutoMapperProfiles()
         {
+            CreateMap<Agreement,AgreementDto>();
+            CreateMap<RegisterDto,AppUser>()
+            .ForMember(dest=>dest.UserName,opt=>opt.MapFrom(src=>src.Email));
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

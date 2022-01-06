@@ -16,6 +16,32 @@ namespace API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.7");
 
+            modelBuilder.Entity("API.DBAccess.Entities.Agreement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contents")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Obligatory")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Removable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agreements");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
@@ -62,6 +88,12 @@ namespace API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -121,6 +153,33 @@ namespace API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.UserAgreement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AgreementId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Value")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AgreementId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("UserAgreement");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -226,6 +285,25 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.UserAgreement", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Agreement", "Agreement")
+                        .WithMany("UserAgreements")
+                        .HasForeignKey("AgreementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.AppUser", "AppUser")
+                        .WithMany("UserAgreements")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Agreement");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.AppRole", null)
@@ -262,6 +340,11 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.Agreement", b =>
+                {
+                    b.Navigation("UserAgreements");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
@@ -269,6 +352,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.DBAccess.Entities.AppUser", b =>
                 {
+                    b.Navigation("UserAgreements");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

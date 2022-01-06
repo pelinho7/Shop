@@ -42,4 +42,37 @@ export class AccountService {
     //atob()decode data in Base64 
     return JSON.parse(atob(token.split('.')[1]))
   }
+
+  register(model:any){
+    return this.http.post<any>(this.baseUrl+'account/register',model).pipe(
+      map((user:any)=>{
+        console.log('111111');
+        console.log(user);
+        // if(user !== null){
+        //   this.setCurrentUser(user);
+        // }
+      })
+    )
+  }
+
+  checkEmailNotTaken(email:string){
+    return this.http.post<boolean>(this.baseUrl+'account/check-email-not-taken',email).pipe(
+      map((result:boolean)=>{
+        return result;
+      })
+    )
+  }
+
+  verifyEmail(data: string) { 
+    return this.http.get<User>(this.baseUrl + data).pipe(
+      map((user:User)=>{
+        this.setCurrentUser(user);
+        return user;
+      })
+    )
+  }
+
+  resendVerificationEmail(user:any) { 
+    return this.http.post(this.baseUrl+'account/resend-verification-email',user);
+  }
 }

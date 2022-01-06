@@ -24,7 +24,7 @@
       <div class="float-right">
         <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
           <button class="btn btn-outline-success mr-1" routerLink='account/login'>Log In</button>
-          <button class="btn btn-outline-success" routerLink='account/login'>Register</button>
+          <button class="btn btn-outline-success" routerLink='account/register'>Register</button>
         </div>
         <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
           <!-- <button class="btn btn-outline-success" (click)="logout()">Log Out</button> -->

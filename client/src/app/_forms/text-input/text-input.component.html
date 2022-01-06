@@ -15,4 +15,10 @@
     <div *ngIf="ngControl.control?.errors?.isMatching" class="invalid-feedback">
         Passwords do not match
     </div>
+    <div *ngIf="ngControl.control?.errors?.email" class="invalid-feedback">
+        Email is invalid
+    </div>
+    <div *ngIf="ngControl.control?.errors?.emailTaken" class="invalid-feedback">
+        This email has been taken, please use another one
+    </div>
 </div>

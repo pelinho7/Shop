@@ -23,7 +23,13 @@ namespace API.DBAccess.Data
             this.context = context;
             this.mapper = mapper;
         }
-        
+
+        public async Task<AppUser> GetUserByEmailAsync(string email)
+        {
+            return await context.Users
+            .SingleOrDefaultAsync(x=>x.NormalizedEmail==email.ToUpper());
+        }
+
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
             return await context.Users.FindAsync(id);

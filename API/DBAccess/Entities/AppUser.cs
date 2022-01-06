@@ -8,6 +8,9 @@ namespace API.DBAccess.Entities
 {
     public class AppUser:IdentityUser<int>
     {   
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         // public DateTime DateOfBirth { get; set; }
         // public string KnownAs { get; set; }
         // public DateTime Created { get; set; }=DateTime.Now;
@@ -19,5 +22,6 @@ namespace API.DBAccess.Entities
         // public string City { get; set; }
         // public string Country { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
+        public ICollection<UserAgreement> UserAgreements { get; set; }
     }
 }

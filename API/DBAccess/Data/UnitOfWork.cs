@@ -15,7 +15,7 @@ namespace API.DBAccess.Data
             this.mapper = mapper;
         }
         public IUserRepository UserRepository =>new UserRepository(context,mapper);
-
+        public IAgreementRepository AgreementRepository =>new AgreementRepository(context,mapper);
 
         public async Task<bool> Complete()
         {

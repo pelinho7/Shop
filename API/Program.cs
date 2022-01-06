@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DBAccess.Data;
 using API.DBAccess.Entities;
+using API.DBAccess.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,10 @@ namespace API
                 var context=services.GetRequiredService<DataContext>();
                 var userManager=services.GetRequiredService<UserManager<AppUser>>();
                 var roleManager=services.GetRequiredService<RoleManager<AppRole>>();
+                var unitOfWork=services.GetRequiredService<IUnitOfWork>();
                 await context.Database.MigrateAsync();
                 await Seed.SeedUsers(userManager,roleManager);
+                await Seed.SeedAgreement(unitOfWork);
             }
             catch(Exception ex){
                 var logger=services.GetRequiredService<ILogger<Program>>();

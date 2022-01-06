@@ -19,6 +19,9 @@ import { SideNavbarComponent } from './navbars/side-navbar/side-navbar.component
 import { LogInComponent } from './account/log-in/log-in.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { RegisterComponent } from './account/register/register.component';
+import { CheckboxInputComponent } from './_forms/checkbox-input/checkbox-input.component';
+import { EmailVerificationComponent } from './email-verification/email-verification.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     TopNavbarComponent,
     SideNavbarComponent,
     LogInComponent,
-    TextInputComponent
+    TextInputComponent,
+    RegisterComponent,
+    CheckboxInputComponent,
+    EmailVerificationComponent
   ],
   imports: [
     BrowserModule,

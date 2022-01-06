@@ -19,7 +19,7 @@ namespace API.DBAccess.Data
         }
 
 
-        // public DbSet<UserLike> Likes { get; set; }
+        public DbSet<Agreement> Agreements { get; set; }
         // public DbSet<Message> Messages { get; set; }
         // public DbSet<Group> Groups { get; set; }
         // public DbSet<Connection> Connections { get; set; }
@@ -40,14 +40,18 @@ namespace API.DBAccess.Data
             .HasForeignKey(x => x.RoleId)
             .IsRequired();
 
-            // builder.Entity<UserLike>()
-            //      .HasKey(k => new { k.SourceUserId, k.LikeUserId });
 
-            // builder.Entity<UserLike>()
-            //     .HasOne(s => s.SourceUser)
-            //     .WithMany(l => l.LikedUsers)
-            //     .HasForeignKey(s => s.SourceUserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<UserAgreement>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.UserAgreements)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserAgreement>()
+                .HasOne(s => s.Agreement)
+                .WithMany(l => l.UserAgreements)
+                .HasForeignKey(s => s.AgreementId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // builder.Entity<UserLike>()
             //     .HasOne(s => s.LikeUser)
