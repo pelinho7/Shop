@@ -22,6 +22,8 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { RegisterComponent } from './account/register/register.component';
 import { CheckboxInputComponent } from './_forms/checkbox-input/checkbox-input.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
+import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
+import { NewPasswordComponent } from './account/new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { EmailVerificationComponent } from './email-verification/email-verificat
     TextInputComponent,
     RegisterComponent,
     CheckboxInputComponent,
-    EmailVerificationComponent
+    EmailVerificationComponent,
+    ResetPasswordComponent,
+    NewPasswordComponent
   ],
   imports: [
     BrowserModule,

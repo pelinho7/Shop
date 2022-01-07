@@ -89,6 +89,26 @@ namespace API.Controllers
             return new (sendEmailResult, message);
         }
 
+        [NonAction]
+        private async Task<(bool,string)> sendResetPasswordEmailAsync(Uri uri,AppUser user, IEmailService emailService)
+        {
+            string resetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
+            string host=httpContextAccessor.HttpContext.Request.Host.Value;
+            StringWriter emailBody = new StringWriter();
+            XmlTextWriter xml = new XmlTextWriter(emailBody);
+            xml.Formatting = Formatting.Indented;
+            xml.WriteElementString("h5", String.Format("Dear {0}", user.UserName));
+            xml.WriteString($"Below is link available to reset your password to your account. Link will be active for one day..");
+            xml.WriteStartElement("br");
+            xml.WriteEndElement();
+            xml.WriteElementString("p", $"{uri}account/new-password?id={user.Id}&token={Uri.EscapeDataString(resetPasswordToken)}");
+            xml.Flush();
+
+            (bool sendEmailResult, string message) = await emailService.SendEmailAsync(user.Email, "Account activation link", emailBody.ToString().ToString());
+
+            return new (sendEmailResult, message);
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -141,6 +161,33 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("reset-password")]
+        public async Task<ActionResult> ResetPassword(string login)
+        {
+            if(login==null)
+                return BadRequest();
+
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(login);
+
+            if(user == null){
+                user = await unitOfWork.UserRepository.GetUserByEmailAsync(login);
+                if(user == null)
+                    return Unauthorized($"Invalid user");
+            }
+
+
+            //get uri of incoming request
+            Uri uri = Request.GetTypedHeaders().Referer;
+            (bool emailResult, string message) = await sendResetPasswordEmailAsync(uri,user,emailService);
+
+            if(emailResult){
+                return Ok();
+            }
+            else{
+                return BadRequest(message);
+            }
+        }
+
         [HttpPost("check-email-not-taken")]
         public async Task<ActionResult<bool>> CheckEmailNotTaken(string email)
         {
@@ -182,6 +229,33 @@ namespace API.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpPost("new-password")]
+        public async Task<ActionResult> NewPassword(NewPasswordDto newPasswordDto)
+        {
+
+             if (newPasswordDto==null ||string.IsNullOrEmpty(newPasswordDto.ResetPasswordToken) 
+             || newPasswordDto.UserId<1)
+            {
+                return BadRequest();
+            }
+
+            newPasswordDto.ResetPasswordToken = Uri.UnescapeDataString(newPasswordDto.ResetPasswordToken);
+                var user = await unitOfWork.UserRepository.GetUserByIdAsync(newPasswordDto.UserId);
+                if (user == null)
+                    return Unauthorized($"Invalid user");
+
+                var resetPasswordResult = await userManager.ResetPasswordAsync(user
+                    , newPasswordDto.ResetPasswordToken, newPasswordDto.NewPassword);
+
+                if (!resetPasswordResult.Succeeded)
+                {
+                    resetPasswordResult.Errors.ToList().ForEach(x => ModelState.AddModelError("", $"{x.Description}"));
+                    return BadRequest(resetPasswordResult?.Errors.FirstOrDefault().Description);
+                }
+                else
+                    return Ok();
         }
     }
 }

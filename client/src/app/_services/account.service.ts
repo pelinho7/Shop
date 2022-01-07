@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { of, ReplaySubject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
@@ -13,7 +14,7 @@ export class AccountService {
   private currentUserSource=new ReplaySubject<User>(1);
   currentUser$=this.currentUserSource.asObservable();
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private toastr:ToastrService) { }
 
   logIn(model:any){
     return this.http.post<User>(this.baseUrl+'account/login',model).pipe(
@@ -46,7 +47,6 @@ export class AccountService {
   register(model:any){
     return this.http.post<any>(this.baseUrl+'account/register',model).pipe(
       map((user:any)=>{
-        console.log('111111');
         console.log(user);
         // if(user !== null){
         //   this.setCurrentUser(user);
@@ -74,5 +74,21 @@ export class AccountService {
 
   resendVerificationEmail(user:any) { 
     return this.http.post(this.baseUrl+'account/resend-verification-email',user);
+  }
+
+  resetPassword(login:string) { 
+    return this.http.get(this.baseUrl+'account/reset-password?login='+login).pipe(
+      map(_ => {
+        return true;
+      }),
+      catchError(err => {
+        this.toastr.error(err);
+        return of(false);
+      })
+    )
+  }
+
+  newPassword(model:any){
+    return this.http.post(this.baseUrl+'account/new-password',model);
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ValidateEmailNotTaken } from 'src/app/validators/email-not-taken.validator';
 import { Agreement } from 'src/app/_models/agreement';
 import { Registration } from 'src/app/_models/registration';
@@ -17,18 +19,14 @@ export class RegisterComponent implements OnInit {
   registerForm:FormGroup;
   public loadData:boolean=false;
   constructor(private fb:FormBuilder,public formHelpersService:FormHelpersService
-    ,private agreementService:AgreementService,private accountService:AccountService) { }
+    ,private agreementService:AgreementService,private accountService:AccountService
+    ,private router:Router,private toastr:ToastrService) { }
 
   ngOnInit(): void {
     this.agreementService.getAgreementsByType(0).subscribe((agreements:Agreement[])=>{
-      // console.log(agreements);
-      // var a=agreements[0] as Agreement;
-      // console.log(a.checked);
       this.registration=new Registration();
-      // this.registration.agreements=agreements;
-      //this.getRegistrationAgreement();
       this.registration.agreements=agreements;
-      console.log(this.registration.agreements)
+      //console.log(this.registration.agreements)
 
       this.registerForm=this.fb.group({
         email:['',Validators.email],
@@ -43,7 +41,6 @@ export class RegisterComponent implements OnInit {
   
       let control = <FormArray>this.registerForm.controls.agreements;
       this.registration.agreements.forEach(agreement=>{
-        console.log(agreement)
         var group=this.fb.group(agreement);
         if(agreement.obligatory){
           group.controls['checked'].validator=Validators.requiredTrue;
@@ -54,24 +51,6 @@ export class RegisterComponent implements OnInit {
     //console.log('111')
     this.loadData=true;
 
-
-    //this.getRegistrationAgreement();
-    // this.registerForm=this.fb.group({
-    //   firstName:['',Validators.required],
-    //   lastName:['',Validators.required],
-    //   password:['',[Validators.required,Validators.minLength(4),Validators.maxLength(8)]],
-    //   passwordRepeated:['',[Validators.required,this.matchValues('password')]],
-    //   agreements: this.fb.array([])
-    // })
-
-    // let control = <FormArray>this.registerForm.controls.agreements;
-    // this.registration.agreements.forEach(agreement=>{
-    //   var group=this.fb.group(agreement);
-    //   if(agreement.obligatory){
-    //     group.controls['checked'].validator=Validators.requiredTrue;
-    //   }
-
-    //   control.push(group)
     })
   }
 
@@ -84,20 +63,10 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  getRegistrationAgreement(){
-    var registration:Registration=new Registration();
-    registration.firstName="f";
-    var a1=new Agreement();
-    a1.id=1;a1.contents="dfdsfds";a1.obligatory=true;a1.checked=false;
-    var a2=new Agreement();
-    a2.id=1;a2.contents="false";a2.obligatory=false;a2.checked=false;
-    this.registration=registration;
-    registration.agreements=[a1,a2];
-  }
-
   register(){
     this.accountService.register(this.registerForm.value).subscribe(user=>{
-      //this.router.navigateByUrl('/');
+      this.toastr.info('On your email sent verification mail')
+      this.router.navigateByUrl('/');
     })
   }
 }
