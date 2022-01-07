@@ -18,8 +18,10 @@ namespace API.DBAccess.Data
 
         }
 
-
+        public DbSet<AppUserHistory> UserHistories { get; set; }
         public DbSet<Agreement> Agreements { get; set; }
+        public DbSet<UserAgreement> UserAgreements { get; set; }
+        public DbSet<UserAgreementHistory> UserAgreementHistories { get; set; }
         // public DbSet<Message> Messages { get; set; }
         // public DbSet<Group> Groups { get; set; }
         // public DbSet<Connection> Connections { get; set; }
@@ -53,21 +55,23 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.AgreementId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // builder.Entity<UserLike>()
-            //     .HasOne(s => s.LikeUser)
-            //     .WithMany(l => l.LikedByUsers)
-            //     .HasForeignKey(s => s.LikeUserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<UserAgreementHistory>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.UserAgreementHistories)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // builder.Entity<Message>()
-            //     .HasOne(u => u.Recipient)
-            //     .WithMany(m => m.MessagesRecived)
-            //     .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<UserAgreementHistory>()
+                .HasOne(s => s.Agreement)
+                .WithMany(l => l.UserAgreementHistories)
+                .HasForeignKey(s => s.AgreementId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // builder.Entity<Message>()
-            //     .HasOne(u => u.Sender)
-            //     .WithMany(m => m.MessagesSent)
-            //     .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<AppUserHistory>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.AppUserHistories)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
         firstName:['',Validators.required],
         lastName:['',Validators.required],
         password:['',[Validators.required,Validators.minLength(4),Validators.maxLength(8)]],
-        passwordRepeated:['',[Validators.required,this.matchValues('password')]],
+        passwordRepeated:['',[Validators.required,this.formHelpersService.matchValues('password')]],
         agreements: this.fb.array([])
       })
 
@@ -52,15 +52,6 @@ export class RegisterComponent implements OnInit {
     this.loadData=true;
 
     })
-  }
-
-  matchValues(matchTo: string): ValidatorFn {
-    return (control: AbstractControl) => {
-      if (control.parent && control.parent.controls) {
-        return control?.value === (control?.parent?.controls as { [key: string]: AbstractControl })[matchTo].value ? null : {isMatching: true}
-      }
-      return null;
-    }
   }
 
   register(){

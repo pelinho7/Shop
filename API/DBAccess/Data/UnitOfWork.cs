@@ -14,12 +14,15 @@ namespace API.DBAccess.Data
             this.context = context;
             this.mapper = mapper;
         }
-        public IUserRepository UserRepository =>new UserRepository(context,mapper);
-        public IAgreementRepository AgreementRepository =>new AgreementRepository(context,mapper);
+        public IUserRepository UserRepository => new UserRepository(context, mapper);
+        public IUserHistoryRepository UserHistoryRepository => new UserHistoryRepository(context, mapper);
+        public IAgreementRepository AgreementRepository => new AgreementRepository(context, mapper);
+        public IUserAgreementRepository UserAgreementRepository => new UserAgreementRepository(context, mapper);
+        public IUserAgreementHistoryRepository UserAgreementHistoryRepository => new UserAgreementHistoryRepository(context, mapper);
 
         public async Task<bool> Complete()
         {
-            return await context.SaveChangesAsync()>0;
+            return await context.SaveChangesAsync() > 0;
         }
 
         public bool HasChanges()

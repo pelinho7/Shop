@@ -23,5 +23,7 @@ namespace API.DBAccess.Entities
         // public string Country { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
         public ICollection<UserAgreement> UserAgreements { get; set; }
+        public ICollection<AppUserHistory> AppUserHistories { get; set; }
+        public ICollection<UserAgreementHistory> UserAgreementHistories { get; set; }
     }
 }

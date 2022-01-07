@@ -39,7 +39,7 @@
               </div>
             </div>
             <button type="button" 
-            [disabled]="registerForm.valid" 
+            [disabled]="!registerForm.valid" 
             class="btn btn-success float-right" form="registerForm" (click)="register()">Register</button>
           </form>
         </div>

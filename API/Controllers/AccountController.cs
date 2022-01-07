@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using AutoMapper;
 using API.DBAccess.Data;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
@@ -25,11 +26,13 @@ namespace API.Controllers
         private readonly ITokenService tokenService;
         private readonly IEmailService emailService;
         private readonly IMapper mapper;
+        private readonly ILogger<AccountController> logger;
         private readonly RoleManager<AppUser> roleManager;
 
-        public AccountController(IUnitOfWork unitOfWork,SignInManager<AppUser> signInManager
-            ,UserManager<AppUser> userManager, IHttpContextAccessor httpContextAccessor
-            ,ITokenService tokenService, IEmailService emailService, IMapper mapper)
+        public AccountController(IUnitOfWork unitOfWork, SignInManager<AppUser> signInManager
+            , UserManager<AppUser> userManager, IHttpContextAccessor httpContextAccessor
+            , ITokenService tokenService, IEmailService emailService, IMapper mapper
+            , ILogger<AccountController> logger)
         {
             this.unitOfWork = unitOfWork;
             this.signInManager = signInManager;
@@ -38,42 +41,58 @@ namespace API.Controllers
             this.tokenService = tokenService;
             this.emailService = emailService;
             this.mapper = mapper;
-        }
-
-        //[HttpGet]
-        [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-        {
-            if(loginDto==null)
-                return BadRequest();
-
-            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(loginDto.Login);
-
-            if(user == null)
-                return Unauthorized($"Invalid user");
-
-            if(!user.EmailConfirmed){
-                var roles=await userManager.GetRolesAsync(user);
-                if(!roles.Contains(AppRoleEnum.Admin.ToString())){
-                    return Unauthorized($"Invalid user");
-                }
-            }
-            
-            var singInResult = await signInManager.CheckPasswordSignInAsync(user,loginDto.Password,false);
-
-            if(!singInResult.Succeeded) return Unauthorized();
-
-            return new UserDto(){
-                Username=user.UserName,
-                Token=await tokenService.CreateToken(user)
-            } ;
+            this.logger = logger;
         }
 
         [NonAction]
-        private async Task<(bool,string)> sendAccountActivationEmailAsync(Uri uri,AppUser user, IEmailService emailService)
+        private async Task<AppUser> getUserByLoginOrEmail(string loginEmail)
+        {
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(loginEmail);
+
+            if (user == null)
+            {
+                user = await unitOfWork.UserRepository.GetUserByEmailAsync(loginEmail);
+            }
+
+            return user;
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        {
+            if (loginDto == null)
+                return BadRequest();
+
+            var user = await getUserByLoginOrEmail(loginDto.Login);//await unitOfWork.UserRepository.GetUserByUsernameAsync(loginDto.Login);
+
+            if (user == null)
+                return Unauthorized($"Invalid user");
+
+            if (!user.EmailConfirmed)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                if (!roles.Contains(AppRoleEnum.Admin.ToString()))
+                {
+                    return Unauthorized($"Invalid user");
+                }
+            }
+
+            var singInResult = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!singInResult.Succeeded) return Unauthorized();
+
+            return new UserDto()
+            {
+                Username = user.UserName,
+                Token = await tokenService.CreateToken(user)
+            };
+        }
+
+        [NonAction]
+        private async Task<(bool, string)> sendAccountActivationEmailAsync(Uri uri, AppUser user, IEmailService emailService)
         {
             string emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            string host=httpContextAccessor.HttpContext.Request.Host.Value;
+            string host = httpContextAccessor.HttpContext.Request.Host.Value;
             StringWriter emailBody = new StringWriter();
             XmlTextWriter xml = new XmlTextWriter(emailBody);
             xml.Formatting = Formatting.Indented;
@@ -86,14 +105,14 @@ namespace API.Controllers
 
             (bool sendEmailResult, string message) = await emailService.SendEmailAsync(user.Email, "Account activation link", emailBody.ToString().ToString());
 
-            return new (sendEmailResult, message);
+            return new(sendEmailResult, message);
         }
 
         [NonAction]
-        private async Task<(bool,string)> sendResetPasswordEmailAsync(Uri uri,AppUser user, IEmailService emailService)
+        private async Task<(bool, string)> sendResetPasswordEmailAsync(Uri uri, AppUser user, IEmailService emailService)
         {
             string resetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
-            string host=httpContextAccessor.HttpContext.Request.Host.Value;
+            string host = httpContextAccessor.HttpContext.Request.Host.Value;
             StringWriter emailBody = new StringWriter();
             XmlTextWriter xml = new XmlTextWriter(emailBody);
             xml.Formatting = Formatting.Indented;
@@ -106,57 +125,72 @@ namespace API.Controllers
 
             (bool sendEmailResult, string message) = await emailService.SendEmailAsync(user.Email, "Account activation link", emailBody.ToString().ToString());
 
-            return new (sendEmailResult, message);
+            return new(sendEmailResult, message);
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if(registerDto==null)
+            if (registerDto == null)
                 return BadRequest();
 
             var user = mapper.Map<AppUser>(registerDto);
 
-            var result = await userManager.CreateAsync(user,registerDto.Password);
+            var result = await userManager.CreateAsync(user, registerDto.Password);
 
-            if(!result.Succeeded) return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+            //record of user history
+            unitOfWork.UserHistoryRepository.AddUserHistory(user);
 
-            var roleResult=await userManager.AddToRoleAsync(user,AppRoleEnum.User.ToString());
+            var roleResult = await userManager.AddToRoleAsync(user, AppRoleEnum.User.ToString());
 
-            if(!roleResult.Succeeded) return BadRequest(result.Errors);
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            registerDto.Agreements.ForEach(agreementDto=>{
+                var userAgreement=mapper.Map<AgreementDto,UserAgreement>(agreementDto);
+                userAgreement.AppUserId=user.Id;
+                unitOfWork.UserAgreementRepository.AddUserAgreement(userAgreement);
+                unitOfWork.UserAgreementHistoryRepository.AddUserAgreementHistory(userAgreement);
+            });
+            
+            var savingResult = await unitOfWork.Complete();
+            if(!savingResult) return StatusCode(StatusCodes.Status500InternalServerError,"Saving data incompleted");
 
             //get uri of incoming request
             Uri uri = Request.GetTypedHeaders().Referer;
-            (bool emailResult, string message) = await sendAccountActivationEmailAsync(uri,user,emailService);
+            (bool emailResult, string message) = await sendAccountActivationEmailAsync(uri, user, emailService);
 
-            return new UserDto(){
-                Username=user.UserName
+            return new UserDto()
+            {
+                Username = user.UserName
             };
         }
 
         [HttpPost("resend-verification-email")]
         public async Task<ActionResult<UserDto>> ResendVerificationEmail(LoginDto loginDto)
         {
-            if(loginDto==null)
+            if (loginDto == null)
                 return BadRequest();
 
             var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(loginDto.Login);
 
-            if(user == null)
+            if (user == null)
                 return Unauthorized($"Invalid user");
-            
-            var singInResult = await signInManager.CheckPasswordSignInAsync(user,loginDto.Password,false);
 
-            if(!singInResult.Succeeded) return Unauthorized();
+            var singInResult = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!singInResult.Succeeded) return Unauthorized();
 
             //get uri of incoming request
             Uri uri = Request.GetTypedHeaders().Referer;
-            (bool emailResult, string message) = await sendAccountActivationEmailAsync(uri,user,emailService);
+            (bool emailResult, string message) = await sendAccountActivationEmailAsync(uri, user, emailService);
 
-            if(emailResult){
+            if (emailResult)
+            {
                 return Ok();
             }
-            else{
+            else
+            {
                 return BadRequest(message);
             }
         }
@@ -164,26 +198,25 @@ namespace API.Controllers
         [HttpGet("reset-password")]
         public async Task<ActionResult> ResetPassword(string login)
         {
-            if(login==null)
+            if (login == null)
                 return BadRequest();
 
-            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(login);
-
-            if(user == null){
-                user = await unitOfWork.UserRepository.GetUserByEmailAsync(login);
-                if(user == null)
-                    return Unauthorized($"Invalid user");
+            var user = await getUserByLoginOrEmail(login);
+            if (user == null)
+            {
+                return Unauthorized($"Invalid user");
             }
-
 
             //get uri of incoming request
             Uri uri = Request.GetTypedHeaders().Referer;
-            (bool emailResult, string message) = await sendResetPasswordEmailAsync(uri,user,emailService);
+            (bool emailResult, string message) = await sendResetPasswordEmailAsync(uri, user, emailService);
 
-            if(emailResult){
+            if (emailResult)
+            {
                 return Ok();
             }
-            else{
+            else
+            {
                 return BadRequest(message);
             }
         }
@@ -191,13 +224,13 @@ namespace API.Controllers
         [HttpPost("check-email-not-taken")]
         public async Task<ActionResult<bool>> CheckEmailNotTaken(string email)
         {
-            if(string.IsNullOrEmpty(email)) return true;
+            if (string.IsNullOrEmpty(email)) return true;
 
             var userByEmail = await unitOfWork.UserRepository.GetUserByEmailAsync(email);
-            if(userByEmail == null) return true;
-            
-            var currentUserId=User.GetUserId();
-            if(userByEmail.Id == currentUserId) return true;
+            if (userByEmail == null) return true;
+
+            var currentUserId = User.GetUserId();
+            if (userByEmail.Id == currentUserId) return true;
 
             return false;
         }
@@ -206,11 +239,11 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> EmailConfirmation(string id, string token)
         {
 
-             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
             {
                 return BadRequest();
             }
-            
+
             token = Uri.UnescapeDataString(token);
             var user = await userManager.FindByIdAsync(id);
 
@@ -220,12 +253,14 @@ namespace API.Controllers
             }
 
             var result = await userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded){
+            if (result.Succeeded)
+            {
 
-                return new UserDto(){
-                    Username=user.UserName,
-                    Token=await tokenService.CreateToken(user)
-                } ;
+                return new UserDto()
+                {
+                    Username = user.UserName,
+                    Token = await tokenService.CreateToken(user)
+                };
             }
 
             return BadRequest();
@@ -235,27 +270,27 @@ namespace API.Controllers
         public async Task<ActionResult> NewPassword(NewPasswordDto newPasswordDto)
         {
 
-             if (newPasswordDto==null ||string.IsNullOrEmpty(newPasswordDto.ResetPasswordToken) 
-             || newPasswordDto.UserId<1)
+            if (newPasswordDto == null || string.IsNullOrEmpty(newPasswordDto.ResetPasswordToken)
+            || newPasswordDto.UserId < 1)
             {
                 return BadRequest();
             }
 
             newPasswordDto.ResetPasswordToken = Uri.UnescapeDataString(newPasswordDto.ResetPasswordToken);
-                var user = await unitOfWork.UserRepository.GetUserByIdAsync(newPasswordDto.UserId);
-                if (user == null)
-                    return Unauthorized($"Invalid user");
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(newPasswordDto.UserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
 
-                var resetPasswordResult = await userManager.ResetPasswordAsync(user
-                    , newPasswordDto.ResetPasswordToken, newPasswordDto.NewPassword);
+            var resetPasswordResult = await userManager.ResetPasswordAsync(user
+                , newPasswordDto.ResetPasswordToken, newPasswordDto.NewPassword);
 
-                if (!resetPasswordResult.Succeeded)
-                {
-                    resetPasswordResult.Errors.ToList().ForEach(x => ModelState.AddModelError("", $"{x.Description}"));
-                    return BadRequest(resetPasswordResult?.Errors.FirstOrDefault().Description);
-                }
-                else
-                    return Ok();
+            if (!resetPasswordResult.Succeeded)
+            {
+                resetPasswordResult.Errors.ToList().ForEach(x => ModelState.AddModelError("", $"{x.Description}"));
+                return BadRequest(resetPasswordResult?.Errors.FirstOrDefault().Description);
+            }
+            else
+                return Ok();
         }
     }
 }

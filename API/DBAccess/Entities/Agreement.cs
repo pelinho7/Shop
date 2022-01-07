@@ -13,5 +13,6 @@ namespace API.DBAccess.Entities
         public DateTime ModDate { get; set; }=DateTime.UtcNow;
 
         public ICollection<UserAgreement> UserAgreements { get; set; }
+        public ICollection<UserAgreementHistory> UserAgreementHistories { get; set; }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using API.DBAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220107160728_HistoryMigration")]
+    partial class HistoryMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +173,7 @@ namespace API.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserHistories");
+                    b.ToTable("AppUserHistory");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.AppUserRole", b =>
@@ -213,7 +215,7 @@ namespace API.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserAgreements");
+                    b.ToTable("UserAgreement");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.UserAgreementHistory", b =>
@@ -240,7 +242,7 @@ namespace API.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("UserAgreementHistories");
+                    b.ToTable("UserAgreementHistory");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
