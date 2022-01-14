@@ -17,12 +17,17 @@ export class LoadingInterceptor implements HttpInterceptor {
   routeSpinnerNameMap = new Map<string, string>()
   constructor(private busyService:BusyService) {
     this.routeSpinnerNameMap.set("account/check-email-not-taken","");
+    this.routeSpinnerNameMap.set("account/check-login-not-taken","");
 
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     var spinnerName="main-spinner";
     var relativeUrl = request.url.replace(this.baseUrl,"")
+    //remove data from url
+    if(relativeUrl.indexOf('?')>=0){
+      relativeUrl=relativeUrl.substring(0,relativeUrl.indexOf('?'));
+    }
     //get name of spinner for current request
     if(this.routeSpinnerNameMap.has(relativeUrl)){
       spinnerName=this.routeSpinnerNameMap.get(relativeUrl);

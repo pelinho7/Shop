@@ -14,6 +14,7 @@ using AutoMapper;
 using API.DBAccess.Data;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -139,6 +140,7 @@ namespace API.Controllers
             var result = await userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) return BadRequest(result.Errors);
+
             //record of user history
             unitOfWork.UserHistoryRepository.AddUserHistory(user);
 
@@ -146,15 +148,16 @@ namespace API.Controllers
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
-            registerDto.Agreements.ForEach(agreementDto=>{
-                var userAgreement=mapper.Map<AgreementDto,UserAgreement>(agreementDto);
-                userAgreement.AppUserId=user.Id;
+            registerDto.Agreements.ForEach(agreementDto =>
+            {
+                var userAgreement = mapper.Map<AgreementDto, UserAgreement>(agreementDto);
+                userAgreement.AppUserId = user.Id;
                 unitOfWork.UserAgreementRepository.AddUserAgreement(userAgreement);
                 unitOfWork.UserAgreementHistoryRepository.AddUserAgreementHistory(userAgreement);
             });
-            
+
             var savingResult = await unitOfWork.Complete();
-            if(!savingResult) return StatusCode(StatusCodes.Status500InternalServerError,"Saving data incompleted");
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
 
             //get uri of incoming request
             Uri uri = Request.GetTypedHeaders().Referer;
@@ -221,7 +224,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("check-email-not-taken")]
+        [HttpGet("check-email-not-taken")]
         public async Task<ActionResult<bool>> CheckEmailNotTaken(string email)
         {
             if (string.IsNullOrEmpty(email)) return true;
@@ -231,6 +234,29 @@ namespace API.Controllers
 
             var currentUserId = User.GetUserId();
             if (userByEmail.Id == currentUserId) return true;
+
+            return false;
+        }
+
+        [Authorize]
+        [HttpGet("check-login-not-taken")]
+        public async Task<ActionResult<bool>> CheckLoginNotTaken(string login)
+        {
+            if (string.IsNullOrEmpty(login)) return true;
+
+            var currentUserId = User.GetUserId();
+            var userByLogin = await unitOfWork.UserRepository.GetUserByUsernameAsync(login);
+            var userByEmail = await unitOfWork.UserRepository.GetUserByEmailAsync(login);
+            //filter current user
+            if (userByLogin != null && userByLogin.Id == currentUserId)
+            {
+                userByLogin = null;
+            }
+            if (userByEmail != null && userByEmail.Id == currentUserId)
+            {
+                userByEmail = null;
+            }
+            if (userByLogin == null && userByEmail == null) return true;
 
             return false;
         }
@@ -292,5 +318,77 @@ namespace API.Controllers
             else
                 return Ok();
         }
+
+        #region account data
+        [Authorize]
+        [HttpGet("{data}")]
+        public async Task<ActionResult<AccountDataDto>> AccountData()
+        {
+            var currentUserId = User.GetUserId();
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
+
+            return mapper.Map<AccountDataDto>(user);
+        }
+
+        [Authorize]
+        [HttpPost("{data}")]
+        public async Task<ActionResult<UserDto>> AccountData(AccountDataDto accountDataDto)
+        {
+            if (accountDataDto == null) BadRequest();
+            var currentUserId = User.GetUserId();
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
+
+            var dto = mapper.Map<AccountDataDto>(user);
+
+            if (accountDataDto.Equals(dto))
+            {
+                return new UserDto() { Username = accountDataDto.Username };
+            }
+
+            user.UserName = accountDataDto.Username;
+            user.Email = accountDataDto.Email;
+            user.FirstName = accountDataDto.FirstName;
+            user.LastName = accountDataDto.LastName;
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+
+            unitOfWork.UserHistoryRepository.AddUserHistory(user);
+            var savingResult = await unitOfWork.Complete();
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+
+            return new UserDto() { Username = accountDataDto.Username };
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            if(changePasswordDto == null)
+                return BadRequest();
+
+            var currentUserId = User.GetUserId();
+            var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
+
+            var checkPasswordResult = await userManager.CheckPasswordAsync(user,changePasswordDto.ActualPassword);
+            if(!checkPasswordResult)
+                return Unauthorized($"Incorrect password");
+            
+            var changePasswordResult=await userManager.ChangePasswordAsync(user,changePasswordDto.ActualPassword,changePasswordDto.NewPassword);
+            if(!changePasswordResult.Succeeded){
+                return BadRequest(changePasswordResult.Errors.Count()>0?changePasswordResult.Errors.First().Description:"");
+            }
+
+            unitOfWork.UserHistoryRepository.AddUserHistory(user);
+            await unitOfWork.Complete();
+
+            return Ok();
+        }
+        #endregion
     }
 }

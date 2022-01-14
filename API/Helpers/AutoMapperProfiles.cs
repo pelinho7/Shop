@@ -18,8 +18,12 @@ namespace API.Helpers
             CreateMap<RegisterDto,AppUser>()
             .ForMember(dest=>dest.UserName,opt=>opt.MapFrom(src=>src.Email));
             CreateMap<AppUser,AppUserHistory>()
-            .ForMember(dest=>dest.AppUserId,opt=>opt.MapFrom(src=>src.Id));
-            CreateMap<UserAgreement,UserAgreementHistory>();
+            .ForSourceMember(x => x.Id, y => y.DoNotValidate())
+            .ForMember(dest=>dest.AppUserId,opt=>opt.MapFrom(src=>src.Id))
+            .ForMember(x => x.Id, opt => opt.MapFrom(src => 0));
+            CreateMap<UserAgreement,UserAgreementHistory>()
+            .ForMember(x => x.Id, opt => opt.MapFrom(src => 0));
+            CreateMap<AppUser,AccountDataDto>();
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { of, ReplaySubject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { of, pipe, ReplaySubject } from 'rxjs';
+import { catchError, map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AccountData } from '../_models/accountData';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -56,7 +57,15 @@ export class AccountService {
   }
 
   checkEmailNotTaken(email:string){
-    return this.http.post<boolean>(this.baseUrl+'account/check-email-not-taken',email).pipe(
+    return this.http.get<boolean>(this.baseUrl+'account/check-email-not-taken?email='+email).pipe(
+      map((result:boolean)=>{
+        return result;
+      })
+    )
+  }
+
+  checkLoginNotTaken(login:string){
+    return this.http.get<boolean>(this.baseUrl+'account/check-login-not-taken?login='+login).pipe(
       map((result:boolean)=>{
         return result;
       })
@@ -90,5 +99,30 @@ export class AccountService {
 
   newPassword(model:any){
     return this.http.post(this.baseUrl+'account/new-password',model);
+  }
+
+  getAccountData(){
+    return this.http.get<AccountData>(this.baseUrl+'account/data').pipe(
+      map((data:AccountData)=>{
+        return data;
+      })
+    )
+  }
+
+  updateAccountData(model:any){
+    return this.http.post<User>(this.baseUrl+'account/data',model).pipe(
+      map((user:User)=>{
+        //reload username after update
+          this.currentUser$.pipe(take(1)).subscribe(currentU=>{
+            currentU.username=user.username;
+            this.setCurrentUser(currentU);
+          })
+          return user;
+        })
+    )
+  }
+
+  changePassword(model:any){
+    return this.http.post(this.baseUrl+'account/change-password',model);
   }
 }

@@ -24,6 +24,11 @@ import { CheckboxInputComponent } from './_forms/checkbox-input/checkbox-input.c
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
 import { NewPasswordComponent } from './account/new-password/new-password.component';
+import { AccountManagmentNavbarComponent } from './account/account-managment-navbar/account-managment-navbar.component';
+import { AccountDataComponent } from './account/account-data/account-data.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { ChangePasswordComponent } from './account/change-password/change-password.component';
+import { UserAgreementsComponent } from './account/user-agreements/user-agreements.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +47,11 @@ import { NewPasswordComponent } from './account/new-password/new-password.compon
     CheckboxInputComponent,
     EmailVerificationComponent,
     ResetPasswordComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    AccountManagmentNavbarComponent,
+    AccountDataComponent,
+    ChangePasswordComponent,
+    UserAgreementsComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +65,7 @@ import { NewPasswordComponent } from './account/new-password/new-password.compon
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
     {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true},
+    {provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

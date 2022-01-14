@@ -1,0 +1,13 @@
+<button class="btn btn-outline-warning float-right"
+[ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'':'d-none'" 
+(click)="closeNav()">x</button>
+<div class="list-group list-group-flush" style="clear: both;">
+  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" 
+    [routerLink]="['/account']" [routerLinkActive]="'border-success'" [routerLinkActiveOptions]="{ exact: true }">Account data</a>
+  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!" 
+    [routerLink]="['/account/change-password']" [routerLinkActive]="'border-success'">Change password</a>
+  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!"
+  [routerLink]="['/account/user-agreements']" [routerLinkActive]="'border-success'">My agreements</a>
+  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!"
+   [routerLinkActive]="'border-success'">Addresses</a>
+</div>
