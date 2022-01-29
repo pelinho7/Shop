@@ -12,6 +12,6 @@ namespace API.DBAccess.Entities
         public string PasswordHash { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime ModDate { get; set; } = DateTime.UtcNow;
+        public DateTime ModDate { get; set; }
     }
 }

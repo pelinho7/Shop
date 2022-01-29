@@ -9,6 +9,8 @@ namespace API.DBAccess.Interfaces
         IAgreementRepository AgreementRepository{get;}
         IUserAgreementRepository UserAgreementRepository{get;}
         IUserAgreementHistoryRepository UserAgreementHistoryRepository{get;}
+        IShippingAddressRepository ShippingAddressRepository{get;}
+        IShippingAddressHistoryRepository ShippingAddressHistoryRepository{get;}
         Task<bool> Complete();
         bool HasChanges();
     }

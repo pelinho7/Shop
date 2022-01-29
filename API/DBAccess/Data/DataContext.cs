@@ -22,9 +22,8 @@ namespace API.DBAccess.Data
         public DbSet<Agreement> Agreements { get; set; }
         public DbSet<UserAgreement> UserAgreements { get; set; }
         public DbSet<UserAgreementHistory> UserAgreementHistories { get; set; }
-        // public DbSet<Message> Messages { get; set; }
-        // public DbSet<Group> Groups { get; set; }
-        // public DbSet<Connection> Connections { get; set; }
+        public DbSet<ShippingAddress> ShippingAddresses { get; set; }
+        public DbSet<ShippingAddressHistory> ShippingAddressHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -72,6 +71,44 @@ namespace API.DBAccess.Data
                 .WithMany(l => l.AppUserHistories)
                 .HasForeignKey(s => s.AppUserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ShippingAddress>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.ShippingAddresses)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ShippingAddressHistory>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.ShippingAddressHistories)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ShippingAddressHistory>()
+                .HasOne(s => s.ShippingAddress)
+                .WithMany(l => l.ShippingAddressHistories)
+                .HasForeignKey(s => s.ShippingAddressId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //default values
+            builder.Entity<AppUserHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Agreement>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<UserAgreement>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<UserAgreementHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ShippingAddress>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ShippingAddressHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
         }
     }
 }

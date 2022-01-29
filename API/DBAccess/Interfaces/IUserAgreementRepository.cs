@@ -9,5 +9,7 @@ namespace API.DBAccess.Interfaces
     public interface IUserAgreementRepository
     {
         void AddUserAgreement(UserAgreement userAgreement);
+        Task<List<UserAgreementDto>> GetUserAgreementsAsync(int userId, bool? obligatory=null);
+        void Update(int id, bool value);
     }
 }

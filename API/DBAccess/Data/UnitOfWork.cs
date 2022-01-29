@@ -17,8 +17,11 @@ namespace API.DBAccess.Data
         public IUserRepository UserRepository => new UserRepository(context, mapper);
         public IUserHistoryRepository UserHistoryRepository => new UserHistoryRepository(context, mapper);
         public IAgreementRepository AgreementRepository => new AgreementRepository(context, mapper);
-        public IUserAgreementRepository UserAgreementRepository => new UserAgreementRepository(context, mapper);
+        public IUserAgreementRepository UserAgreementRepository => new UserAgreementRepository(context, mapper,UserAgreementHistoryRepository);
         public IUserAgreementHistoryRepository UserAgreementHistoryRepository => new UserAgreementHistoryRepository(context, mapper);
+
+        public IShippingAddressRepository ShippingAddressRepository => new ShippingAddressRepository(context, mapper,ShippingAddressHistoryRepository);
+        public IShippingAddressHistoryRepository ShippingAddressHistoryRepository => new ShippingAddressHistoryRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

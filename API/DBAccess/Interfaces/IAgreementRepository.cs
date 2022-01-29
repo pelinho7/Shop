@@ -9,6 +9,7 @@ namespace API.DBAccess.Interfaces
     public interface IAgreementRepository
     {
         Task<IEnumerable<AgreementDto>> GetAgreementsByTypeAsync(AgreementTypeEnum agreementType);
+        Task<IEnumerable<Agreement>> GetAgreementsAsync(bool? obligatory=null);
         void AddAgreement(Agreement agreement);
         int Count();
     }

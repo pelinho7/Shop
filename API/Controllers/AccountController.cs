@@ -153,7 +153,7 @@ namespace API.Controllers
                 var userAgreement = mapper.Map<AgreementDto, UserAgreement>(agreementDto);
                 userAgreement.AppUserId = user.Id;
                 unitOfWork.UserAgreementRepository.AddUserAgreement(userAgreement);
-                unitOfWork.UserAgreementHistoryRepository.AddUserAgreementHistory(userAgreement);
+                //unitOfWork.UserAgreementHistoryRepository.AddUserAgreementHistory(userAgreement);
             });
 
             var savingResult = await unitOfWork.Complete();

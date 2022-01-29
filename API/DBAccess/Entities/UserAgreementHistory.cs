@@ -10,6 +10,6 @@ namespace API.DBAccess.Entities
         public Agreement Agreement { get; set; }
         public int AgreementId { get; set; }
         public bool Value { get; set; }
-        public DateTime ModDate { get; set; }=DateTime.UtcNow;
+        public DateTime ModDate { get; set; }
     }
 }

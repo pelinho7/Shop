@@ -5,6 +5,7 @@ using API.DBAccess.Entities;
 using API.DBAccess.Interfaces;
 using API.DTOs;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DBAccess.Data
 {
@@ -27,6 +28,15 @@ namespace API.DBAccess.Data
         public int Count()
         {
             return context.Agreements.Count();
+        }
+
+        public async Task<IEnumerable<Agreement>> GetAgreementsAsync(bool? obligatory=null)
+        {
+            var query=context.Agreements.AsQueryable();
+            if(obligatory.HasValue){
+                query=query.Where(x=>x.Obligatory==obligatory.Value).AsQueryable();
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<AgreementDto>> GetAgreementsByTypeAsync(AgreementTypeEnum agreementType)

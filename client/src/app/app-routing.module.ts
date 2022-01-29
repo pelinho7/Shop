@@ -11,6 +11,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { HomeComponent } from './home/home.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
+import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
 import { AuthenticationGuard } from './_guards/authentication.guard';
 
 // const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
       {path:'account/data',component:AccountDataComponent},
       {path:'account/change-password',component:ChangePasswordComponent},
       {path:'account/user-agreements',component:UserAgreementsComponent},
+      {path:'account/shipping-addresses',component:ShippingAddressesComponent},
     ]
   },
   {path:'not-found',component:NotFoundComponent},

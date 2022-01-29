@@ -10,8 +10,7 @@ namespace API.DBAccess.Entities
         public string Contents{get;set;}
         public bool Obligatory { get; set; }
         public bool Removable { get; set; }=true;
-        public DateTime ModDate { get; set; }=DateTime.UtcNow;
-
+        public DateTime ModDate { get; set; }
         public ICollection<UserAgreement> UserAgreements { get; set; }
         public ICollection<UserAgreementHistory> UserAgreementHistories { get; set; }
     }

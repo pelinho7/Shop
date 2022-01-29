@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-header">
+        <div class="modal-header border-0 p-0">
+            <h3>{{title}}</h3>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+      <form id="shippingAddresForm" [formGroup]="shippingAddresForm">
+        <input type="number" class="d-none" [formControl]='shippingAddresForm.controls["id"]'/>
+        <input type="checkbox" class="d-none" [formControl]='shippingAddresForm.controls["deleted"]'/>
+        <div class="form-row">
+            <div class="col-12 col-sm-6">
+                <app-text-input [formControl]='shippingAddresForm.controls["firstName"]' [label]='"First Name"'></app-text-input>
+            </div>
+            <div class="col-12 col-sm-6">
+                <app-text-input [formControl]='shippingAddresForm.controls["lastName"]' [label]='"Last Name"'></app-text-input>
+            </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12 col-sm-6">
+            <app-text-input [formControl]='shippingAddresForm.controls["phone"]' [label]='"Phone"'></app-text-input>
+        </div>
+        <div class="col-12 col-sm-6">
+            <app-text-input [formControl]='shippingAddresForm.controls["country"]' [label]='"Country"'></app-text-input>
+        </div>
+        
+      </div>
+      
+      <div class="form-row">
+      <div class="col-12 col-sm-4">
+        <app-text-input [formControl]='shippingAddresForm.controls["zipCode"]' [label]='"Zip code"'></app-text-input>
+    </div>
+    <div class="col-12 col-sm-8">
+        <app-text-input [formControl]='shippingAddresForm.controls["city"]' [label]='"City"'></app-text-input>
+    </div>
+    </div>
+    <div class="form-row">
+      <div class="col-12 col-sm-12 col-md-8">
+        <app-text-input [formControl]='shippingAddresForm.controls["street"]' [label]='"Street"'></app-text-input>
+    </div>
+    <div class="col-6 col-md-2">
+        <app-text-input [formControl]='shippingAddresForm.controls["buildingNumber"]' [label]='"Building nr"'></app-text-input>
+    </div>
+    <div class="col-6 col-md-2">
+      <app-text-input [formControl]='shippingAddresForm.controls["flatNumber"]' [label]='"Flat nr"'></app-text-input>
+  </div>
+    </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" form="shippingAddresForm" 
+        [disabled]="!shippingAddresForm.valid" class="btn btn-primary" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>

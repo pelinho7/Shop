@@ -29,6 +29,9 @@ import { AccountDataComponent } from './account/account-data/account-data.compon
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { UserAgreementsComponent } from './account/user-agreements/user-agreements.component';
+import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
+import { UpsertShippingAddresComponent } from './shippingAddresses/upsert-shipping-addres/upsert-shipping-addres.component';
+import { ShippingAddressComponent } from './shippingaddresses/shipping-address/shipping-address.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { UserAgreementsComponent } from './account/user-agreements/user-agreemen
     AccountManagmentNavbarComponent,
     AccountDataComponent,
     ChangePasswordComponent,
-    UserAgreementsComponent
+    UserAgreementsComponent,
+    ShippingAddressesComponent,
+    UpsertShippingAddresComponent,
+    ShippingAddressComponent
   ],
   imports: [
     BrowserModule,

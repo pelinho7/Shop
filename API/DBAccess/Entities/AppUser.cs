@@ -25,5 +25,7 @@ namespace API.DBAccess.Entities
         public ICollection<UserAgreement> UserAgreements { get; set; }
         public ICollection<AppUserHistory> AppUserHistories { get; set; }
         public ICollection<UserAgreementHistory> UserAgreementHistories { get; set; }
+        public ICollection<ShippingAddress> ShippingAddresses { get; set; }
+        public ICollection<ShippingAddressHistory> ShippingAddressHistories { get; set; }
     }
 }

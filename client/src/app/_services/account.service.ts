@@ -6,6 +6,7 @@ import { catchError, map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AccountData } from '../_models/accountData';
 import { User } from '../_models/user';
+import { UserAgreementsService } from './user-agreements.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,10 @@ export class AccountService {
   baseUrl=environment.apiUrl;
   private currentUserSource=new ReplaySubject<User>(1);
   currentUser$=this.currentUserSource.asObservable();
+  accountData:AccountData=null;
 
-  constructor(private http:HttpClient, private toastr:ToastrService) { }
+  constructor(private http:HttpClient, private toastr:ToastrService
+    ,private userAgreementsService:UserAgreementsService) { }
 
   logIn(model:any){
     return this.http.post<User>(this.baseUrl+'account/login',model).pipe(
@@ -30,6 +33,7 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.userAgreementsService.clear();
   }
 
   setCurrentUser(user:User){
@@ -43,6 +47,13 @@ export class AccountService {
   getDecodedToken(token:string){
     //atob()decode data in Base64 
     return JSON.parse(atob(token.split('.')[1]))
+  }
+
+  isTokenExpired(token:string){
+    const expiry = (this.getDecodedToken(token)).exp;
+    var ex=(Math.floor((new Date).getTime() / 1000)) >= expiry;
+    console.log('exp '+ex);
+    return ex;
   }
 
   register(model:any){

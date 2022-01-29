@@ -26,7 +26,9 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModDate")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 331, DateTimeKind.Utc).AddTicks(6321));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -159,7 +161,9 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModDate")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 330, DateTimeKind.Utc).AddTicks(3136));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -189,6 +193,127 @@ namespace API.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BuildingNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FlatNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 331, DateTimeKind.Utc).AddTicks(8160));
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("ShippingAddresses");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ShippingAddressHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BuildingNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FlatNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 331, DateTimeKind.Utc).AddTicks(8655));
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ShippingAddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ShippingAddressId");
+
+                    b.ToTable("ShippingAddressHistories");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.UserAgreement", b =>
                 {
                     b.Property<int>("Id")
@@ -202,7 +327,9 @@ namespace API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("ModDate")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 331, DateTimeKind.Utc).AddTicks(7022));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -229,7 +356,9 @@ namespace API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("ModDate")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 1, 28, 17, 15, 14, 331, DateTimeKind.Utc).AddTicks(7546));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -357,6 +486,36 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.AppUser", "AppUser")
+                        .WithMany("ShippingAddresses")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ShippingAddressHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.AppUser", "AppUser")
+                        .WithMany("ShippingAddressHistories")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.ShippingAddress", "ShippingAddress")
+                        .WithMany("ShippingAddressHistories")
+                        .HasForeignKey("ShippingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("ShippingAddress");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.UserAgreement", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.Agreement", "Agreement")
@@ -447,11 +606,20 @@ namespace API.Migrations
                 {
                     b.Navigation("AppUserHistories");
 
+                    b.Navigation("ShippingAddresses");
+
+                    b.Navigation("ShippingAddressHistories");
+
                     b.Navigation("UserAgreementHistories");
 
                     b.Navigation("UserAgreements");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
+                {
+                    b.Navigation("ShippingAddressHistories");
                 });
 #pragma warning restore 612, 618
         }
