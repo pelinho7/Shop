@@ -73,5 +73,25 @@ namespace API.Controllers
 
             return Ok(mapper.Map<ShippingAddressDto>(shippingAddress));
         }
+
+        [HttpDelete("delete-shipping-address/{addressId:int}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteShippingAddress(int addressId)
+        {
+            if(addressId<=0)
+                return BadRequest();
+
+            var userId=User.GetUserId();
+            var shippingAddress = await unitOfWork.ShippingAddressRepository.GetUserShippingAddressByIdAsync(addressId);
+            if(shippingAddress == null)return NotFound("Address not found");
+            if(shippingAddress.AppUserId != userId)return Unauthorized();
+
+            unitOfWork.ShippingAddressRepository.DeleteShippingAddress(addressId);
+            var savingResult = await unitOfWork.Complete();
+
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
+
+            return Ok();
+        }
     }
 }

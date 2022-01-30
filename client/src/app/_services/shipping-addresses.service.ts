@@ -24,25 +24,6 @@ export class ShippingAddressesService {
     )
   }
 
-  // upsertShippingAddres(model:any){
-  //   return this.http.post<ShippingAddres>(this.baseUrl+'shippingaddresses/upsert-shipping-address',model)
-  //   .toPromise().then((shippingAddres:ShippingAddres)=>{
-  //           //get current list of shipping addresses base on observable
-  //           var array:ShippingAddres[];
-  //           this.shippingAddresses$.pipe(take(1)).subscribe(u=>array=u);
-  //           var index = array.findIndex(x=>x.id==shippingAddres.id);
-  //           //when addres is inserted add element to array
-  //           if(index<0){
-  //             array.push(shippingAddres)
-  //           }
-  //           //when addres is updated replace old data
-  //           else{
-  //             array[index]=shippingAddres;
-  //           }
-  //           this.shippingAdressesSource.next(array);
-  //   })
-  // }
-
   upsertShippingAddres(model:any){
     return this.http.post<ShippingAddres>(this.baseUrl+'shippingaddresses/upsert-shipping-address',model).pipe(
       map((shippingAddres:ShippingAddres)=>{
@@ -62,4 +43,30 @@ export class ShippingAddressesService {
       })
     )
   }
+
+  deteleShippingAddress(id:number){
+    console.log('11111')
+    return this.http.delete(this.baseUrl+'shippingaddresses/delete-shipping-address/'+id).pipe(
+      map(()=>{
+        //get current list of shipping addresses base on observable
+        var array:ShippingAddres[];
+        this.shippingAddresses$.pipe(take(1)).subscribe(u=>array=u);
+        var index = array.findIndex(x=>x.id==id);
+        //remove from array by index
+        if(index>=0){
+          array.splice(index, 1);//remove element from array
+        }
+        this.shippingAdressesSource.next(array);
+      })
+    )
+  }
+
+  fullShippingAddress(shippingAddres:ShippingAddres): string {
+    var address=shippingAddres.street+' '+shippingAddres.buildingNumber;
+    address=address.trim();
+    if(shippingAddres.flatNumber!= null && shippingAddres.flatNumber.length>0){
+        address+'/'+shippingAddres.flatNumber;
+    }
+    return address;
+}
 }

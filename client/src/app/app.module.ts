@@ -31,7 +31,7 @@ import { ChangePasswordComponent } from './account/change-password/change-passwo
 import { UserAgreementsComponent } from './account/user-agreements/user-agreements.component';
 import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
 import { UpsertShippingAddresComponent } from './shippingAddresses/upsert-shipping-addres/upsert-shipping-addres.component';
-import { ShippingAddressComponent } from './shippingaddresses/shipping-address/shipping-address.component';
+import { ShippingAddressCardComponent } from './shippingAddresses/shipping-address-card/shipping-address-card.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,7 @@ import { ShippingAddressComponent } from './shippingaddresses/shipping-address/s
     UserAgreementsComponent,
     ShippingAddressesComponent,
     UpsertShippingAddresComponent,
-    ShippingAddressComponent
+    ShippingAddressCardComponent
   ],
   imports: [
     BrowserModule,
