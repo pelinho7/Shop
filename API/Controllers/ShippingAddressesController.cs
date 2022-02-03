@@ -65,7 +65,7 @@ namespace API.Controllers
                 unitOfWork.ShippingAddressHistoryRepository.AddShippingAddressHistory(shippingAddress);
             }
             else{
-                //unitOfWork.ShippingAddressRepository.AddShippingAddress(shippingAddress);
+                unitOfWork.ShippingAddressRepository.UpdateShippingAddress(shippingAddress);
             }
             savingResult = await unitOfWork.Complete();
 
@@ -90,6 +90,26 @@ namespace API.Controllers
             var savingResult = await unitOfWork.Complete();
 
             if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
+
+            return Ok();
+        }
+
+        [HttpPatch("set-default-shipping-address/{addressId:int}")]
+        [Authorize]
+        public async Task<ActionResult> SetDefaultShippingAddress(int addressId)
+        {
+            if(addressId<=0)
+                return BadRequest();
+
+            var userId=User.GetUserId();
+            var shippingAddress = await unitOfWork.ShippingAddressRepository.GetUserShippingAddressByIdAsync(addressId);
+            if(shippingAddress == null)return NotFound("Address not found");
+            if(shippingAddress.AppUserId != userId)return Unauthorized();
+
+            unitOfWork.ShippingAddressRepository.MarkAsDefaultAddress(addressId);
+            var savingResult = await unitOfWork.Complete();
+
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Changing default address incompleted");
 
             return Ok();
         }

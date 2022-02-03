@@ -25,7 +25,9 @@ namespace API.DBAccess.Data
 
         public void AddShippingAddress(ShippingAddress shippingAddress)
         {
-            //context.ShippingAddresses.Count(x=>x.)
+            if(context.ShippingAddresses.Count(x=>x.Default && x.AppUserId==shippingAddress.AppUserId) == 0){
+                shippingAddress.Default=true;
+            }
             context.ShippingAddresses.Add(shippingAddress);
         }
 
@@ -50,15 +52,43 @@ namespace API.DBAccess.Data
             return mapper.Map<List<ShippingAddressDto>>(shippingAddresses);
         }
 
-        public void MarkAsDefaultAddress(int addressId)
+        public async void MarkAsDefaultAddress(int addressId)
         {
-            throw new System.NotImplementedException();
+            var address = await  context.ShippingAddresses.FirstOrDefaultAsync(x=>x.Id == addressId);
+            if(address != null){
+                System.DateTime modDate=System.DateTime.UtcNow;
+                address.Default=true;
+                address.ModDate=modDate;
+                shippingAddressHistoryRepository.AddShippingAddressHistory(address);
+
+                var defaultAddress = await context.ShippingAddresses
+                .FirstOrDefaultAsync(x=>x.Default  && x.AppUserId==address.AppUserId);
+
+                if(defaultAddress!=null){
+                    defaultAddress.Default=false;
+                    defaultAddress.ModDate=modDate;
+                    shippingAddressHistoryRepository.AddShippingAddressHistory(defaultAddress);
+                }
+            }
+            else{
+                throw new System.Exception("Not found");
+            }
         }
 
-        public void UpdateShippingAddress(ShippingAddress shippingAddress)
+        public async void UpdateShippingAddress(ShippingAddress shippingAddress)
         {
-
-            shippingAddressHistoryRepository.AddShippingAddressHistory(shippingAddress);
+            var address = await  context.ShippingAddresses.FirstOrDefaultAsync(x=>x.Id == shippingAddress.Id);
+            address.FirstName=shippingAddress.FirstName;
+            address.LastName=shippingAddress.LastName;
+            address.Country=shippingAddress.Country;
+            address.City=shippingAddress.City;
+            address.ZipCode=shippingAddress.ZipCode;
+            address.Street=shippingAddress.Street;
+            address.BuildingNumber=shippingAddress.BuildingNumber;
+            address.FlatNumber=shippingAddress.FlatNumber;
+            address.Phone=shippingAddress.Phone;
+            address.ModDate=System.DateTime.UtcNow;
+            shippingAddressHistoryRepository.AddShippingAddressHistory(address);
         }
     }
 }

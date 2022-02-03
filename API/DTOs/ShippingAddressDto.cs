@@ -14,5 +14,6 @@ namespace API.DTOs
         public string FlatNumber { get; set; }
         public string Phone { get; set; }
         public bool Deleted { get; set; }
+        public bool Default { get; set; }
     }
 }

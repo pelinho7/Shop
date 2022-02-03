@@ -1,0 +1,21 @@
+/* .background-btn {
+    padding-left: inherit;
+    padding-right: inherit;
+    position: absolute;
+    height: 100%;
+    width: calc(100% - calc(var(--margin) + var(--margin)));
+    opacity: 0;
+    z-index: 1;
+    background-color: gray;
+    left: var(--margin);
+}
+
+.background-btn:hover{
+    opacity: 0.2;
+}
+
+.address-card-padding{
+    --margin: 15px;
+    padding-left: var(--margin);
+    padding-right: var(--margin);
+} */

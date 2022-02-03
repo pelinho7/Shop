@@ -1,5 +1,9 @@
 <div>
     <div class="card">
+      <div class="position-relative">
+        <button class="btn btn-primary d-inline-block background-btn" (click)="edit()">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
         <div class="card-header">
           <h5>{{shippingAddress.firstName}} {{shippingAddress.lastName}}</h5>
         </div>
@@ -8,9 +12,11 @@
           <div>{{shippingAddress.zipCode}} {{shippingAddress.city}}</div>
           <div>{{shippingAddressesService.fullShippingAddress(shippingAddress)}}</div>
         </div>
+      </div>
+        
         <div class="card-footer">
-          <button class="btn btn-default btn-lg p-0">
-            <i class="fa fa-star-o" aria-hidden="true"></i>       
+          <button class="btn btn-default btn-lg p-0" (click)="setDefault()">
+            <i class="fa" [ngClass]="shippingAddress.default ? 'fa-star default-address-star' : 'fa-star-o'" aria-hidden="true"></i>       
           </button>
           <button class="btn btn-default btn-lg p-0 float-right" (click)="delete()">
             <i class="fa fa-trash" style="color:brown;" aria-hidden="true"></i>       

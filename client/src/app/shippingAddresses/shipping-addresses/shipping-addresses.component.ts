@@ -41,5 +41,7 @@ export class ShippingAddressesComponent implements OnInit {
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 
-
+  onEdit(address:ShippingAddres){
+    this.upsertShippingAddresModal(address)
+  }
 }

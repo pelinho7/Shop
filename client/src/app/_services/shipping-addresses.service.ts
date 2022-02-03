@@ -45,7 +45,6 @@ export class ShippingAddressesService {
   }
 
   deteleShippingAddress(id:number){
-    console.log('11111')
     return this.http.delete(this.baseUrl+'shippingaddresses/delete-shipping-address/'+id).pipe(
       map(()=>{
         //get current list of shipping addresses base on observable
@@ -55,6 +54,22 @@ export class ShippingAddressesService {
         //remove from array by index
         if(index>=0){
           array.splice(index, 1);//remove element from array
+        }
+        this.shippingAdressesSource.next(array);
+      })
+    )
+  }
+
+  setDefaultShippingAddress(id:number){
+    return this.http.patch(this.baseUrl+'shippingaddresses/set-default-shipping-address/'+id,null).pipe(
+      map(()=>{
+        //get current list of shipping addresses base on observable
+        var array:ShippingAddres[];
+        this.shippingAddresses$.pipe(take(1)).subscribe(u=>array=u);
+        array.forEach(x=>x.default=false);
+        var index = array.findIndex(x=>x.id==id);
+        if(index>=0){
+          array[index].default=true;
         }
         this.shippingAdressesSource.next(array);
       })

@@ -10,7 +10,7 @@ export class ShippingAddres {
     flatNumber:string=''
     phone:string=''
     deleted:boolean=false
-
+    default:boolean=false
    
     constructor(){}
 }

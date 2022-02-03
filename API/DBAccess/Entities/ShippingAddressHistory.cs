@@ -27,6 +27,7 @@ namespace API.DBAccess.Entities
         [Required]
         public string Phone { get; set; }
         public bool Deleted { get; set; }
+        public bool Default { get; set; }=false;
         public DateTime ModDate { get; set; }
         public ShippingAddress ShippingAddress{get;set;}
         [Required]
