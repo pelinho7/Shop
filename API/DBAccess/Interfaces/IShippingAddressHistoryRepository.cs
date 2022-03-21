@@ -9,5 +9,6 @@ namespace API.DBAccess.Interfaces
     public interface IShippingAddressHistoryRepository
     {
         void AddShippingAddressHistory(ShippingAddress shippingAddress);
+        Task<List<ShippingAddressHistory>> GetShippingAddressHistoryByUserAsync(int userId);
     }
 }

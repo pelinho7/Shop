@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { HistoryComponent } from 'src/app/history/history.component';
+import { getUsersLocale } from 'src/app/_helpers/historyHelpers';
 import { ShippingAddres } from 'src/app/_models/shippingAddres';
 import { MobileNavbarHelpersService } from 'src/app/_services/mobile-navbar-helpers.service';
 import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watcher.service';
@@ -28,6 +30,20 @@ export class ShippingAddressesComponent implements OnInit {
 
   addNewShippingAddres(){
     this.upsertShippingAddresModal(new ShippingAddres());
+  }
+
+  showHistory(){
+
+    this.shippingAddressesService.getShippingAddressesHistory().subscribe(_=>{});
+    //this.upsertShippingAddresModal(new ShippingAddres());
+    const initialState: ModalOptions = {
+      initialState: {
+        title:'Shipping Addesses History'
+      },
+      class:'modal-xl'
+    };
+    this.bsModalRef = this.modalService.show(HistoryComponent,initialState);
+    this.bsModalRef.content.closeBtnName = 'Close';
   }
 
   upsertShippingAddresModal(shippingAddres:ShippingAddres) {

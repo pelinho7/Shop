@@ -14,6 +14,9 @@ using API.DBAccess.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using API.DBAccess.Entities;
+using System.Reflection;
+using System.Globalization;
+using API.Services.Interfaces;
 
 namespace API.Controllers
 {
@@ -22,13 +25,15 @@ namespace API.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly ILogger<ShippingAddressesController> logger;
+        private readonly ICreateHistoryService createHistoryService;
 
         public ShippingAddressesController(IUnitOfWork unitOfWork, IMapper mapper
-        , ILogger<ShippingAddressesController> logger)
+        , ILogger<ShippingAddressesController> logger, ICreateHistoryService createHistoryService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.logger = logger;
+            this.createHistoryService = createHistoryService;
         }
 
         [HttpGet("get-shipping-addresses")]
@@ -112,6 +117,20 @@ namespace API.Controllers
             if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Changing default address incompleted");
 
             return Ok();
+        }
+
+        [HttpGet("get-shipping-addresses-history")]
+        //[Authorize]
+        public async Task<ActionResult<IEnumerable<HistoryDto>>> GetShippingAddressesHistory(int timezone,string location)
+        {
+            var userId=User.GetUserId();
+            var shippingAddressesHistory = await unitOfWork.ShippingAddressHistoryRepository.GetShippingAddressHistoryByUserAsync(userId);
+            logger.LogError("dsadsadas");
+            var groupedAddresses=shippingAddressesHistory.GroupBy(x=>x.ShippingAddressId).ToList();
+            var historyList = createHistoryService.CreateHistory(groupedAddresses,timezone,location);
+            logger.LogError(JsonSerializer.Serialize(historyList));
+           
+            return Ok(historyList);
         }
     }
 }

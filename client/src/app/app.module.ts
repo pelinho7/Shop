@@ -32,6 +32,7 @@ import { UserAgreementsComponent } from './account/user-agreements/user-agreemen
 import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
 import { UpsertShippingAddresComponent } from './shippingAddresses/upsert-shipping-addres/upsert-shipping-addres.component';
 import { ShippingAddressCardComponent } from './shippingAddresses/shipping-address-card/shipping-address-card.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ShippingAddressCardComponent } from './shippingAddresses/shipping-addre
     UserAgreementsComponent,
     ShippingAddressesComponent,
     UpsertShippingAddresComponent,
-    ShippingAddressCardComponent
+    ShippingAddressCardComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using API.DBAccess.Entities;
 using API.DBAccess.Interfaces;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.DBAccess.Data
 {
@@ -19,6 +23,11 @@ namespace API.DBAccess.Data
         public void AddShippingAddressHistory(ShippingAddress shippingAddress)
         {
             context.ShippingAddressHistories.Add(mapper.Map<ShippingAddress,ShippingAddressHistory>(shippingAddress));
+        }
+
+        public async Task<List<ShippingAddressHistory>> GetShippingAddressHistoryByUserAsync(int userId)
+        {
+            return await context.ShippingAddressHistories.Where(x=>x.AppUserId==userId).ToListAsync();
         }
     }
 }

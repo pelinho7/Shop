@@ -18,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private busyService:BusyService) {
     this.routeSpinnerNameMap.set("account/check-email-not-taken","");
     this.routeSpinnerNameMap.set("account/check-login-not-taken","");
-
+    this.routeSpinnerNameMap.set("shippingaddresses/get-shipping-addresses-history","history-spinner");
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

@@ -4,7 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { getTimezone, getUsersLocale } from '../_helpers/historyHelpers';
 import { ShippingAddres } from '../_models/shippingAddres';
+import { History } from '../_models/history';
 
 @Injectable({
   providedIn: 'root'
@@ -83,5 +85,16 @@ export class ShippingAddressesService {
         address+'/'+shippingAddres.flatNumber;
     }
     return address;
+}
+
+getShippingAddressesHistory(){
+  var timezone=getTimezone();
+  var location=getUsersLocale();
+
+  return this.http.get<History[]>(this.baseUrl+'shippingaddresses/get-shipping-addresses-history?timezone='+timezone+'&location='+location).pipe(
+    map((historyList:History[])=>{
+      return historyList;
+    })
+  )
 }
 }

@@ -17,6 +17,7 @@ namespace API.Extensions
             services.AddScoped<IAgreementRepository,AgreementRepository>();
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IEmailService,EmailService>();
+            services.AddScoped<ICreateHistoryService,CreateHistoryService>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options=>{
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));
