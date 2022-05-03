@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { map } from "rxjs/operators";
@@ -25,8 +25,7 @@ export class ProductService {
   }
 
 
-
-  getProducts(dynamicControls:DynamicControl[]){
+  getProducts(dynamicControls:DynamicControl[],initPath:string=''){
     // var response=this.memberCache.get(Object.values(userParams).join('-'))
     // if(response){
     //   return of(response);
@@ -34,22 +33,34 @@ export class ProductService {
 
     //let params=getPaginationHeaders(userParams.pageNumber,userParams.pageSize);
 
-
-
+    let path:string='';
     let params=new HttpParams();
     if(dynamicControls){
       dynamicControls.forEach(x=>{
+        //if(x.value!=null )
+        path+='&'+x.name+'='+x.value
         params=params.append(x.name,x.value);
       })
+      if(path.length>0){
+        path = '?' + path.substring(1);
+      }
     }
 
+    if(initPath.length>0){
+      path=initPath;
+    }
+
+    // const headers = new HttpHeaders()
+    //   .append('Content-Type', 'application/json')
+    //   .append('Access-Control-Allow-Headers', 'Content-Type')
+    //   .append('Access-Control-Allow-Methods', 'GET')
+    //   .append('Access-Control-Allow-Origin', '*');
     
     // params=params.append('minAge',3);
     // params=params.append('maxAge',21);
     // params=params.append('gender','dasdasd');
     //params=params.append('orderBy',userParams.orderBy.toString());
-    
-    return this.http.get<Product[]>(this.baseUrl+'products',{ observe: 'response', params }).pipe(
+    return this.http.get<Product[]>(this.baseUrl+'products/get-products'+path,{ observe: 'response'}).pipe(
       map(response=>{
         let products:Product[]=[];
         if(response.body)

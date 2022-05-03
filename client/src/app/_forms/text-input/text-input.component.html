@@ -4,6 +4,8 @@
         type={{type}}
         class="form-control" 
         [formControl]="ngControl.control"
+        popover="{{label}}"
+        triggers="mouseenter:mouseleave"
         placeholder={{label}}>
     <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
     <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
@@ -23,5 +25,8 @@
     </div>
     <div *ngIf="ngControl.control?.errors?.loginTaken" class="invalid-feedback">
         This login has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.attributeCodeTaken" class="invalid-feedback">
+        This attribute code has been taken, please use another one
     </div>
 </div>

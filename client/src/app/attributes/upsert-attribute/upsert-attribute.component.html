@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-header">
+        <div class="modal-header border-0 p-0">
+            <h3>{{title}}</h3>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+      <ngx-spinner name="attribute-spinner">
+        <h3>Loading...</h3>
+      </ngx-spinner>
+      <form id="attributeForm" [formGroup]="attributeForm">
+        <input type="number" class="d-none" [formControl]='attributeForm.controls["id"]'/>
+        <input type="checkbox" class="d-none" [formControl]='attributeForm.controls["deleted"]'/>
+        <div class="form-row">
+            <div class="col-12 col-sm-8">
+                <app-text-input [formControl]='attributeForm.controls["code"]' [label]='"Code"'></app-text-input>
+            </div>
+            <div class="col-12 col-sm-4">
+              <app-select [formControl]='attributeForm.controls["type"]' [keyValueMap]='attributeService.attributeTypes' 
+              [label]='"Type"' [hideNullValue]="true"></app-select>
+            </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+              <app-text-input [formControl]='attributeForm.controls["label"]' [label]='"Label"'></app-text-input>
+          </div>
+      </div>
+      <div class="form-row">
+        <div class="col-12 col-sm-6">
+          <app-number-input [ngClass]="selectedType != 1 ? 'd-none' : ''" [formControl]='attributeForm.controls["decimalPlaces"]' 
+          [label]='"Decimal Places"' [max]="4" [min]="0"></app-number-input>
+        </div>
+        <div class="col-12 col-sm-6">
+          <app-select [ngClass]="!filtrationModeVisibile ? 'd-none' : ''" [formControl]='attributeForm.controls["filtrationMode"]' 
+          [keyValueMap]='filtrationModesArray' [label]='"Filtration mode"' [hideNullValue]="true"></app-select>
+        </div>
+    </div>
+
+      </form>
+      <div class="modal-footer">
+        <button type="button" form="attributeForm" 
+        [disabled]="!attributeForm.valid" class="btn btn-primary" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>

@@ -125,7 +125,6 @@ namespace API.Controllers
         {
             var userId=User.GetUserId();
             var shippingAddressesHistory = await unitOfWork.ShippingAddressHistoryRepository.GetShippingAddressHistoryByUserAsync(userId);
-            logger.LogError("dsadsadas");
             var groupedAddresses=shippingAddressesHistory.GroupBy(x=>x.ShippingAddressId).ToList();
             var historyList = createHistoryService.CreateHistory(groupedAddresses,timezone,location);
             logger.LogError(JsonSerializer.Serialize(historyList));

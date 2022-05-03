@@ -14,20 +14,21 @@ namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        public ProductsController()
-        {
+        private readonly ILogger<ProductsController> logger;
 
+        public ProductsController(ILogger<ProductsController> logger)
+        {
+            this.logger = logger;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts([ModelBinder(BinderType = typeof(DynamicModelBinder))]dynamic queries)
+
+        [HttpGet("get-products/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts3(string category,[ModelBinder(BinderType = typeof(DynamicModelBinder))]dynamic queries)
         {
-            //var a=((List<KeyValuePair<string, object>>)queries);
             var a=(Dictionary<string, object>)queries;
             var b=a.Select(x=>x.Key).ToList();
+            logger.LogError(category+" "+JsonSerializer.Serialize(a));
 
-            var options=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
-            var json=JsonSerializer.Serialize(queries,options);
 
             DynamicControl num1=new DynamicControl("c11","from",null,null);
             DynamicControl num2=new DynamicControl("c22","to",null,null);
@@ -44,7 +45,7 @@ namespace API.Controllers
             DynamicControl ch2=new DynamicControl("ch2","label",true,null);
             DynamicControl ch3=new DynamicControl("ch3","label",true,null);
             DynamicControl ch4=new DynamicControl("ch4","label",true,null);
-            FilterAttribute f3=new FilterAttribute("ch","checkbox",new List<DynamicControl>(){ch1,ch2,ch4,ch4});
+            FilterAttribute f3=new FilterAttribute("ch","checkbox",new List<DynamicControl>(){ch1,ch2,ch3,ch4});
 
             List<DynamicSelectOption> options1=new List<DynamicSelectOption>();
             options1.Add(new DynamicSelectOption("1111",1));

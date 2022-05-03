@@ -33,6 +33,11 @@ import { ShippingAddressesComponent } from './shippingAddresses/shipping-address
 import { UpsertShippingAddresComponent } from './shippingAddresses/upsert-shipping-addres/upsert-shipping-addres.component';
 import { ShippingAddressCardComponent } from './shippingAddresses/shipping-address-card/shipping-address-card.component';
 import { HistoryComponent } from './history/history.component';
+import { AttributesListComponent } from './attributes/attributes-list/attributes-list.component';
+import { SelectComponent } from './_forms/select/select.component';
+import { UpsertAttributeComponent } from './attributes/upsert-attribute/upsert-attribute.component';
+import { NumberInputComponent } from './_forms/number-input/number-input.component';
+
 
 @NgModule({
   declarations: [
@@ -59,7 +64,11 @@ import { HistoryComponent } from './history/history.component';
     ShippingAddressesComponent,
     UpsertShippingAddresComponent,
     ShippingAddressCardComponent,
-    HistoryComponent
+    HistoryComponent,
+    AttributesListComponent,
+    SelectComponent,
+    UpsertAttributeComponent,
+    NumberInputComponent
   ],
   imports: [
     BrowserModule,

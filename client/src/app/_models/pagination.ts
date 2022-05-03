@@ -1,8 +1,23 @@
 export class Pagination{
-    currentPage:number;
-    itemsPerPage:number;
+    page:number=1;
+    itemsPerPage:number=10;
     totalItems:number;
     totalPages:number;
 
     constructor(){}
+
+    castJsonToClass(json:Pagination){
+        if(json.itemsPerPage){
+          this.itemsPerPage = json.itemsPerPage;
+        }
+        if(json.page){
+          this.page = json.page;
+        }
+        if(json.totalPages){
+          this.totalPages = json.totalPages;
+        }
+        if(json.totalItems){
+          this.totalItems = json.totalItems;
+        }
+      }
 }

@@ -36,4 +36,7 @@ export class TopNavbarComponent implements OnInit {
     this.router.navigateByUrl('/');
   }
 
+  navigateToAttributes(){
+    this.router.navigateByUrl('/attributes')
+  }
 }

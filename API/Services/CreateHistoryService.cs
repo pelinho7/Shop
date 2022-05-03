@@ -53,7 +53,6 @@ namespace API.Services
             }
 
             List<HistoryDto> historyList = new List<HistoryDto>();
-
             foreach (var group in groupedData)
             {
                 //list of all modification of current object
@@ -112,10 +111,11 @@ namespace API.Services
                         }
                     }
                     history.PropertiesHistory = historyOfPropertiesList;
-                    historyList.Add(history);
+                    if(historyOfPropertiesList.Count()>0){
+                        historyList.Add(history);
+                    }
                 }
             }
-
             return historyList.OrderByDescending(x=>x.Moddate).ToList();;
         }
 

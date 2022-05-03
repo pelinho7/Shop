@@ -28,7 +28,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 934, DateTimeKind.Utc).AddTicks(8519));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(2166));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -163,7 +163,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 933, DateTimeKind.Utc).AddTicks(5441));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 696, DateTimeKind.Utc).AddTicks(8780));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -191,6 +191,87 @@ namespace API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Attribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DecimalPlaces")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FiltrationMode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(5098));
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attributes");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.AttributeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DecimalPlaces")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FiltrationMode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(5653));
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.ToTable("AttributeHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -234,7 +315,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 935, DateTimeKind.Utc).AddTicks(213));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(4005));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -295,7 +376,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 935, DateTimeKind.Utc).AddTicks(726));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(4535));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -335,7 +416,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 934, DateTimeKind.Utc).AddTicks(9136));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(2921));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -364,7 +445,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 1, 30, 15, 0, 49, 934, DateTimeKind.Utc).AddTicks(9721));
+                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(3507));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -490,6 +571,17 @@ namespace API.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.AttributeHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("AttributeHistories")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -621,6 +713,11 @@ namespace API.Migrations
                     b.Navigation("UserAgreements");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Attribute", b =>
+                {
+                    b.Navigation("AttributeHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>

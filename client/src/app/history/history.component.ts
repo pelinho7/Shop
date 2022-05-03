@@ -11,14 +11,14 @@ import { History } from '../_models/history';
 export class HistoryComponent implements OnInit {
 
   title?: string="New addres";
-  historyList:History[];
+  public historyList:History[];
  
   constructor(public bsModalRef: BsModalRef, private shippingAddressesService:ShippingAddressesService) {}
 
   ngOnInit(): void {
-    this.shippingAddressesService.getShippingAddressesHistory().subscribe(historyList=>{
-      this.historyList=historyList;
-    });
+    // this.shippingAddressesService.getShippingAddressesHistory().subscribe(historyList=>{
+    //   this.historyList=historyList;
+    // });
 
   }
 

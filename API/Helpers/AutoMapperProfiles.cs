@@ -35,6 +35,11 @@ namespace API.Helpers
             CreateMap<ShippingAddress,ShippingAddressHistory>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
             .ForMember(dest => dest.ShippingAddressId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<AttributeDto, DBAccess.Entities.Attribute>();
+            CreateMap<DBAccess.Entities.Attribute,AttributeDto>();
+            CreateMap<DBAccess.Entities.Attribute,AttributeHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.AttributeId, opt => opt.MapFrom(src => src.Id));
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

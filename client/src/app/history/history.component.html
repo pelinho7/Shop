@@ -31,7 +31,7 @@
             <div class="card">
                <div>
                  <div class="card-header">
-                   <h5>{{history.type==0?'Created':(history.type==1?'Modify':'Deleted')}} object Id: {{history.objectId}}</h5>
+                   <h5>{{history.type==0?'Creation':(history.type==1?'Modification':'Removal')}} object Id: {{history.objectId}}</h5>
                  </div>
                  <div class="card-body">
                    <div *ngFor="let property of history.propertiesHistory">

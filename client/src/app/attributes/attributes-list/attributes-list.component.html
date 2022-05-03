@@ -1,0 +1,89 @@
+<div class="container-fluid" *ngIf="loaded">
+    <form class="border mt-2 p-2 rounded"  id="attributesFiltrationForm" [formGroup]="attributesFiltrationForm">
+        <div class="form-row">
+            <div class="form-group col-12 col-md-4 mb-0">
+                <label class="">Code:</label>
+                <app-text-input class="mb-0" maxlength="30" [formControl]='attributesFiltrationForm.controls["code"]' [label]='"Code"'></app-text-input>
+              </div>
+            <div class="form-group col-4 col-md-2 mb-0">
+                <label class="">Type:</label>
+                <app-select [formControl]='attributesFiltrationForm.controls["type"]' [keyValueMap]='attributeService.attributeTypes' [label]='"Type"'></app-select>
+            </div>
+            <div class="form-group col-4 col-md-2 mb-0">
+                <label class="">Items per page:</label>
+                <app-select [formControl]='attributesFiltrationForm.controls["itemsPerPage"]' [keyValueMap]='attributeService.itemsPerPage' [label]='"Type"'></app-select>
+            </div>
+            <div class="form-group mt-auto col-4 col-md-2">
+                <button type="submit" form="attributesFiltrationForm" class="btn btn-primary w-100" (click)="filter()">Filter</button>
+            </div>
+            <div class="form-group mt-auto col-12 col-md-2">
+                <button type="button" class="btn btn-success w-100" (click)="addNewAttribute()">Add new</button>
+            </div>
+        </div>
+
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr class="d-flex">
+              <th class="col-sm-3">Code</th>
+              <th class="col-sm-6">Label</th>
+              <th class="col-sm-3">Actions</th>
+            </tr>
+          </thead>
+        <tbody>
+            <tr class="d-flex" *ngFor="let attribute of attributeService.attributesPage">
+                <td class="col-sm-3">{{attribute.code}}</td>
+                <td class="col-sm-6">{{attribute.label}}</td>
+                <td class="col-sm-3 d-flex justify-content-start">
+                    <button class="btn btn-primary d-inline-block background-btn mr-1"
+                    popover="Edit" triggers="mouseenter:mouseleave" (click)="edit(attribute.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button class="btn btn-danger d-inline-block background-btn mr-1"
+                      popover="Delete"
+                      triggers="mouseenter:mouseleave" (click)="onDelete(attribute.id)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>       
+                      </button>
+
+                        <button type="button" class="btn btn-outline-info"
+                        popover="History"
+                        triggers="mouseenter:mouseleave" (click)="showHistory(attribute.id)">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                          </button>
+                </td>
+              </tr>
+        </tbody>
+      </table>
+
+    <!-- <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="width: 30%">Code</th>
+            <th style="width: 50%">Label</th>
+            <th style="width: 20%">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attribute of attributeService.attributesPage">
+            <td>{{attribute.code}}</td>
+            <td>{{attribute.label}}</td>
+            <td>
+                <button class="btn btn-primary">das</button>
+                <button class="btn btn-primary">das</button>
+                <button class="btn btn-primary">das</button>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+
+    <div id="pagination-panel" class="d-flex justify-content-center">
+        <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
+                [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
+                (pageChanged)="pageChanged($event)"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
+
+</div>
+

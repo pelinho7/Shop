@@ -1,0 +1,12 @@
+<div class="form-group">
+    <input 
+        [class.is-invalid]="ngControl.touched && ngControl.invalid"
+        type={{type}}
+        class="form-control" 
+        [formControl]="ngControl.control"
+        popover="{{label}}"
+        triggers="mouseenter:mouseleave"
+        placeholder={{label}} min="{{min}}" max="{{max}}"
+        >
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+</div>

@@ -13,7 +13,7 @@
         <div class="row" style="height: 50px;" *ngFor="let product of products">{{product.id}}</div>   
         <div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="d-flex justify-content-center" *ngIf="pagination">
             <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems"
-                    [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.currentPage"
+                    [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
                     (pageChanged)="pageChanged($event)"
                     previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
             </pagination>

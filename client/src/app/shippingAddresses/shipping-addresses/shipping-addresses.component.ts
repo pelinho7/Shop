@@ -34,16 +34,18 @@ export class ShippingAddressesComponent implements OnInit {
 
   showHistory(){
 
-    this.shippingAddressesService.getShippingAddressesHistory().subscribe(_=>{});
-    //this.upsertShippingAddresModal(new ShippingAddres());
-    const initialState: ModalOptions = {
-      initialState: {
-        title:'Shipping Addesses History'
-      },
-      class:'modal-xl'
-    };
-    this.bsModalRef = this.modalService.show(HistoryComponent,initialState);
-    this.bsModalRef.content.closeBtnName = 'Close';
+    this.shippingAddressesService.getShippingAddressesHistory().subscribe((history:any[])=>{
+      const initialState: ModalOptions = {
+        initialState: {
+          title:'Shipping Addesses History',
+          historyList:history
+        },
+        class:'modal-xl'
+      };
+      this.bsModalRef = this.modalService.show(HistoryComponent,initialState);
+      this.bsModalRef.content.closeBtnName = 'Close';
+    });
+
   }
 
   upsertShippingAddresModal(shippingAddres:ShippingAddres) {

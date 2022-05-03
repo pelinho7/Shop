@@ -6,6 +6,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { FilterAttribute } from '../../_models/filterAttribute';
 import { Pagination } from 'src/app/_models/pagination';
 import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watcher.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list',
@@ -21,10 +22,18 @@ export class ProductsListComponent implements OnInit {
 
 
   constructor(private productService:ProductService
-    ,public resizeWindowWatcherService:ResizeWindowWatcherService) { }
+    ,public resizeWindowWatcherService:ResizeWindowWatcherService,private route: Router) { }
 
   ngOnInit(): void {
-    this.loadProducts();
+    var urlParam='';
+    if(this.route.url.includes('/') && this.route.url.lastIndexOf('/')!=0){
+      urlParam=this.route.url.substring(this.route.url.lastIndexOf('/'));
+    }
+    else if(this.route.url.includes('?')){
+      urlParam=this.route.url.substring(this.route.url.indexOf('?'));
+    }
+    console.log('1111111111 '+urlParam)
+      this.loadProducts(urlParam);
   }
 
   openMobileFilter(){
@@ -41,12 +50,13 @@ export class ProductsListComponent implements OnInit {
   // }
 
 
-  loadProducts(){
+  loadProducts(initPath:string=''){
     let dynamicControls:DynamicControl[]=[];
     if(this.filterAttributes)
       this.filterAttributes.map(x=>x.dynamicControls).forEach(x=>dynamicControls= [...dynamicControls, ...x]);
-
-    this.productService.getProducts(dynamicControls).subscribe(results=>{
+      
+    console.log(dynamicControls);
+    this.productService.getProducts(dynamicControls,initPath).subscribe(results=>{
       this.products=results.products;
       this.filterAttributes=results.filterAttributes;
       this.pagination=results.pagination;
@@ -59,8 +69,26 @@ export class ProductsListComponent implements OnInit {
   }
 
   onFilter(event:any) {
+     console.log('999999999');
     console.log(this.filterAttributes)
+    this.loadProducts();
     //console.log(filterAttributes);
+
+    let dynamicControls:DynamicControl[]=[];
+    var path='';
+    if(this.filterAttributes)
+      this.filterAttributes.map(x=>x.dynamicControls).forEach(x=>dynamicControls= [...dynamicControls, ...x]);
+    if(dynamicControls){
+      dynamicControls.forEach(x=>{
+        //if(x.value!=null )
+        path+='&'+x.name+'='+x.value
+      })
+      if(path.length>0){
+        path = '?' + path.substring(1);
+      }
+    }
+
+    this.route.navigateByUrl('/products'+path);
 }
 
 pageChanged(event:any){

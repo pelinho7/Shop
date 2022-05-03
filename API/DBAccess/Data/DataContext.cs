@@ -24,6 +24,8 @@ namespace API.DBAccess.Data
         public DbSet<UserAgreementHistory> UserAgreementHistories { get; set; }
         public DbSet<ShippingAddress> ShippingAddresses { get; set; }
         public DbSet<ShippingAddressHistory> ShippingAddressHistories { get; set; }
+        public DbSet<Entities.Attribute> Attributes { get; set; }
+        public DbSet<AttributeHistory> AttributeHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -90,6 +92,12 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.ShippingAddressId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<AttributeHistory>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.AttributeHistories)
+                .HasForeignKey(s => s.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //default values
             builder.Entity<AppUserHistory>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
@@ -107,6 +115,12 @@ namespace API.DBAccess.Data
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ShippingAddressHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Entities.Attribute>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<AttributeHistory>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
         }

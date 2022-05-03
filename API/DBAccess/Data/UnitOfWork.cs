@@ -22,7 +22,9 @@ namespace API.DBAccess.Data
 
         public IShippingAddressRepository ShippingAddressRepository => new ShippingAddressRepository(context, mapper,ShippingAddressHistoryRepository);
         public IShippingAddressHistoryRepository ShippingAddressHistoryRepository => new ShippingAddressHistoryRepository(context, mapper);
-
+        
+        public IAttributeRepository AttributeRepository => new AttributeRepository(context, mapper,AttributeHistoryRepository);
+        public IAttributeHistoryRepository AttributeHistoryRepository => new AttributeHistoryRepository(context, mapper);
         public async Task<bool> Complete()
         {
             return await context.SaveChangesAsync() > 0;
