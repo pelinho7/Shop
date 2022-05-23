@@ -21,6 +21,8 @@ export class LoadingInterceptor implements HttpInterceptor {
     this.routeSpinnerNameMap.set("shippingaddresses/get-shipping-addresses-history","history-spinner");
     this.routeSpinnerNameMap.set("attributes/check-code-not-taken","");
     this.routeSpinnerNameMap.set("attributes/upsert-attribute","attribute-spinner");
+    this.routeSpinnerNameMap.set("categories/check-code-not-taken","");
+    //this.routeSpinnerNameMap.set("attributes/get-all-attributes","category-spinner");
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -38,6 +40,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     if(spinnerName.length>0){
       this.busyService.busy(spinnerName);
     }
+
     return next.handle(request).pipe(
       //fake delay
       delay(1000),

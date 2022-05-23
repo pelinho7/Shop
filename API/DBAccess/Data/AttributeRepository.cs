@@ -39,6 +39,14 @@ namespace API.DBAccess.Data
             attributeHistoryRepository.AddAttributeHistory(attribute);
         }
 
+        public async Task<List<AttributeBasicDto>> GetAllAttributes()
+        {
+            var query=context.Attributes.AsQueryable();
+            query=query.Where(x=>!x.Deleted);
+            query = query.OrderBy(x=>x.Code);
+            return await query.ProjectTo<AttributeBasicDto>(mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
+        }
+
         public async Task<Entities.Attribute> GetAttributeByCode(string code)
         {
             return await context.Attributes.FirstOrDefaultAsync(x=>x.Code.ToUpper() == code.ToUpper() && !x.Deleted);
@@ -55,7 +63,7 @@ namespace API.DBAccess.Data
             query=query.Where(x=>!x.Deleted);
             if(!string.IsNullOrEmpty(code)) query=query.Where(x=>x.Code.ToUpper().Contains(code.ToUpper()));
             if(type.HasValue) query=query.Where(x=>x.Type == type.Value);
-            query = query.OrderBy(x=>x.Id);
+            query = query.OrderBy(x=>x.Code);
             return await PagedList<AttributeDto>.CreateAsync(
                 query.ProjectTo<AttributeDto>(mapper.ConfigurationProvider).AsNoTracking()
                 ,pagination.Page,pagination.ItemsPerPage);

@@ -72,7 +72,7 @@ export class AttributesListComponent implements OnInit {
 
   edit(id:number){
     var attribute = this.attributeService.attributesPage.find(x=>x.id==id);
-    this.upsertShippingAddresModal(attribute);
+    this.upsertAttributeModal(attribute);
   }
 
   onDelete(id:number){
@@ -82,7 +82,7 @@ export class AttributesListComponent implements OnInit {
     })
   }
 
-  upsertShippingAddresModal(attribute:Attribute) {
+  upsertAttributeModal(attribute:Attribute) {
     const initialState: ModalOptions = {
       initialState: {
         attribute:attribute,
@@ -101,11 +101,11 @@ export class AttributesListComponent implements OnInit {
   }
 
   addNewAttribute(){
-    this.upsertShippingAddresModal(new Attribute())
+    this.upsertAttributeModal(new Attribute())
   }
 
   onEdit(attribute:Attribute){
-    this.upsertShippingAddresModal(attribute)
+    this.upsertAttributeModal(attribute)
   }
 
   showHistory(id:number){

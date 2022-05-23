@@ -37,7 +37,9 @@ import { AttributesListComponent } from './attributes/attributes-list/attributes
 import { SelectComponent } from './_forms/select/select.component';
 import { UpsertAttributeComponent } from './attributes/upsert-attribute/upsert-attribute.component';
 import { NumberInputComponent } from './_forms/number-input/number-input.component';
-
+import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
+import { UpsertCategoryComponent } from './categories/upsert-category/upsert-category.component';
+import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,9 @@ import { NumberInputComponent } from './_forms/number-input/number-input.compone
     AttributesListComponent,
     SelectComponent,
     UpsertAttributeComponent,
-    NumberInputComponent
+    NumberInputComponent,
+    CategoriesListComponent,
+    UpsertCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +87,13 @@ import { NumberInputComponent } from './_forms/number-input/number-input.compone
     {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
     {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true},
     {provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},
+    {
+      provide: MAT_SELECTSEARCH_DEFAULT_OPTIONS,
+      useValue: <MatSelectSearchOptions>{
+        noEntriesFoundLabel: 'No options found',
+        placeholderLabel:'Search'
+      }
+    },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

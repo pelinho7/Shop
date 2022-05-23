@@ -26,6 +26,9 @@ namespace API.DBAccess.Data
         public DbSet<ShippingAddressHistory> ShippingAddressHistories { get; set; }
         public DbSet<Entities.Attribute> Attributes { get; set; }
         public DbSet<AttributeHistory> AttributeHistories { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryLink> CategoryLinks { get; set; }
+        public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -98,6 +101,35 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.AttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<CategoryLink>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.CategoryLinks)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CategoryAttribute>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.CategoryAttributes)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CategoryAttribute>()
+                .HasOne(s => s.Attribute)
+                .WithOne(l => l.CategoryAttribute)
+                .HasForeignKey<CategoryAttribute>(b => b.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Category>()
+                .HasOne(b=>b.ParentCategory)
+                .WithMany()
+                .HasForeignKey(b=>b.ParentCategoryId);
+
+            builder.Entity<CategoryHistory>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.CategoryHistories)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //default values
             builder.Entity<AppUserHistory>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
@@ -123,6 +155,14 @@ namespace API.DBAccess.Data
             builder.Entity<AttributeHistory>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
+            builder.Entity<Category>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+            
+            builder.Entity<CategoryAttribute>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<CategoryHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }
 }

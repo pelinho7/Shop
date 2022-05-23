@@ -1,0 +1,78 @@
+<div class="card">
+    <div class="card-header">
+        <div class="modal-header border-0 p-0">
+            <p class="h3 m-0">{{title}}</p>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+      <ngx-spinner name="category-spinner">
+        <h3>Loading...</h3>
+      </ngx-spinner>
+      <form id="attributeForm" [formGroup]="categoryForm">
+        <input type="number" class="d-none" [formControl]='categoryForm.controls["id"]'/>
+        <input type="checkbox" class="d-none" [formControl]='categoryForm.controls["deleted"]'/>
+        <div class="form-row">
+            <div class="col-12">
+                <app-text-input [formControl]='categoryForm.controls["code"]' [label]='"Code"'></app-text-input>
+            </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+              <app-text-input [formControl]='categoryForm.controls["label"]' [label]='"Label"'></app-text-input>
+          </div>
+      </div>
+
+
+
+      <div class="form-row">
+        <div class="col-12">
+          <label class="">Category attributes</label>
+          <div class="border rounded">
+            <mat-form-field class="w-100">
+              <mat-select #matSelectRef class="" [formControl]='categoryForm.controls["attributes"]' placeholder="" id="categoryAttributeSelect" (valueChange)="addCategoryAttribute($event)">
+                <mat-option>
+                  <ngx-mat-select-search [formControl]='categoryForm.controls["filteredAttributes"]'></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let attribute of filteredAttributes | async" [value]="attribute.id">
+                  {{attribute.code}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      
+            <mat-list *ngIf="categoryAttributes | async" cdkDropList (cdkDropListDropped)="drop($event)">
+              <div class="row" cdkDrag *ngFor="let ca of categoryAttributes | async">
+                <div class="col-11 category-attribute align-text-bottom">
+                  <label> {{ca.code}} </label>
+                </div>
+                <div class="col-1">
+                  <a class="btn remove-attribute align-middle p-0" (click)="removeCategoryAttribute(ca.id)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                </div>
+              </div>
+             </mat-list>
+          </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+      <!-- <mat-list cdkDropList>
+        <mat-list-item cdkDrag> Pepper </mat-list-item>
+        <mat-list-item cdkDrag> Salt </mat-list-item>
+        <mat-list-item cdkDrag> Paprika </mat-list-item>
+       </mat-list> -->
+
+      </form>
+      <div class="modal-footer">
+        <button type="button" form="categoryForm" 
+        [disabled]="!categoryForm.valid"
+        class="btn btn-primary" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>

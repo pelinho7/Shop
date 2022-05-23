@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DBAccess.Entities
 {
-    public class Attribute
+    public class Category
     {
-        [Required]
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
@@ -14,16 +13,14 @@ namespace API.DBAccess.Entities
         [Required]
         [MaxLength(60)]
         public string Label{get;set;}
-        [Required]
-        public int Type { get; set; }
-        [Required]
-        public int FiltrationMode { get; set; }
-        [Required]
-        public int DecimalPlaces { get; set; }
         public bool Deleted { get; set; }
         [Required]
         public DateTime ModDate { get; set; }
-        public ICollection<AttributeHistory> AttributeHistories { get; set; }
-        public CategoryAttribute CategoryAttribute { get; set; }
+        public int? ParentCategoryId {get;set;}
+        public Category ParentCategory { get; set; }
+        public ICollection<CategoryLink> CategoryLinks { get; set; }
+        public ICollection<CategoryLink> ParentCategoryLinks { get; set; }
+        public ICollection<CategoryAttribute> CategoryAttributes { get; set; }
+        public ICollection<CategoryHistory> CategoryHistories { get; set; }
     }
 }

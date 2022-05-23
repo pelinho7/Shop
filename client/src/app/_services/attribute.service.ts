@@ -7,6 +7,7 @@ import { Attribute } from '../_models/attribute';
 import { AttributesFiltration } from '../_models/attributesFiltration';
 import { Pagination } from '../_models/pagination';
 import { History as DataHistory } from '../_models/history';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ public itemsPerPage = new Map([
 ]);
 
 requestParameters:string='';
-
+allAttributes:Attribute[]=null;
 attributesPage:Attribute[];
   constructor(private http:HttpClient) { 
   }
@@ -86,6 +87,19 @@ attributesPage:Attribute[];
       }));
   }
 
+  getAllAttributes(){
+    if(this.allAttributes == null){
+      return this.http.get<Attribute[]>(this.baseUrl+'attributes/get-all-attributes').pipe(
+        map((attributes:Attribute[])=>{
+          this.allAttributes = attributes;
+          return attributes;
+        }));
+    }
+    else{
+      return of(this.allAttributes);
+    }
+  }
+
   checkCodeNotTaken(code:string){
     return this.http.get<boolean>(this.baseUrl+'attributes/check-code-not-taken?code='+code).pipe(
       map((result:boolean)=>{
@@ -95,6 +109,7 @@ attributesPage:Attribute[];
   }
 
   upsertAttribute(model:Attribute){
+    this.allAttributes=null;
     return this.http.post<Attribute>(this.baseUrl+'attributes/upsert-attribute',model).pipe(
       map((attribute:Attribute)=>{
           return attribute;
@@ -104,6 +119,7 @@ attributesPage:Attribute[];
 
  
   deleteAttribute(id:number){
+    this.allAttributes=null;
     return this.http.delete(this.baseUrl+'attributes/delete-attribute/'+id).pipe(
       map(()=>{
        return;

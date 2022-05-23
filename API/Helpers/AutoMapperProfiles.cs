@@ -37,6 +37,7 @@ namespace API.Helpers
             .ForMember(dest => dest.ShippingAddressId, opt => opt.MapFrom(src => src.Id));
             CreateMap<AttributeDto, DBAccess.Entities.Attribute>();
             CreateMap<DBAccess.Entities.Attribute,AttributeDto>();
+            CreateMap<DBAccess.Entities.Attribute,AttributeBasicDto>();
             CreateMap<DBAccess.Entities.Attribute,AttributeHistory>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
             .ForMember(dest => dest.AttributeId, opt => opt.MapFrom(src => src.Id));

@@ -35,8 +35,4 @@ export class TopNavbarComponent implements OnInit {
     this.accountService.logout();
     this.router.navigateByUrl('/');
   }
-
-  navigateToAttributes(){
-    this.router.navigateByUrl('/attributes')
-  }
 }

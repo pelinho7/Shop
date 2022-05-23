@@ -14,5 +14,7 @@ namespace API.DBAccess.Interfaces
         Task<Attribute> GetAttributeByCode(string code);
         Task<Attribute> GetAttributeById(int id);
         Task<PagedList<AttributeDto>> GetAttributes(string code,int? type,Pagination pagination=null);
+        Task<List<AttributeBasicDto>> GetAllAttributes();
+
     }
 }

@@ -1,0 +1,12 @@
+.category-attribute:hover{
+  cursor:move;
+}
+
+.remove-attribute:hover{
+  cursor:pointer !important;
+}
+
+.cdk-drag.row{
+  margin: 0;
+}
+

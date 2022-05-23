@@ -18,15 +18,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
-    public class AttributesController : BaseApiController
+    public class CategoriesController : BaseApiController
     {
-        private readonly ILogger<AttributesController> logger;
+        private readonly ILogger<CategoriesController> logger;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly ICreateHistoryService createHistoryService;
 
-        public AttributesController(IUnitOfWork unitOfWork, IMapper mapper
-        , ILogger<AttributesController> logger, ICreateHistoryService createHistoryService)
+        public CategoriesController(IUnitOfWork unitOfWork, IMapper mapper
+        , ILogger<CategoriesController> logger, ICreateHistoryService createHistoryService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -37,7 +37,7 @@ namespace API.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AttributeDto>>> GetAttributes([FromQuery]GetAttributesParamDto paramsDto)
+        public async Task<ActionResult<IEnumerable<AttributeDto>>> GetCategories([FromQuery]GetAttributesParamDto paramsDto)
         {
             var pagination=new Pagination();
             if(paramsDto.Page.HasValue){
@@ -53,17 +53,9 @@ namespace API.Controllers
             return Ok(attributes);
         }
 
+        [HttpPost("upsert-category")]
         [Authorize(Roles ="Admin")]
-        [HttpGet("get-all-attributes")]
-        public async Task<ActionResult<IEnumerable<AttributeBasicDto>>> GetAllAttributes()
-        {
-            var attributes = await unitOfWork.AttributeRepository.GetAllAttributes();
-            return Ok(attributes);
-        }
-
-        [HttpPost("upsert-attribute")]
-        [Authorize(Roles ="Admin")]
-        public async Task<ActionResult<AttributeDto>> UpsertAttribute(AttributeDto attributeDto)
+        public async Task<ActionResult<AttributeDto>> UpsertCategory(AttributeDto attributeDto)
         {
             if(attributeDto==null)
                 return BadRequest();
@@ -88,18 +80,18 @@ namespace API.Controllers
             return Ok(mapper.Map<AttributeDto>(attribute));
         }
 
-        [HttpDelete("delete-attribute/{attributeId:int}")]
+        [HttpDelete("delete-category/{categoryId:int}")]
         [Authorize]
-        public async Task<ActionResult> DeleteAttribute(int attributeId)
+        public async Task<ActionResult> DeleteCategory(int categoryId)
         {
-            if(attributeId<=0)
+            if(categoryId<=0)
                 return BadRequest();
 
             var userId=User.GetUserId();
             // var attribute = await unitOfWork.AttributeRepository.GetAttributeById(attributeId);
             // if(attribute == null)return NotFound("Attribute not found");
 
-            unitOfWork.AttributeRepository.DeleteAttribute(attributeId);
+            unitOfWork.AttributeRepository.DeleteAttribute(categoryId);
             var savingResult = await unitOfWork.Complete();
 
             if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
@@ -113,18 +105,18 @@ namespace API.Controllers
         {
             if (string.IsNullOrEmpty(code)) return true;
 
-            var attribute = await unitOfWork.AttributeRepository.GetAttributeByCode(code);
-            if (attribute != null)
-            {
-                return false;
-            }
+            // var attribute = await unitOfWork.AttributeRepository.GetAttributeByCode(code);
+            // if (attribute != null)
+            // {
+            //     return false;
+            // }
 
             return true;
         }
 
-        [HttpGet("get-attribute-history")]
+        [HttpGet("get-category-history")]
         [Authorize(Roles ="Admin")]
-        public async Task<ActionResult<IEnumerable<HistoryDto>>> GetAttributeHistory(int id,int timezone,string location)
+        public async Task<ActionResult<IEnumerable<HistoryDto>>> GetCategoryHistory(int id,int timezone,string location)
         {
             var attributeHistory = await unitOfWork.AttributeHistoryRepository.GetAttributeHistoryByIdAsync(id);
             var groupedAttributes=attributeHistory.GroupBy(x=>x.AttributeId).ToList();

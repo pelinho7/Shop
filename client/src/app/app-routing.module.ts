@@ -7,6 +7,7 @@ import { NewPasswordComponent } from './account/new-password/new-password.compon
 import { RegisterComponent } from './account/register/register.component';
 import { UserAgreementsComponent } from './account/user-agreements/user-agreements.component';
 import { AttributesListComponent } from './attributes/attributes-list/attributes-list.component';
+import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
@@ -40,6 +41,7 @@ const routes: Routes = [
         canActivate:[AdminGuard],
         children:[
           {path:'attributes',component:AttributesListComponent},
+          {path:'categories',component:CategoriesListComponent},
         ]
       },
 
