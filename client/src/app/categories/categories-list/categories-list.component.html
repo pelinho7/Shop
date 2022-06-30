@@ -1,85 +1,12 @@
 <div class="container-fluid">
-    <button type="button" class="btn btn-success w-100" (click)="addNewCategorie()">Add new</button>
+    <button type="button" class="btn btn-success w-100 mb-3" (click)="addNewCategory(null)">Add new main category</button>
 
-    <div class="card border-0">
-        <div class="card-header rounded border">
-            <button type="button" class="btn" popover="Expand" triggers="mouseenter:mouseleave">
-                <i class="fa fa-chevron-down" aria-hidden="true"></i>
-            </button>
-            dadas
-            <div class="float-right">
-                <button type="button" class="btn btn-outline-primary mr-1" popover="Edit" triggers="mouseenter:mouseleave">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-outline-danger" popover="Delete" triggers="mouseenter:mouseleave">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
 
-            <div class="card border-0">
-                <div class="card-header rounded border">
-                    <button type="button" class="btn invisible" popover="Expand" triggers="mouseenter:mouseleave">
-                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                    </button>
-                    dadas
-                    <div class="float-right">
-                        <button type="button" class="btn btn-outline-primary mr-1" popover="Edit" triggers="mouseenter:mouseleave">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" popover="Delete" triggers="mouseenter:mouseleave">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </div>
-    
-                </div>
-                <div class="card-body"></div>
-            </div>
-
+    <div *ngIf="categoryService.categoriesTree$ | async">
+        <div class="row m-0" *ngFor="let categoryTreeItem of categoryService.categoriesTree$ | async">
+            <app-category-tree-item (editEvent)="updateNewCategory($event)" (deleteEvent)="delete($event)" 
+            (addEvent)="addNewCategory($event)" (showHistoryEvent)="showHistory($event)"
+            (expandReduceEvent)="expandReduce($event)" [categoryTreeItem]="categoryTreeItem"></app-category-tree-item>
         </div>
     </div>
 </div>
-
-
-
-<accordion [isAnimated]="true">
-    <accordion-group heading="Static Header">
-      This content is straight in the template.
-    </accordion-group>
-    <accordion-group heading="Another group" class="tree-control" [isOpen]="true">
-        <accordion-group heading="_______Another group1" id="asdf">
-            <div [innerHTML]="wiget"></div>
-            <!-- <accordion-group heading="group1" ></accordion-group> -->
-        </accordion-group>
-    </accordion-group>
-
-    <accordion-group
-    *ngFor="let number of [1,2,3,4];"
-    [isOpen]="false"
-    #accordionGroupRef
->
-
-    <!-- Header -->
-    <h5 class="m-0" accordion-heading>
-        <!-- {{ accordionGroupRef.isOpen ? "OPEN" : "CLOSED"}}
-        I am accordion {{number}} -->
-        <button class="float-right" (click)="add()">dadas</button>
-        <!-- <span class="float-right"> I float all the way on the right!</span> -->
-    </h5>    
-
-    <!-- Content -->
-    Accordion content
-</accordion-group>
-  </accordion>
-
-  <mat-form-field>
-    <!-- <mat-label>State</mat-label> -->
-    <mat-select>
-       <!-- <input> -->
-      <mat-option>None</mat-option>
-      <mat-option>None1</mat-option>
-      <mat-option>None2</mat-option>
-      <!-- <mat-option *ngFor="let state of selectedStates" [value]="state">{{state}}</mat-option> -->
-    </mat-select>
-  </mat-form-field>

@@ -1,0 +1,50 @@
+<div class="card border-0 w-100" [ngClass]="!categoryTreeItem.visible ? 'd-none' : ''">
+    <div class="card-header rounded border">
+        <div class="row align-items-center">
+            <div class="col-8 align-self-center">
+                <button [ngClass]="categoryTreeItem.subCategories.length==0 ? 'invisible' : ''"  type="button"
+                class="btn float-left" popover="Expand" triggers="mouseenter:mouseleave" (click)="expandReduce(categoryTreeItem.id)">
+                <i [ngClass]="categoryTreeItem?.subCategories[0]?.visible ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" aria-hidden="true"></i>
+                </button>
+                <div class="d-inline">
+                    <p class="">{{categoryTreeItem.code}}</p>
+                    <p class="font-italic">{{categoryTreeItem.label}}</p>
+                </div>
+            </div>
+            <div class="col-4 align-self-center">
+                <div class="float-right m-auto">
+                    <button type="button" class="btn btn-outline-primary mr-1" popover="Add" 
+                    triggers="mouseenter:mouseleave" (click)="add(categoryTreeItem.id)">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+                    <button type="button" class="btn btn-outline-primary mr-1" popover="Edit" 
+                        triggers="mouseenter:mouseleave" (click)="edit(categoryTreeItem.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger mr-1" popover="Delete" 
+                        triggers="mouseenter:mouseleave" (click)="delete(categoryTreeItem.id)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-info" popover="History"
+                        triggers="mouseenter:mouseleave" (click)="showHistory(categoryTreeItem.id)">
+                        <i class="fa fa-history" aria-hidden="true"></i>
+                      </button>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="card-body ml-4 p-0" *ngFor="let c of categoryTreeItem.subCategories">
+        <app-category-tree-item (editEvent)="edit($event)" (deleteEvent)="delete($event)" 
+        (expandReduceEvent)="expandReduce($event)" (addEvent)="add($event)" 
+        (showHistoryEvent)="showHistory($event)"
+        style="width: 100%;" class="w-100" [categoryTreeItem]="c"></app-category-tree-item>
+    </div>
+</div>
+
+
+<!-- <div class="row" *ngFor="let c of categoryTreeItem.subCategories">
+    <app-category-tree-item [categoryTreeItem]="c"></app-category-tree-item>
+  </div> -->
+

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.DBAccess.Entities
 {
@@ -22,5 +23,7 @@ namespace API.DBAccess.Entities
         public ICollection<CategoryLink> ParentCategoryLinks { get; set; }
         public ICollection<CategoryAttribute> CategoryAttributes { get; set; }
         public ICollection<CategoryHistory> CategoryHistories { get; set; }
+        [NotMapped]
+        public List<CategoryAttribute> ParentCategoriesAttributes { get; set; }
     }
 }

@@ -13,6 +13,7 @@
       </ngx-spinner>
       <form id="attributeForm" [formGroup]="categoryForm">
         <input type="number" class="d-none" [formControl]='categoryForm.controls["id"]'/>
+        <input type="number" class="d-none" [formControl]='categoryForm.controls["parentCategoryId"]'/>
         <input type="checkbox" class="d-none" [formControl]='categoryForm.controls["deleted"]'/>
         <div class="form-row">
             <div class="col-12">
@@ -48,7 +49,7 @@
                   <label> {{ca.code}} </label>
                 </div>
                 <div class="col-1">
-                  <a class="btn remove-attribute align-middle p-0" (click)="removeCategoryAttribute(ca.id)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                  <a class="btn remove-attribute align-middle p-0" (click)="removeCategoryAttribute(ca.attributeId)"><i class="fa fa-times" aria-hidden="true"></i></a>
                 </div>
               </div>
              </mat-list>

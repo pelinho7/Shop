@@ -28,7 +28,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(2166));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(883));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -163,7 +163,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 696, DateTimeKind.Utc).AddTicks(8780));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 647, DateTimeKind.Utc).AddTicks(6662));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -221,7 +221,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(5098));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(4115));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -262,7 +262,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(5653));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(4680));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -272,6 +272,166 @@ namespace API.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("AttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(5196));
+
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Lp")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(5745));
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId")
+                        .IsUnique();
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryAttributes");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryAttributeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryAttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Lp")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(6965));
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("CategoryAttributeId");
+
+                    b.ToTable("CategoryAttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(6393));
+
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ParentCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("CategoryLinks");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -315,7 +475,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(4005));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(2740));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -376,7 +536,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(4535));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(3425));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -416,7 +576,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(2921));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(1579));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -445,7 +605,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 4, 21, 17, 40, 27, 698, DateTimeKind.Utc).AddTicks(3507));
+                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(2186));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -584,6 +744,83 @@ namespace API.Migrations
                     b.Navigation("Attribute");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.Category", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Category", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentCategoryId");
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryAttribute", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithOne("CategoryAttribute")
+                        .HasForeignKey("API.DBAccess.Entities.CategoryAttribute", "AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("CategoryAttributes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryAttributeHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("CategoryAttributeHistories")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.CategoryAttribute", "CategoryAttribute")
+                        .WithMany("CategoryAttributeHistories")
+                        .HasForeignKey("CategoryAttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("CategoryAttribute");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("CategoryHistories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryLink", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("CategoryLinks")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Category", "ParentCategory")
+                        .WithMany("ParentCategoryLinks")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.AppUser", "AppUser")
@@ -718,6 +955,26 @@ namespace API.Migrations
             modelBuilder.Entity("API.DBAccess.Entities.Attribute", b =>
                 {
                     b.Navigation("AttributeHistories");
+
+                    b.Navigation("CategoryAttribute");
+
+                    b.Navigation("CategoryAttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Category", b =>
+                {
+                    b.Navigation("CategoryAttributes");
+
+                    b.Navigation("CategoryHistories");
+
+                    b.Navigation("CategoryLinks");
+
+                    b.Navigation("ParentCategoryLinks");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.CategoryAttribute", b =>
+                {
+                    b.Navigation("CategoryAttributeHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>

@@ -8,5 +8,8 @@ namespace API.DBAccess.Interfaces
 {
     public interface ICategoryLinkRepository
     {
+        void UpsertCategoryLinks(Category category);
+        Task<List<int>> GetSubCategoriesIds(int parentCategoryId);
+
     }
 }

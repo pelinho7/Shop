@@ -40,6 +40,8 @@ import { NumberInputComponent } from './_forms/number-input/number-input.compone
 import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
 import { UpsertCategoryComponent } from './categories/upsert-category/upsert-category.component';
 import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
+import { CategoryTreeItemComponent } from './categories/category-tree-item/category-tree-item.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,9 @@ import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-ma
     UpsertAttributeComponent,
     NumberInputComponent,
     CategoriesListComponent,
-    UpsertCategoryComponent
+    UpsertCategoryComponent,
+    CategoryTreeItemComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

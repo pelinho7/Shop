@@ -25,5 +25,6 @@ namespace API.DBAccess.Entities
         public DateTime ModDate { get; set; }
         public ICollection<AttributeHistory> AttributeHistories { get; set; }
         public CategoryAttribute CategoryAttribute { get; set; }
+        public List<CategoryAttributeHistory> CategoryAttributeHistories { get; set; }
     }
 }

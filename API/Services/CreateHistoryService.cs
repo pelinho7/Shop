@@ -28,6 +28,7 @@ namespace API.Services
             PropertyInfo deletedProp = null, modDateProp = null;
             //get type of data
             Type objectType = typeof(T);
+
             var allPropertyList = objectType.GetProperties().ToList();
             List<(string, PropertyInfo)> propertyToHistoryList = new List<(string, PropertyInfo)>();
             //get only property with DisplayNameAttribute
@@ -51,6 +52,7 @@ namespace API.Services
                     allPropertyList.RemoveAt(i);
                 }
             }
+            logger.LogInformation($"Prop list: {JsonSerializer.Serialize(propertyToHistoryList.Select(x=>x.Item2.Name))}");
 
             List<HistoryDto> historyList = new List<HistoryDto>();
             foreach (var group in groupedData)

@@ -29,6 +29,8 @@ namespace API.DBAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryLink> CategoryLinks { get; set; }
         public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
+        public DbSet<CategoryHistory> CategoryHistories { get; set; }
+        public DbSet<CategoryAttributeHistory> CategoryAttributeHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -107,6 +109,12 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<CategoryLink>()
+                .HasOne(s => s.ParentCategory)
+                .WithMany(l => l.ParentCategoryLinks)
+                .HasForeignKey(s => s.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<CategoryAttribute>()
                 .HasOne(s => s.Category)
                 .WithMany(l => l.CategoryAttributes)
@@ -128,6 +136,18 @@ namespace API.DBAccess.Data
                 .HasOne(s => s.Category)
                 .WithMany(l => l.CategoryHistories)
                 .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CategoryAttributeHistory>()
+                .HasOne(s => s.CategoryAttribute)
+                .WithMany(l => l.CategoryAttributeHistories)
+                .HasForeignKey(s => s.CategoryAttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CategoryAttributeHistory>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.CategoryAttributeHistories)
+                .HasForeignKey(s => s.AttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //default values
@@ -162,6 +182,9 @@ namespace API.DBAccess.Data
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<CategoryHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<CategoryAttributeHistory>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }

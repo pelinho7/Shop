@@ -1,3 +1,4 @@
+import { Agreement } from "./agreement"
 import { CategoryAttribute } from "./categoryAttribute"
 
 export class Category {
@@ -5,6 +6,7 @@ export class Category {
     code:string=''
     label:string=''
     deleted:boolean=false
+    parentCategoryId :number
     categoryAttributes:CategoryAttribute[]=[]
     parentCategoriesAttributes:CategoryAttribute[]=[]
    

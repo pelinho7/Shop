@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.DBAccess.Entities
 {
@@ -17,5 +19,9 @@ namespace API.DBAccess.Entities
         public DateTime ModDate { get; set; }
         public Category Category { get; set; }
         public Attribute Attribute { get; set; }
+        public ICollection<CategoryAttributeHistory> CategoryAttributeHistories { get; set; }
+
+        [NotMapped]
+        public string Code { get{ return Attribute?.Code;}  }
     }
 }

@@ -1,10 +1,12 @@
+using System;
 using System.Threading.Tasks;
 using API.DBAccess.Interfaces;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.DBAccess.Data
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork,IDisposable
     {
         private readonly DataContext context;
         private readonly IMapper mapper;
@@ -25,6 +27,17 @@ namespace API.DBAccess.Data
         
         public IAttributeRepository AttributeRepository => new AttributeRepository(context, mapper,AttributeHistoryRepository);
         public IAttributeHistoryRepository AttributeHistoryRepository => new AttributeHistoryRepository(context, mapper);
+        
+        public ICategoryRepository CategoryRepository => new CategoryRepository(context, mapper,CategoryHistoryRepository);
+
+        public ICategoryHistoryRepository CategoryHistoryRepository => new CategoryHistoryRepository(context, mapper);
+
+        public ICategoryAttributeRepository CategoryAttributeRepository => new CategoryAttributeRepository(context, mapper,CategoryAttributeHistoryRepository);
+
+        public ICategoryAttributeHistoryRepository CategoryAttributeHistoryRepository => new CategoryAttributeHistoryRepository(context, mapper);
+
+        public ICategoryLinkRepository CategoryLinkRepository => new CategoryLinkRepository(context, mapper);
+
         public async Task<bool> Complete()
         {
             return await context.SaveChangesAsync() > 0;
@@ -33,6 +46,30 @@ namespace API.DBAccess.Data
         public bool HasChanges()
         {
             return context.ChangeTracker.HasChanges();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransaction()
+        {
+            return await context.Database.BeginTransactionAsync();
+        }
+
+        private bool _disposed;
+        protected void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

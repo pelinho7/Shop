@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.DBAccess.Interfaces
 {
@@ -13,7 +14,14 @@ namespace API.DBAccess.Interfaces
         IShippingAddressHistoryRepository ShippingAddressHistoryRepository{get;}
         IAttributeRepository AttributeRepository{get;}
         IAttributeHistoryRepository AttributeHistoryRepository{get;}
+        ICategoryRepository CategoryRepository{get;}
+        ICategoryHistoryRepository CategoryHistoryRepository{get;}
+        ICategoryAttributeRepository CategoryAttributeRepository{get;}
+        ICategoryAttributeHistoryRepository CategoryAttributeHistoryRepository{get;}
+        ICategoryLinkRepository CategoryLinkRepository{get;}
+        
         Task<bool> Complete();
+        Task<IDbContextTransaction> BeginTransaction();
         bool HasChanges();
     }
 }

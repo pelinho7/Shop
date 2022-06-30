@@ -41,6 +41,22 @@ namespace API.Helpers
             CreateMap<DBAccess.Entities.Attribute,AttributeHistory>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
             .ForMember(dest => dest.AttributeId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<CategoryAttributeDto,CategoryAttribute>();
+
+            CreateMap<CategoryDto,Category>();
+            CreateMap<Category,CategoryHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<CategoryAttribute,CategoryAttributeHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.CategoryAttributeId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<CategoryAttribute,CategoryAttributeDto>();
+            CreateMap<Category,CategoryDto>();
+            CreateMap<Category,CategoryTreeItemDto>();
+
+
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));
