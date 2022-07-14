@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ValidateEmailNotTaken } from 'src/app/validators/email-not-taken.validator';
@@ -16,9 +16,9 @@ import { FormHelpersService } from 'src/app/_services/form-helpers.service';
 })
 export class RegisterComponent implements OnInit {
   public registration:Registration;
-  registerForm:FormGroup;
+  registerForm:UntypedFormGroup;
   public loadData:boolean=false;
-  constructor(private fb:FormBuilder,public formHelpersService:FormHelpersService
+  constructor(private fb:UntypedFormBuilder,public formHelpersService:FormHelpersService
     ,private agreementService:AgreementService,private accountService:AccountService
     ,private router:Router,private toastr:ToastrService) { }
 
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
       this.registerForm.controls['email'].setAsyncValidators(ValidateEmailNotTaken.createValidator(this.accountService));
   
-      let control = <FormArray>this.registerForm.controls.agreements;
+      let control = <UntypedFormArray>this.registerForm.controls.agreements;
       this.registration.agreements.forEach(agreement=>{
         var group=this.fb.group(agreement);
         if(agreement.obligatory){

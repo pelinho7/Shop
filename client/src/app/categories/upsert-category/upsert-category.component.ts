@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryCodeNotTaken } from 'src/app/validators/category-code-not-taken.validator';
@@ -24,7 +24,7 @@ export class UpsertCategoryComponent implements OnInit {
   attributes:Attribute[];
   attributesSelectArray:Attribute[];
   category:Category;
-  categoryForm:FormGroup;
+  categoryForm:UntypedFormGroup;
   selectedType:number;
   filtrationModesArray = new Map<number, string>();
   filtrationModeVisibile:boolean=false;
@@ -39,7 +39,7 @@ export class UpsertCategoryComponent implements OnInit {
 
   public categoryAttributes: ReplaySubject<CategoryAttribute[]> = new ReplaySubject<CategoryAttribute[]>(1);
  
-  constructor(public bsModalRef: BsModalRef,private fb:FormBuilder
+  constructor(public bsModalRef: BsModalRef,private fb:UntypedFormBuilder
     ,private toastr:ToastrService,private attributeService:AttributeService
     ,private categoryService:CategoryService) {}
 

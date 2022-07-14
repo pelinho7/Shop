@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -13,10 +13,10 @@ import { ResetPasswordComponent } from '../reset-password/reset-password.compone
 })
 export class LogInComponent implements OnInit {
   bsModalRef?: BsModalRef;
-  logInForm:FormGroup;
+  logInForm:UntypedFormGroup;
 
   constructor(
-    private fb:FormBuilder,private modalService: BsModalService
+    private fb:UntypedFormBuilder,private modalService: BsModalService
     ,private accountService:AccountService
     ,private router:Router
     ,private toastr:ToastrService) { }

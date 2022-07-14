@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [],
@@ -41,6 +42,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatSelectModule,
     DragDropModule,
     NgxMatSelectSearchModule,
+    AngularEditorModule,
   ],
   exports:[
     BsDropdownModule,
@@ -61,6 +63,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatSelectModule,
     DragDropModule,
     NgxMatSelectSearchModule,
+    AngularEditorModule,
   ]
 })
 export class SharedModule { }

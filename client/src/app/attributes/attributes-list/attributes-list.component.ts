@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -21,11 +21,11 @@ export class AttributesListComponent implements OnInit {
 
   loaded=false;
   bsModalRef?: BsModalRef;
-  attributesFiltrationForm:FormGroup;
+  attributesFiltrationForm:UntypedFormGroup;
   pagination:Pagination;
   attributesFiltrationParams: AttributesFiltration;
 
-  constructor(public attributeService:AttributeService,private fb:FormBuilder
+  constructor(public attributeService:AttributeService,private fb:UntypedFormBuilder
     ,private activatedRoute: ActivatedRoute
     ,private modalService: BsModalService
     ,private toastr:ToastrService,private router:Router

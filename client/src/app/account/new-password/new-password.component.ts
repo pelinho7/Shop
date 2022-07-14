@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/_models/user';
@@ -12,10 +12,10 @@ import { FormHelpersService } from 'src/app/_services/form-helpers.service';
   styleUrls: ['./new-password.component.css']
 })
 export class NewPasswordComponent implements OnInit {
-  newPasswordForm:FormGroup;
+  newPasswordForm:UntypedFormGroup;
   loadData:boolean=false;
   constructor(private accountService:AccountService,private router:Router
-    , private toastr:ToastrService,private fb:FormBuilder
+    , private toastr:ToastrService,private fb:UntypedFormBuilder
     , private formHelpersService:FormHelpersService) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AttributeCodeNotTaken } from 'src/app/validators/attribute-code-not-taken.validator';
@@ -15,14 +15,14 @@ export class UpsertAttributeComponent implements OnInit {
 
   title?: string="New attribute";
   attribute:Attribute
-  attributeForm:FormGroup;
+  attributeForm:UntypedFormGroup;
   selectedType:number;
   filtrationModesArray = new Map<number, string>();
   filtrationModeVisibile:boolean=false;
   editMode:boolean=false;
   saved:boolean=false;
  
-  constructor(public bsModalRef: BsModalRef,private fb:FormBuilder
+  constructor(public bsModalRef: BsModalRef,private fb:UntypedFormBuilder
     ,public attributeService:AttributeService
     ,private toastr:ToastrService) {}
 

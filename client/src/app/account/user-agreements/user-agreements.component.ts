@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserAgreement } from 'src/app/_models/userAgreement';
 import { FormHelpersService } from 'src/app/_services/form-helpers.service';
@@ -14,11 +14,11 @@ import { UserAgreementsService } from 'src/app/_services/user-agreements.service
 })
 export class UserAgreementsComponent implements OnInit {
 
-  userAgreementsForm:FormGroup;
+  userAgreementsForm:UntypedFormGroup;
   public loadData:boolean=false;
 
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
-    ,private fb:FormBuilder,private userAgreementsService:UserAgreementsService
+    ,private fb:UntypedFormBuilder,private userAgreementsService:UserAgreementsService
     ,public formHelpersService:FormHelpersService
     ,private toastr:ToastrService,public mobileNavbarHelpersService:MobileNavbarHelpersService) { }
 
@@ -28,7 +28,7 @@ export class UserAgreementsComponent implements OnInit {
           agreements: this.fb.array([])
       })
 
-      let control = <FormArray>this.userAgreementsForm.controls.agreements;
+      let control = <UntypedFormArray>this.userAgreementsForm.controls.agreements;
       agreements.forEach(agreement=>{
         var group=this.fb.group(agreement);
         control.push(group)

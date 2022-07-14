@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/_services/account.service';
@@ -13,11 +13,11 @@ import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watc
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-  changePasswordForm:FormGroup;
+  changePasswordForm:UntypedFormGroup;
   public loadData:boolean=false;
   
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
-    ,private fb:FormBuilder,public formHelpersService:FormHelpersService
+    ,private fb:UntypedFormBuilder,public formHelpersService:FormHelpersService
     ,private accountService:AccountService,private router:Router
     ,private toastr:ToastrService,public mobileNavbarHelpersService:MobileNavbarHelpersService) { }
 

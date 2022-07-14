@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ValidateEmailNotTaken } from 'src/app/validators/email-not-taken.validator';
 import { ValidateLoginNotTaken } from 'src/app/validators/login-not-taken.validator';
@@ -16,11 +16,11 @@ import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watc
 })
 export class AccountDataComponent implements OnInit {
   //public registration:Registration;
-  accountDataForm:FormGroup;
+  accountDataForm:UntypedFormGroup;
   public loadData:boolean=false;
 
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
-    ,private fb:FormBuilder,public formHelpersService:FormHelpersService
+    ,private fb:UntypedFormBuilder,public formHelpersService:FormHelpersService
     ,private accountService:AccountService
     ,private toastr:ToastrService,public mobileNavbarHelpersService:MobileNavbarHelpersService) { }
 

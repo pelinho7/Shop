@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, FormGroup, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
   
 
@@ -9,7 +9,7 @@ import { Directive, Input } from '@angular/core';
   export class CrossNumericValidatorDirective implements Validator {
     @Input('appCrossNumericValidator') appCrossNumericValidator: string;
 
-    validate(control: FormControl): ValidationErrors | null {//AbstractControl
+    validate(control: UntypedFormControl): ValidationErrors | null {//AbstractControl
       
         const numericFieldsPair: NumericFieldsPair = JSON.parse(this.appCrossNumericValidator);
 

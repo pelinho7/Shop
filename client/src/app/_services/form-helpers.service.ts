@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormGroup, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +8,11 @@ export class FormHelpersService {
 
   constructor() { }
 
-  getControlsFromArray(form:FormGroup,groupName:string){
-    return (<FormArray>form.controls[groupName]).controls;
+  getControlsFromArray(form:UntypedFormGroup,groupName:string){
+    return (<UntypedFormArray>form.controls[groupName]).controls;
   }
 
-  getControlFromGroup(formGroup:FormGroup,controlName:string){
+  getControlFromGroup(formGroup:UntypedFormGroup,controlName:string){
     return (formGroup.controls[controlName]);
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ShippingAddressesService } from 'src/app/_services/shipping-addresses.service';
@@ -15,9 +15,9 @@ export class UpsertShippingAddresComponent implements OnInit {
 
   title?: string="New addres";
   shippingAddres:ShippingAddres
-  shippingAddresForm:FormGroup;
+  shippingAddresForm:UntypedFormGroup;
  
-  constructor(public bsModalRef: BsModalRef,private fb:FormBuilder
+  constructor(public bsModalRef: BsModalRef,private fb:UntypedFormBuilder
     ,private shippingAddressesService:ShippingAddressesService
     ,private toastr:ToastrService) {}
 
