@@ -12,6 +12,8 @@ import { EmailVerificationComponent } from './email-verification/email-verificat
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { HomeComponent } from './home/home.component';
+import { ProductManagmentComponent } from './products-managment/product-managment/product-managment.component';
+import { ProductsManagmentListComponent } from './products-managment/products-managment-list/products-managment-list.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
 import { AdminGuard } from './_guards/admin.guard';
@@ -42,6 +44,9 @@ const routes: Routes = [
         children:[
           {path:'attributes',component:AttributesListComponent},
           {path:'categories',component:CategoriesListComponent},
+          {path:'products-management',component:ProductsManagmentListComponent},
+          {path:'products-management/create',component:ProductManagmentComponent},
+          {path:'products-management/edit/:id',component:ProductManagmentComponent},
         ]
       },
 

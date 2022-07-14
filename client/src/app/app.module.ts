@@ -42,6 +42,9 @@ import { UpsertCategoryComponent } from './categories/upsert-category/upsert-cat
 import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 import { CategoryTreeItemComponent } from './categories/category-tree-item/category-tree-item.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ProductsManagmentListComponent } from './products-managment/products-managment-list/products-managment-list.component';
+import { ProductManagmentComponent } from './products-managment/product-managment/product-managment.component';
+import { ProductDescriptionParagraphComponent } from './products-managment/product-description-paragraph/product-description-paragraph.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +79,10 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     CategoriesListComponent,
     UpsertCategoryComponent,
     CategoryTreeItemComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ProductsManagmentListComponent,
+    ProductManagmentComponent,
+    ProductDescriptionParagraphComponent
   ],
   imports: [
     BrowserModule,

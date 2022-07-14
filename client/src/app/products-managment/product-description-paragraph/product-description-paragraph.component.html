@@ -1,0 +1,50 @@
+<div class="card m-1">
+  <div class="card-header">
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0" popover="Text-only"
+      triggers="mouseenter:mouseleave" (click)="textOnly()">
+      <span [ngClass]="paragraphType==ParagraphType.TextOnly ? 'text-warning' : ''">
+        <i class="fa fa-align-left" aria-hidden="true"></i>
+      </span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0" popover="Image-only"
+      triggers="mouseenter:mouseleave" (click)="imageOnly()">
+      <i class="fa fa-picture-o" [ngClass]="paragraphType==ParagraphType.ImageOnly ? 'text-warning' : ''"
+        aria-hidden="true"></i>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0" popover="Text-Image"
+      triggers="mouseenter:mouseleave" (click)="textImage()">
+      <span [ngClass]="paragraphType==ParagraphType.TextImage ? 'text-warning' : ''">
+        <i class="fa fa-align-left" aria-hidden="true"></i>
+        |
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+      </span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0" popover="Image-Text"
+      triggers="mouseenter:mouseleave" (click)="imageText()">
+      <span [ngClass]="paragraphType==ParagraphType.ImageText ? 'text-warning' : ''">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+        |
+        <i class="fa fa-align-left" aria-hidden="true"></i>
+      </span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0" popover="Image-Image"
+      triggers="mouseenter:mouseleave" (click)="imageImage()">
+      <span [ngClass]="paragraphType==ParagraphType.ImageImage ? 'text-warning' : ''">
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+        |
+        <i class="fa fa-picture-o" aria-hidden="true"></i>
+      </span>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0 float-right" popover="Remove"
+      triggers="mouseenter:mouseleave" (click)="remove()">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="btn btn-outline-secondary mr-1 border-0 float-right" popover="Up"
+      triggers="mouseenter:mouseleave">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div #paragraphBody class="card-body">
+    <!-- <angular-editor [placeholder]="'Enter text here...'"></angular-editor> -->
+  </div>
+</div>
