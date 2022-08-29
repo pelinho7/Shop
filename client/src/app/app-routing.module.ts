@@ -16,6 +16,7 @@ import { ProductManagmentComponent } from './products-managment/product-managmen
 import { ProductsManagmentListComponent } from './products-managment/products-managment-list/products-managment-list.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
+import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { AuthenticationGuard } from './_guards/authentication.guard';
 
@@ -47,6 +48,7 @@ const routes: Routes = [
           {path:'products-management',component:ProductsManagmentListComponent},
           {path:'products-management/create',component:ProductManagmentComponent},
           {path:'products-management/edit/:id',component:ProductManagmentComponent},
+          {path:'warehouses',component:WarehousesListComponent},
         ]
       },
 

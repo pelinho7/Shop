@@ -10,7 +10,7 @@ namespace API.DBAccess.Interfaces
     {
         void AddCategoryAttribute(CategoryAttribute categoryAttribute);
         void UpdateCategoryAttribute(CategoryAttribute categoryAttribute);
-        Task<List<CategoryAttribute>> GetCategoryAttributes(int categoryId);
+        Task<List<CategoryAttribute>> GetCategoryAttributes(int categoryId,bool atrFullData=false);
         Task<List<CategoryAttribute>> GetParentCategoriesAttributes(int categoryId);
     }
 }

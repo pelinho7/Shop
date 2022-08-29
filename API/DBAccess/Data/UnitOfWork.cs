@@ -38,6 +38,13 @@ namespace API.DBAccess.Data
 
         public ICategoryLinkRepository CategoryLinkRepository => new CategoryLinkRepository(context, mapper);
 
+        public IProductRepository ProductRepository => new ProductRepository(context, mapper);
+
+        public IPhotoRepository PhotoRepository => new PhotoRepository(context, mapper);
+
+        public IProductHistoryRepository ProductHistoryRepository => new ProductHistoryRepository(context, mapper);
+        public IPhotoHistoryRepository PhotoHistoryRepository => new PhotoHistoryRepository(context, mapper);
+
         public async Task<bool> Complete()
         {
             return await context.SaveChangesAsync() > 0;

@@ -271,3 +271,5 @@ C:\Users\pelin\OneDrive\Pulpit\Nowy folder\Shop\api\obj\Debug\net5.0\API.dll
 C:\Users\pelin\OneDrive\Pulpit\Nowy folder\Shop\api\obj\Debug\net5.0\ref\API.dll
 C:\Users\pelin\OneDrive\Pulpit\Nowy folder\Shop\api\obj\Debug\net5.0\API.pdb
 C:\Users\pelin\OneDrive\Pulpit\Nowy folder\Shop\api\obj\Debug\net5.0\API.genruntimeconfig.cache
+C:\Users\pelin\OneDrive\Pulpit\Shop\api\bin\Debug\net5.0\CloudinaryDotNet.dll
+C:\Users\pelin\OneDrive\Pulpit\Shop\api\bin\Debug\net5.0\Newtonsoft.Json.dll

@@ -19,6 +19,10 @@ namespace API.DBAccess.Interfaces
         ICategoryAttributeRepository CategoryAttributeRepository{get;}
         ICategoryAttributeHistoryRepository CategoryAttributeHistoryRepository{get;}
         ICategoryLinkRepository CategoryLinkRepository{get;}
+        IProductRepository ProductRepository{get;}
+        IPhotoRepository PhotoRepository{get;}
+        IProductHistoryRepository ProductHistoryRepository{get;}
+        IPhotoHistoryRepository PhotoHistoryRepository{get;}
         
         Task<bool> Complete();
         Task<IDbContextTransaction> BeginTransaction();

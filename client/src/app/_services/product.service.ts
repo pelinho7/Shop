@@ -9,6 +9,8 @@ import { GetProductsResult } from '../_models/getProductsResult';
 import { FilterAttribute } from '../_models/filterAttribute';
 import { ProductListData } from '../_models/productListData';
 import { Pagination } from '../_models/pagination';
+import { Photo } from '../_models/photo';
+import { ProductAttributesWrapper } from '../_models/productAttributesWrapper';
 
 
 @Injectable({
@@ -18,12 +20,26 @@ export class ProductService {
   baseUrl=environment.apiUrl;
   dynamicControls:DynamicControl[]=[];
   products:Product[]=[];
+  productManagmentPhotos:Photo[]=[];
+
   constructor(private http:HttpClient) { }
 
   getDynamicControls(){
     return this.dynamicControls;
   }
 
+  
+  uploadImages(images: File[]){
+    const formData = new FormData();
+    for  (var i =  0; i <  images.length; i++)  {  
+      formData.append("files",  images[i]);
+  } 
+    return this.http.post<Photo[]>(this.baseUrl+'products/upload-images?productId=1',formData).pipe(
+      map((photos:Photo[])=>{
+          return photos;
+        })
+    )
+  }
 
   getProducts(dynamicControls:DynamicControl[],initPath:string=''){
     // var response=this.memberCache.get(Object.values(userParams).join('-'))
@@ -85,5 +101,45 @@ export class ProductService {
     )
 
     //return this.http.get<Product[]>(this.baseUrl+'products',{ params });
+  }
+
+  createProduct(){
+    return this.http.post<Product>(this.baseUrl+'products/create-product',null).pipe(
+      map((product:Product)=>{
+          return product;
+        })
+    )
+  }
+
+  getProduct(id:number){
+    return this.http.get<Product>(this.baseUrl+'products/get-product/'+id).pipe(
+      map((product:Product)=>{
+          return product;
+        })
+    )
+  }
+
+  deletePhoto(id:number){
+    return this.http.delete(this.baseUrl+'products/delete-image/'+id).pipe(
+      map(()=>{
+       return;
+      })
+    )
+  }
+
+  checkCodeNotTaken(code:string){
+    return this.http.get<boolean>(this.baseUrl+'products/check-code-not-taken?code='+code).pipe(
+      map((result:boolean)=>{
+        return result;
+      })
+    )
+  }
+
+  getProductAttributes(categoryId:number){
+    return this.http.get<ProductAttributesWrapper>(this.baseUrl+'products/get-product-attributes/'+categoryId).pipe(
+      map((productAttributesWrapper:ProductAttributesWrapper)=>{
+          return productAttributesWrapper;
+        })
+    )
   }
 }

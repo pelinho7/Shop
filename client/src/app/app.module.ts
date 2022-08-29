@@ -45,6 +45,14 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { ProductsManagmentListComponent } from './products-managment/products-managment-list/products-managment-list.component';
 import { ProductManagmentComponent } from './products-managment/product-managment/product-managment.component';
 import { ProductDescriptionParagraphComponent } from './products-managment/product-description-paragraph/product-description-paragraph.component';
+import { TextOnlyParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/text-only-paragraph-type/text-only-paragraph-type.component';
+import { ImageOnlyParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/image-only-paragraph-type/image-only-paragraph-type.component';
+import { ProductImagesPickerComponent } from './products-managment/product-description-paragraph/product-images-picker/product-images-picker.component';
+import { TextImageParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/text-image-paragraph-type/text-image-paragraph-type.component';
+import { ImageTextParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/image-text-paragraph-type/image-text-paragraph-type.component';
+import { ImageImageParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/image-image-paragraph-type/image-image-paragraph-type.component';
+import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
+import { UpsertWarehouseComponent } from './warehouses/upsert-warehouse/upsert-warehouse.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +90,15 @@ import { ProductDescriptionParagraphComponent } from './products-managment/produ
     ConfirmDialogComponent,
     ProductsManagmentListComponent,
     ProductManagmentComponent,
-    ProductDescriptionParagraphComponent
+    ProductDescriptionParagraphComponent,
+    TextOnlyParagraphTypeComponent,
+    ImageOnlyParagraphTypeComponent,
+    ProductImagesPickerComponent,
+    TextImageParagraphTypeComponent,
+    ImageTextParagraphTypeComponent,
+    ImageImageParagraphTypeComponent,
+    WarehousesListComponent,
+    UpsertWarehouseComponent
   ],
   imports: [
     BrowserModule,

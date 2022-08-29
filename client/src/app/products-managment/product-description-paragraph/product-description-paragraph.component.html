@@ -44,7 +44,11 @@
       <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
   </div>
-  <angular-editor [placeholder]="'Enter text here...'"></angular-editor>
   <div #paragraphBody class="card-body">
+    <app-text-only-paragraph-type [hidden]="paragraphType!=ParagraphType.TextOnly"></app-text-only-paragraph-type>
+    <app-image-only-paragraph-type [hidden]="paragraphType!=ParagraphType.ImageOnly"></app-image-only-paragraph-type>
+    <app-text-image-paragraph-type [hidden]="paragraphType!=ParagraphType.TextImage"></app-text-image-paragraph-type>
+    <app-image-text-paragraph-type [hidden]="paragraphType!=ParagraphType.ImageText"></app-image-text-paragraph-type>
+    <app-image-image-paragraph-type [hidden]="paragraphType!=ParagraphType.ImageImage"></app-image-image-paragraph-type>
   </div>
 </div>

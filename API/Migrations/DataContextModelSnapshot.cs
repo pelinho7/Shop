@@ -28,7 +28,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(883));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(3040));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -163,7 +163,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 647, DateTimeKind.Utc).AddTicks(6662));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 43, DateTimeKind.Utc).AddTicks(9938));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -221,7 +221,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(4115));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(6125));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -262,7 +262,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(4680));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(6614));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -296,7 +296,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(5196));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(7132));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -329,7 +329,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(5745));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(7724));
 
                     b.HasKey("Id");
 
@@ -365,7 +365,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(6965));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(8754));
 
                     b.HasKey("Id");
 
@@ -401,7 +401,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(6393));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(8287));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -432,6 +432,139 @@ namespace API.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("CategoryLinks");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Lp")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProductHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductHistoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.PhotoHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Lp")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PhotoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("PhotoHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Temporary")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(60)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -475,7 +608,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(2740));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(4963));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -536,7 +669,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(3425));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(5470));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -576,7 +709,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(1579));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(3749));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -605,7 +738,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 6, 28, 16, 37, 57, 649, DateTimeKind.Utc).AddTicks(2186));
+                        .HasDefaultValue(new DateTime(2022, 8, 3, 17, 21, 39, 45, DateTimeKind.Utc).AddTicks(4335));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -821,6 +954,51 @@ namespace API.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.Photo", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.ProductHistory", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("ProductHistoryId");
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("Photos")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.PhotoHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Photo", "Photo")
+                        .WithMany("PhotoHistories")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("PhotoHistories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("ProductHistories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.AppUser", "AppUser")
@@ -975,6 +1153,25 @@ namespace API.Migrations
             modelBuilder.Entity("API.DBAccess.Entities.CategoryAttribute", b =>
                 {
                     b.Navigation("CategoryAttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Photo", b =>
+                {
+                    b.Navigation("PhotoHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Product", b =>
+                {
+                    b.Navigation("PhotoHistories");
+
+                    b.Navigation("Photos");
+
+                    b.Navigation("ProductHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductHistory", b =>
+                {
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>

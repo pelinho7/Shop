@@ -9,18 +9,55 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using API.Helpers;
 using API.Extensions;
+using Microsoft.AspNetCore.Http;
+using API.Interfaces;
+using API.DBAccess.Interfaces;
+using AutoMapper;
+using API.DBAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
         private readonly ILogger<ProductsController> logger;
+        private readonly IPhotoService photoService;
 
-        public ProductsController(ILogger<ProductsController> logger)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper
+            ,ILogger<ProductsController> logger,IPhotoService photoService)
         {
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
             this.logger = logger;
+            this.photoService = photoService;
         }
 
+        [HttpPost("create-product")]
+        public async Task<ActionResult<ProductDto>> CreateProduct(){
+            Product newProduct=new Product(){Temporary=true,CreateDate=DateTime.UtcNow,ModDate=DateTime.UtcNow};
+            unitOfWork.ProductRepository.AddProduct(newProduct);
+            var savingResult = await unitOfWork.Complete();
+
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+
+            var productDto=mapper.Map<ProductDto>(newProduct);
+            return Ok(productDto);
+        }
+
+        [HttpGet("get-product/{id}")]
+        public async Task<ActionResult<ProductDto>> CreateProduct(int id){
+            if(id<=0)
+                return BadRequest();
+
+            var product = await unitOfWork.ProductRepository.GetProductById(id);
+
+            if (product==null) return NotFound();
+
+            var productDto=mapper.Map<ProductDto>(product);
+            return Ok(productDto);
+        }
 
         [HttpGet("get-products/{category}")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts3(string category,[ModelBinder(BinderType = typeof(DynamicModelBinder))]dynamic queries)
@@ -76,10 +113,99 @@ namespace API.Controllers
             return Ok(p);
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<AppUser>> GetUser(int id)
-        // {
-        //     return await _context.Users.FindAsync(id);
-        // }
+        [HttpPost("upload-images")]
+        public async Task<ActionResult<IEnumerable<PhotoDto>>> UploadImages([FromForm]IEnumerable<IFormFile> files
+        ,/*[FromQuery]*/int productId,bool temporary)
+        {
+            logger.LogError(productId.ToString());
+            List<PhotoDto> addedPhotos=new List<PhotoDto>();
+            var maxLp = await unitOfWork.PhotoRepository.GetMaxPhotoLp(productId);
+            maxLp++;
+            DateTime date=DateTime.UtcNow;
+            foreach(var file in files){
+                try{
+                    //logger.LogError("cccccccccccccccc11111111 "+JsonSerializer.Serialize(file));
+                    var result = await photoService.AddPhotoAsync(file);
+                    Photo photo=new Photo();
+                    photo.ProductId=productId;
+                    photo.PublicId=result.PublicId;
+                    photo.Url=result.Url.AbsoluteUri;
+                    photo.Lp=maxLp;
+                    photo.ModDate=date;
+                    unitOfWork.PhotoRepository.AddPhoto(photo);
+                    var savingResult = await unitOfWork.Complete();
+                    if (savingResult) maxLp++;
+
+
+    //addedPhotos.Add(new PhotoDto(){Id=i,Lp=i,Url=result.Url.AbsoluteUri});
+                    addedPhotos.Add(mapper.Map<PhotoDto>(photo));
+                }
+                catch(Exception ex){
+
+                }
+
+
+            //logger.LogError("cccccccccccccccc11111111 "+JsonSerializer.Serialize(result));
+
+            }
+            return Ok(addedPhotos);
+        }
+
+        [HttpDelete("delete-image/{id}")]
+        public async Task<ActionResult> DeleteImage(int id)
+        {
+            if(id<=0) return BadRequest();
+            
+            var photoToDeleted = await unitOfWork.PhotoRepository.GetPhoto(id);
+            if(photoToDeleted == null) return NotFound();
+
+            unitOfWork.PhotoRepository.DeletePhoto(id);
+            var savingResult = await unitOfWork.Complete();
+
+            if(!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
+
+            var result = await photoService.DeletePhotoAsync(photoToDeleted.PublicId);
+            return Ok();
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpGet("check-code-not-taken")]
+        public async Task<ActionResult<bool>> CheckCodeNotTaken(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return true;
+
+            var product = await unitOfWork.ProductRepository.GetProductByCode(code);
+            if (product != null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [HttpGet("get-product-attributes/{categoryId}")]
+        public async Task<ActionResult<ProductAttributesWrapperDto>> GetProductAttributes(int categoryId){
+            if(categoryId<=0)
+                return BadRequest();
+
+            var attributes = await unitOfWork.CategoryAttributeRepository.GetCategoryAttributes(categoryId,true);
+            var parentCategoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetParentCategoriesAttributes(categoryId);
+            attributes.AddRange(parentCategoriesAttributes);
+            attributes=attributes.OrderBy(x=>x.Lp).ToList();
+            var textAttributes= attributes.Where(x=>x.Attribute.Type == 0).ToList();
+            var numericAttributes= attributes.Where(x=>x.Attribute.Type == 1).ToList();
+
+            var textAttributesDto = textAttributes.Select(a=>mapper.Map<ProductTextAttributeDto>(a)).ToList();
+            var numericAttributesDto = numericAttributes.Select(a=>mapper.Map<ProductNumberAttributeDto>(a)).ToList();
+            ProductAttributesWrapperDto productAttributesWrapperDto=new ProductAttributesWrapperDto();
+            productAttributesWrapperDto.ProductTextAttributes=textAttributesDto;
+            productAttributesWrapperDto.ProductNumberAttributes=numericAttributesDto;
+            // var productDto=mapper.Map<ProductTextAttributeDto>(a[0]);
+            //logger.LogError(JsonSerializer.Serialize(numericAttributes[2].));
+            // if (product==null) return NotFound();
+
+            // var productDto=mapper.Map<ProductDto>(product);
+            return Ok(productAttributesWrapperDto);
+        }
     }
 }

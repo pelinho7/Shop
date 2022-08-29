@@ -1,0 +1,6 @@
+<div class="text-only" style="min-height: 50px;">
+    <angular-editor *ngIf="editMode" [placeholder]="" [(ngModel)]="html"  [config]="editorConfig"></angular-editor>
+    <div *ngIf="!editMode" [innerHTML]="html">
+        {{html}}
+    </div>
+</div>

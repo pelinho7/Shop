@@ -1,0 +1,22 @@
+.main-section-title{
+    font-size: 16px;
+}
+
+.miniature{
+    height: 70px;
+}
+
+
+.photos-panel{
+  min-height: 100px;
+}
+
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+ }
+
+ .img-wrapper:hover {
+    cursor:pointer;
+  }

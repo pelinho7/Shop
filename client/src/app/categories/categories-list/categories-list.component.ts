@@ -10,6 +10,7 @@ import { ConfirmService } from 'src/app/_services/confirm.service';
 import { MobileNavbarHelpersService } from 'src/app/_services/mobile-navbar-helpers.service';
 import { UpsertCategoryComponent } from '../upsert-category/upsert-category.component';
 import { History as DataHistory} from '../../_models/history';
+import { BusyService } from 'src/app/_services/busy.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -26,7 +27,8 @@ export class CategoriesListComponent implements OnInit {
     ,public categoryService:CategoryService
     ,private attributeService:AttributeService
     ,public mobileNavbarHelpersService:MobileNavbarHelpersService
-    ,private confirmService:ConfirmService) { }
+    ,private confirmService:ConfirmService
+    ,private busyService:BusyService) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -89,7 +91,9 @@ export class CategoriesListComponent implements OnInit {
   }
 
   getCategories(){
+    this.busyService.busy('main-spinner');
     this.categoryService.getCategories().subscribe((category:any)=>{
+      this.busyService.idle('main-spinner');
     })
   }
 

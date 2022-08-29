@@ -23,5 +23,7 @@ namespace API.DBAccess.Entities
 
         [NotMapped]
         public string Code { get{ return Attribute?.Code;}  }
+        [NotMapped]
+        public string Label { get{ return Attribute?.Label;}  }
     }
 }

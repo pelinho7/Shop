@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,12 @@ export class NumberInputComponent implements ControlValueAccessor {
   @Input() type = 'number';
   @Input() max:number = null;
   @Input() min:number = null;
+  @Input() decimalPlaces:number = 0;
+  @ViewChild('numberInput') input:ElementRef;
   
   constructor(@Self() public ngControl: NgControl) { 
     this.ngControl.valueAccessor=this;
+    // this.input.nativeElement.value=parseFloat(this.input.nativeElement.value).toFixed(this.decimalPlaces)
   }
 
   writeValue(obj: any): void {
@@ -23,6 +26,15 @@ export class NumberInputComponent implements ControlValueAccessor {
   registerOnTouched(fn: any): void {
   }
 
+  ngAfterViewInit(): void {
+      this.input.nativeElement.value=parseFloat(this.input.nativeElement.value).toFixed(this.decimalPlaces)
+  }
 
+  setDecimalPlaces($event:any) {
+    $event.target.value = parseFloat($event.target.value).toFixed(this.decimalPlaces);
+  }
 
+  getStep(){
+      return 1/(Math.pow(10,this.decimalPlaces));
+  }
 }

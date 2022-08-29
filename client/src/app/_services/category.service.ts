@@ -91,6 +91,20 @@ export class CategoryService {
     }
   }
 
+  categoryTree2Map(categories:CategoryTreeItem[],categoryMap : Map<number, string>){
+    categories.forEach(categoryItem => {
+      var tab:string=""
+      for (let i = 0; i < categoryItem.treeLevel; i++) {
+        tab+="\xA0\xA0";
+      }
+      categoryMap.set(categoryItem.id,tab+categoryItem.code);
+      if(categoryItem.subCategories!=null){
+        this.categoryTree2Map(categoryItem.subCategories,categoryMap)
+      }
+    });
+    return categoryMap;
+  }
+
   expandControl(parentId:number){
     let categoryTree:CategoryTreeItem[];
     this.categoriesTree$.pipe(take(1)).subscribe(x=>categoryTree=x);
@@ -153,7 +167,6 @@ export class CategoryService {
   deleteCategoryInTree(id:number,categoryTree:CategoryTreeItem[]){
     var category = categoryTree.find(x=>x.id == id);
     if(category){
-      console.log('12321')
       categoryTree.splice(categoryTree.indexOf(category), 1);
     }
     else{

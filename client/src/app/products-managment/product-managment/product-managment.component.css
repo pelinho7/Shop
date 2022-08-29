@@ -1,0 +1,46 @@
+.main-section-title{
+    font-size: 16px;
+}
+
+.miniature{
+    height: 70px;
+}
+
+.image-upload img {
+    cursor: pointer;
+  }
+
+.image-upload>input {
+  display: none;
+}
+
+.photos-drag-over{
+  background-color: #e6e6e6;
+}
+
+.photos-panel{
+  min-height: 100px;
+}
+
+
+.img-overlay .btn {
+  display: none;
+}
+
+.img-wrapper:hover .btn {
+  display:inline;
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+ }
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align:right;
+}

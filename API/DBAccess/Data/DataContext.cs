@@ -31,6 +31,10 @@ namespace API.DBAccess.Data
         public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
         public DbSet<CategoryHistory> CategoryHistories { get; set; }
         public DbSet<CategoryAttributeHistory> CategoryAttributeHistories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<ProductHistory> ProductHistories { get; set; }
+        public DbSet<PhotoHistory> PhotoHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -149,6 +153,36 @@ namespace API.DBAccess.Data
                 .WithMany(l => l.CategoryAttributeHistories)
                 .HasForeignKey(s => s.AttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+
+
+
+            builder.Entity<Photo>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.Photos)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductHistory>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductHistories)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PhotoHistory>()
+                .HasOne(s => s.Photo)
+                .WithMany(l => l.PhotoHistories)
+                .HasForeignKey(s => s.PhotoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PhotoHistory>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.PhotoHistories)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
 
             //default values
             builder.Entity<AppUserHistory>()

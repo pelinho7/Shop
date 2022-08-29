@@ -56,6 +56,12 @@ namespace API.Helpers
             CreateMap<Category,CategoryDto>();
             CreateMap<Category,CategoryTreeItemDto>();
 
+            CreateMap<Product,ProductDto>();
+            CreateMap<Photo,PhotoDto>();
+
+            CreateMap<CategoryAttribute,ProductTextAttributeDto>();
+            CreateMap<CategoryAttribute,ProductNumberAttributeDto>()
+            .ForMember(dest => dest.DecimalPlaces, opt => opt.MapFrom(src => src.Attribute!=null?src.Attribute.DecimalPlaces:0));
 
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))

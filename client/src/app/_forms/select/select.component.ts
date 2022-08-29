@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,8 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() label:string;
   @Input() keyValueMap:Map<number,string>;
   @Input() hideNullValue:boolean=false;
+  @Output() valueChangeEvent: EventEmitter<number> = new EventEmitter();
+
   
   constructor(@Self() public ngControl: NgControl) { 
     this.ngControl.valueAccessor=this;
@@ -22,4 +24,11 @@ export class SelectComponent implements ControlValueAccessor {
   registerOnTouched(fn: any): void {
   }
 
+  change(value:number){
+    this.valueChangeEvent.emit(value);
+  }
+
+  asIsOrder(a:any, b:any) {
+    return 1;
+  }
 }

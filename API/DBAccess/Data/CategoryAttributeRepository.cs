@@ -35,9 +35,14 @@ namespace API.DBAccess.Data
             ca.ModDate=categoryAttribute.ModDate;
         }
 
-        public async Task<List<CategoryAttribute>> GetCategoryAttributes(int categoryId)
+        public async Task<List<CategoryAttribute>> GetCategoryAttributes(int categoryId,bool atrFullData=false)
         {
-            return await context.CategoryAttributes.Where(x=>!x.Deleted && x.CategoryId==categoryId).ToListAsync();
+            var query=context.CategoryAttributes.AsQueryable();
+            if(atrFullData){
+                query = query.Include(x=>x.Attribute).AsQueryable();
+            }
+            return await query
+            .Where(x=>!x.Deleted && x.CategoryId==categoryId).ToListAsync();
         }
 
         public async Task<List<CategoryAttribute>> GetParentCategoriesAttributes(int categoryId)
