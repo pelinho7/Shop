@@ -35,6 +35,8 @@ namespace API.DBAccess.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<ProductHistory> ProductHistories { get; set; }
         public DbSet<PhotoHistory> PhotoHistories { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -155,9 +157,6 @@ namespace API.DBAccess.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-
-
-
             builder.Entity<Photo>()
                 .HasOne(s => s.Product)
                 .WithMany(l => l.Photos)
@@ -219,6 +218,9 @@ namespace API.DBAccess.Data
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<CategoryAttributeHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Warehouse>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }

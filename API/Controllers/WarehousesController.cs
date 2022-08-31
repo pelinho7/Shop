@@ -46,11 +46,10 @@ namespace API.Controllers
             if(paramsDto.ItemsPerPage.HasValue){
                 pagination.ItemsPerPage=paramsDto.ItemsPerPage.Value;
             }
-            // var attributes = await unitOfWork.AttributeRepository.GetAttributes(paramsDto.Code,paramsDto.Type,pagination);
-            // //Response.AddHeader(new Pagination(){Page=paramsDto.Page.HasValue?paramsDto.Page.Value:2},"Pagination");
-            // Response.AddHeader(new Pagination(){Page=attributes.CurrentPage,TotalPages=attributes.TotalPages},"Pagination");
+            var warehouses = await unitOfWork.WarehouseRepository.GetWarehouses(paramsDto.Code,pagination);
+            Response.AddHeader(new Pagination(){Page=warehouses.CurrentPage,TotalPages=warehouses.TotalPages},"Pagination");
 
-            return Ok(/*attributes*/);
+            return Ok(warehouses);
         }
 
         // [Authorize(Roles ="Admin")]
@@ -61,65 +60,59 @@ namespace API.Controllers
         //     return Ok(attributes);
         // }
 
-        // [HttpPost("upsert-attribute")]
-        // [Authorize(Roles ="Admin")]
-        // public async Task<ActionResult<AttributeDto>> UpsertAttribute(AttributeDto attributeDto)
-        // {
-        //     if(attributeDto==null)
-        //         return BadRequest();
+        [HttpPost("upsert-warehouse")]
+        [Authorize(Roles ="Admin")]
+        public async Task<ActionResult<WarehouseDto>> UpsertWarehouse(WarehouseDto warehouseDto)
+        {
+            if(warehouseDto==null)
+                return BadRequest();
 
-        //     var userId=User.GetUserId();
-        //     var attribute = mapper.Map<DBAccess.Entities.Attribute>(attributeDto);
-        //     bool savingResult;
-        //     if(attribute.Id == 0){
-        //         unitOfWork.AttributeRepository.AddAttribute(attribute);
-        //         savingResult = await unitOfWork.Complete();
-        //         if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+            var userId=User.GetUserId();
+            var warehouse = mapper.Map<DBAccess.Entities.Warehouse>(warehouseDto);
+            bool savingResult;
+            if(warehouse.Id == 0){
+                unitOfWork.WarehouseRepository.AddWarehouse(warehouse);
+            }
+            else{
+                unitOfWork.WarehouseRepository.UpdateWarehouse(warehouse);
+            }
+            savingResult = await unitOfWork.Complete();
 
-        //         unitOfWork.AttributeHistoryRepository.AddAttributeHistory(attribute);
-        //     }
-        //     else{
-        //         unitOfWork.AttributeRepository.UpdateAttribute(attribute);
-        //     }
-        //     savingResult = await unitOfWork.Complete();
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
 
-        //     if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+            return Ok(mapper.Map<WarehouseDto>(warehouse));
+        }
 
-        //     return Ok(mapper.Map<AttributeDto>(attribute));
-        // }
+        [HttpDelete("delete-warehouse/{warehouseId:int}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteWarehouse(int warehouseId)
+        {
+            if(warehouseId<=0)
+                return BadRequest();
 
-        // [HttpDelete("delete-attribute/{attributeId:int}")]
-        // [Authorize]
-        // public async Task<ActionResult> DeleteAttribute(int attributeId)
-        // {
-        //     if(attributeId<=0)
-        //         return BadRequest();
+            var userId=User.GetUserId();
 
-        //     var userId=User.GetUserId();
-        //     // var attribute = await unitOfWork.AttributeRepository.GetAttributeById(attributeId);
-        //     // if(attribute == null)return NotFound("Attribute not found");
+            unitOfWork.WarehouseRepository.DeleteWarehouse(warehouseId);
+            var savingResult = await unitOfWork.Complete();
 
-        //     unitOfWork.AttributeRepository.DeleteAttribute(attributeId);
-        //     var savingResult = await unitOfWork.Complete();
+            if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
 
-        //     if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Deleting incompleted");
+            return Ok();
+        }
 
-        //     return Ok();
-        // }
+        [Authorize(Roles ="Admin")]
+        [HttpGet("check-code-not-taken")]
+        public async Task<ActionResult<bool>> CheckCodeNotTaken(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return true;
 
-        // [Authorize(Roles ="Admin")]
-        // [HttpGet("check-code-not-taken")]
-        // public async Task<ActionResult<bool>> CheckCodeNotTaken(string code)
-        // {
-        //     if (string.IsNullOrEmpty(code)) return true;
+            var warehouse = await unitOfWork.WarehouseRepository.GetWarehouseByCode(code);
+            if (warehouse != null)
+            {
+                return false;
+            }
 
-        //     var attribute = await unitOfWork.AttributeRepository.GetAttributeByCode(code);
-        //     if (attribute != null)
-        //     {
-        //         return false;
-        //     }
-
-        //     return true;
-        // }
+            return true;
+        }
     }
 }

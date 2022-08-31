@@ -63,6 +63,8 @@ namespace API.Helpers
             CreateMap<CategoryAttribute,ProductNumberAttributeDto>()
             .ForMember(dest => dest.DecimalPlaces, opt => opt.MapFrom(src => src.Attribute!=null?src.Attribute.DecimalPlaces:0));
 
+            CreateMap<Warehouse,WarehouseDto>();
+            CreateMap<WarehouseDto,Warehouse>();
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

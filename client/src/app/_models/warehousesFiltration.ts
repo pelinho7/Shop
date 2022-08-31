@@ -2,7 +2,6 @@ import { Pagination } from "./pagination";
 
 export class WarehousesFiltration extends  Pagination{
     code:string='';
-    type:number=null;
 
     constructor(){
         super();

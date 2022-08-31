@@ -1,18 +1,18 @@
 <div class="container-fluid" *ngIf="loaded">
-    <form class="border mt-2 p-2 rounded"  id="attributesFiltrationForm" [formGroup]="attributesFiltrationForm">
+    <form class="border mt-2 p-2 rounded"  id="warehousesFiltrationForm" [formGroup]="warehousesFiltrationForm">
         <div class="form-row">
             <div class="form-group col-12 col-md-4 mb-0">
                 <label class="">Code:</label>
-                <app-text-input class="mb-0" maxlength="30" [formControl]='attributesFiltrationForm.controls["code"]' [label]='"Code"'></app-text-input>
+                <app-text-input class="mb-0" maxlength="30" [formControl]='warehousesFiltrationForm.controls["code"]' [label]='"Code"'></app-text-input>
               </div>
-            <div class="form-group col-4 col-md-2 mb-0">
+            <div class="form-group col-6 col-md-2 mb-0">
                 <label class="">Items per page:</label>
-                <app-select [formControl]='attributesFiltrationForm.controls["itemsPerPage"]' [keyValueMap]='attributeService.itemsPerPage' [label]='"Type"'></app-select>
+                <app-select [formControl]='warehousesFiltrationForm.controls["itemsPerPage"]' [keyValueMap]='warehouseService.itemsPerPage' [label]='"Items per page"'></app-select>
             </div>
-            <div class="form-group mt-auto col-4 col-md-2">
-                <button type="submit" form="attributesFiltrationForm" class="btn btn-primary w-100" (click)="filter()">Filter</button>
+            <div class="form-group mt-auto col-6 col-md-3">
+                <button type="submit" form="warehousesFiltrationForm" class="btn btn-primary w-100" (click)="filter()">Filter</button>
             </div>
-            <div class="form-group mt-auto col-12 col-md-2">
+            <div class="form-group mt-auto col-12 col-md-3">
                 <button type="button" class="btn btn-success w-100" (click)="addNewWarehouse()">Add new</button>
             </div>
         </div>
@@ -28,17 +28,17 @@
             </tr>
           </thead>
         <tbody>
-            <tr class="d-flex" *ngFor="let attribute of attributeService.attributesPage">
-                <td class="col-sm-3">{{attribute.code}}</td>
-                <td class="col-sm-6">{{attribute.label}}</td>
+            <tr class="d-flex" *ngFor="let warehouse of warehouseService.warehousesPage">
+                <td class="col-sm-3">{{warehouse.code}}</td>
+                <td class="col-sm-6">{{warehouse.label}}</td>
                 <td class="col-sm-3 d-flex justify-content-start">
                     <button class="btn btn-primary d-inline-block background-btn mr-1"
-                    popover="Edit" triggers="mouseenter:mouseleave" (click)="edit(attribute.id)">
+                    popover="Edit" triggers="mouseenter:mouseleave" (click)="edit(warehouse.id)">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
                       </button>
                       <button class="btn btn-danger d-inline-block background-btn mr-1"
                       popover="Delete"
-                      triggers="mouseenter:mouseleave" (click)="onDelete(attribute.id)">
+                      triggers="mouseenter:mouseleave" (click)="onDelete(warehouse.id)">
                         <i class="fa fa-trash" aria-hidden="true"></i>       
                       </button>
                 </td>

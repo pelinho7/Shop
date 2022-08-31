@@ -1,1 +1,35 @@
-<p>upsert-warehouse works!</p>
+<div class="card">
+    <div class="card-header">
+        <div class="modal-header border-0 p-0">
+          <p class="h3 m-0">{{title}}</p>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+      <ngx-spinner name="warehouse-spinner">
+        <h3>Loading...</h3>
+      </ngx-spinner>
+      <form id="warehouseForm" [formGroup]="warehouseForm">
+        <input type="number" class="d-none" [formControl]='warehouseForm.controls["id"]'/>
+        <input type="checkbox" class="d-none" [formControl]='warehouseForm.controls["deleted"]'/>
+        <div class="form-row">
+            <div class="col-12">
+                <app-text-input [formControl]='warehouseForm.controls["code"]' [label]='"Code"'></app-text-input>
+            </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+              <app-text-input [formControl]='warehouseForm.controls["label"]' [label]='"Label"'></app-text-input>
+          </div>
+      </div>
+      
+
+      </form>
+      <div class="modal-footer">
+        <button type="button" form="warehouseForm" [disabled]="!warehouseForm.valid"
+         class="btn btn-primary" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>

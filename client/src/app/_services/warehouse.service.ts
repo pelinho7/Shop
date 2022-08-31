@@ -14,10 +14,18 @@ export class WarehouseService {
   requestParameters:string='';
   allWarehouses:Warehouse[]=null;
   warehousesPage:Warehouse[];
+
+  public itemsPerPage = new Map([
+    [10, "10"],
+    [20, "20"],
+    [50, "50"],
+    [100, "100"],
+  ]);
+
     constructor(private http:HttpClient) { 
     }
 
-  getAttributes(attributesFiltration:WarehousesFiltration){
+  getWarehouses(attributesFiltration:WarehousesFiltration){
     this.requestParameters='';
     let parametersArray: string[] = [];
     if(attributesFiltration.code!=null && attributesFiltration.code.length>0){
@@ -45,5 +53,31 @@ export class WarehouseService {
         }
         return pagination;
       }));
+  }
+
+  upsertWarehouse(model:Warehouse){
+    this.allWarehouses=null;
+    return this.http.post<Warehouse>(this.baseUrl+'warehouses/upsert-warehouse',model).pipe(
+      map((warehouse:Warehouse)=>{
+          return warehouse;
+        })
+    )
+  }
+
+  checkCodeNotTaken(code:string){
+    return this.http.get<boolean>(this.baseUrl+'warehouses/check-code-not-taken?code='+code).pipe(
+      map((result:boolean)=>{
+        return result;
+      })
+    )
+  }
+
+  deleteWarehouse(id:number){
+    this.allWarehouses=null;
+    return this.http.delete(this.baseUrl+'warehouses/delete-warehouse/'+id).pipe(
+      map(()=>{
+       return;
+      })
+    )
   }
 }

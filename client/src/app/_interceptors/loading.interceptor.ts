@@ -25,6 +25,9 @@ export class LoadingInterceptor implements HttpInterceptor {
     this.routeSpinnerNameMap.set("products/upload-images","product-managment-images-spinner");
     this.routeSpinnerNameMap.set("products/check-code-not-taken","");
     this.routeSpinnerNameMap.set("categories","");
+    this.routeSpinnerNameMap.set("warehouses/check-code-not-taken","");
+    this.routeSpinnerNameMap.set("warehouses/upsert-warehouse","warehouse-spinner");
+
     //this.routeSpinnerNameMap.set("attributes/get-all-attributes","category-spinner");
   }
 
