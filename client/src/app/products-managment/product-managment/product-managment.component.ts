@@ -28,6 +28,7 @@ export class ProductManagmentComponent implements OnInit {
 
   categoryMap:Map<number, string>;
   showAttributesSection:boolean=false;
+  stocksLevelsLoaded:boolean=false;
   productForm:FormGroup;
   dropzoneDisableClick:boolean=false;
   editMode:boolean=false;
@@ -41,7 +42,9 @@ export class ProductManagmentComponent implements OnInit {
     ,private fb:FormBuilder
     ,private toastr:ToastrService
     ,public formHelpersService:FormHelpersService
-    ,private categoryService:CategoryService) {}
+    ,private categoryService:CategoryService) {
+      this.productForm=this.fb.group({})
+    }
 
     d:string=`<div>
     <div class="paragraph text-only">text</div>
@@ -252,7 +255,8 @@ export class ProductManagmentComponent implements OnInit {
       name:[this.product.name,[Validators.required,Validators.maxLength(60)]],
       categoryId:[{value: this.product.categoryId},Validators.required],
       textAttributes: this.fb.array([]),
-      numberAttributes: this.fb.array([])
+      numberAttributes: this.fb.array([]),
+      productAmounts: this.fb.array([])
     })
 
     if(!this.editMode){
@@ -262,16 +266,28 @@ export class ProductManagmentComponent implements OnInit {
     this.loadDescription();
   }
 
+  stocksLevelsTabSelected(){
+    if(!this.stocksLevelsLoaded){
+      this.productService.getProductAmounts(this.product.id).subscribe(amounts=>{
+        this.stocksLevelsLoaded=true;
+        this.product.productAmounts=amounts;
+
+      let amountsControl = <FormArray>this.productForm.controls.productAmounts;
+      amountsControl.clear();
+
+      this.product.productAmounts.forEach(amount => {
+        var group=this.fb.group(amount);
+        group.controls['amount'].validator=Validators.required;
+        group.controls['amount'].setValue(amount.amount);
+        amountsControl.push(group)
+      });
+      })
+    }
+  }
+
   saveProduct(){
     try{
-      for (var i in this.productForm.controls) {
-        this.productForm.controls[i].markAsTouched();
-      }
-      var b=this.productForm.valid
-// if(this.attributesForm){
-//   var a=this.attributesForm.valid;
-//   console.log(this.attributesForm.valid)
-// }
+      console.log(this.productForm.value)
 return;
       this.componentsReferences.forEach(component => {
         var content = component.instance.getParagraphContent();

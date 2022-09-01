@@ -10,5 +10,7 @@ namespace API.DTOs
         public int CategoryId { get; set; }
         public List<PhotoDto> Photos { get; set; }=new List<PhotoDto>();
         public string Description { get; set; }="";
+        public List<ProductAmountDto> ProductAmounts { get; set; }
+
     }
 }

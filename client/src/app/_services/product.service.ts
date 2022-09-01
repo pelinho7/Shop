@@ -11,6 +11,7 @@ import { ProductListData } from '../_models/productListData';
 import { Pagination } from '../_models/pagination';
 import { Photo } from '../_models/photo';
 import { ProductAttributesWrapper } from '../_models/productAttributesWrapper';
+import { ProductAmount } from '../_models/productAmount';
 
 
 @Injectable({
@@ -139,6 +140,14 @@ export class ProductService {
     return this.http.get<ProductAttributesWrapper>(this.baseUrl+'products/get-product-attributes/'+categoryId).pipe(
       map((productAttributesWrapper:ProductAttributesWrapper)=>{
           return productAttributesWrapper;
+        })
+    )
+  }
+
+  getProductAmounts(productId:number){
+    return this.http.get<ProductAmount[]>(this.baseUrl+'products/get-product-amounts/'+productId).pipe(
+      map((productAmounts:ProductAmount[])=>{
+          return productAmounts;
         })
     )
   }

@@ -24,6 +24,7 @@ namespace API.DBAccess.Interfaces
         IProductHistoryRepository ProductHistoryRepository{get;}
         IPhotoHistoryRepository PhotoHistoryRepository{get;}
         IWarehouseRepository WarehouseRepository{get;}
+        IProductAmountRepository ProductAmountRepository{get;}
         
         Task<bool> Complete();
         Task<IDbContextTransaction> BeginTransaction();

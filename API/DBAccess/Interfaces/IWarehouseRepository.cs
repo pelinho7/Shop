@@ -13,6 +13,7 @@ namespace API.DBAccess.Interfaces
         void UpdateWarehouse(Warehouse warehouse);
         Task<Warehouse> GetWarehouse(int id);
         Task<PagedList<WarehouseDto>> GetWarehouses(string code, Pagination pagination = null);
+        Task<List<Warehouse>> GetWarehouses();
         Task<Warehouse> GetWarehouseByCode(string code);
         void DeleteWarehouse(int warehouseId);
     }

@@ -3,14 +3,16 @@ using System;
 using API.DBAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220831094855_ProductAmountMigration")]
+    partial class ProductAmountMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +30,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(6929));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 329, DateTimeKind.Utc).AddTicks(7556));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -163,7 +165,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 368, DateTimeKind.Utc).AddTicks(3477));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 328, DateTimeKind.Utc).AddTicks(3289));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -221,7 +223,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(9985));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(712));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -262,7 +264,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(850));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(1278));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -296,7 +298,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(1559));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(1792));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -329,7 +331,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(2552));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(2291));
 
                     b.HasKey("Id");
 
@@ -365,7 +367,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(3728));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(3617));
 
                     b.HasKey("Id");
 
@@ -401,7 +403,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(3164));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(2965));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -543,13 +545,13 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(4843));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(4778));
 
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
@@ -637,7 +639,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(8788));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 329, DateTimeKind.Utc).AddTicks(9457));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -698,7 +700,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(9302));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(50));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -738,7 +740,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(7651));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 329, DateTimeKind.Utc).AddTicks(8265));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -767,7 +769,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(8192));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 329, DateTimeKind.Utc).AddTicks(8876));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -803,7 +805,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(4310));
+                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 48, 55, 330, DateTimeKind.Utc).AddTicks(4276));
 
                     b.HasKey("Id");
 

@@ -22,5 +22,6 @@ namespace API.DBAccess.Entities
         public ICollection<Photo> Photos { get; set; }
         public ICollection<PhotoHistory> PhotoHistories { get; set; }
         public ICollection<ProductHistory> ProductHistories { get; set; }
+        public ICollection<ProductAmount> ProductAmounts { get; set; }
     }
 }

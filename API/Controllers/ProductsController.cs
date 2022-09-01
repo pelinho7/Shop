@@ -200,12 +200,39 @@ namespace API.Controllers
             ProductAttributesWrapperDto productAttributesWrapperDto=new ProductAttributesWrapperDto();
             productAttributesWrapperDto.ProductTextAttributes=textAttributesDto;
             productAttributesWrapperDto.ProductNumberAttributes=numericAttributesDto;
-            // var productDto=mapper.Map<ProductTextAttributeDto>(a[0]);
-            //logger.LogError(JsonSerializer.Serialize(numericAttributes[2].));
-            // if (product==null) return NotFound();
 
-            // var productDto=mapper.Map<ProductDto>(product);
             return Ok(productAttributesWrapperDto);
+        }
+
+        [HttpGet("get-product-amounts/{productId}")]
+        public async Task<ActionResult<IEnumerable<ProductAmountDto>>> GetProductAmounts(int productId){
+            if(productId<=0)
+                return BadRequest();
+
+            var warehouses=await unitOfWork.WarehouseRepository.GetWarehouses();
+            var amounts = await unitOfWork.ProductAmountRepository.GetProductAmounts(productId);
+
+            var productAmounts = amounts
+            .Select(a=>mapper.Map<ProductAmountDto>(a)).ToList();
+            var productAmountsFromWarehouses = warehouses
+            .Select(a=>mapper.Map<ProductAmountDto>(a))
+            .Where(x=>!productAmounts.Select(z=>z.WarehouseId).Contains(x.WarehouseId)).ToList();
+            productAmountsFromWarehouses.ForEach(x=>{x.ProductId=productId;});
+            productAmounts.AddRange(productAmountsFromWarehouses);
+            productAmounts = productAmounts.OrderBy(x=>x.WarehouseId).ToList();
+            // var parentCategoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetParentCategoriesAttributes(categoryId);
+            // attributes.AddRange(parentCategoriesAttributes);
+            // attributes=attributes.OrderBy(x=>x.Lp).ToList();
+            // var textAttributes= attributes.Where(x=>x.Attribute.Type == 0).ToList();
+            // var numericAttributes= attributes.Where(x=>x.Attribute.Type == 1).ToList();
+
+            // var textAttributesDto = textAttributes.Select(a=>mapper.Map<ProductTextAttributeDto>(a)).ToList();
+            // var numericAttributesDto = numericAttributes.Select(a=>mapper.Map<ProductNumberAttributeDto>(a)).ToList();
+            // ProductAttributesWrapperDto productAttributesWrapperDto=new ProductAttributesWrapperDto();
+            // productAttributesWrapperDto.ProductTextAttributes=textAttributesDto;
+            // productAttributesWrapperDto.ProductNumberAttributes=numericAttributesDto;
+
+            return Ok(productAmounts);
         }
     }
 }

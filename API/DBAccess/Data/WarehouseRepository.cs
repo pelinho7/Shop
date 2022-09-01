@@ -46,7 +46,7 @@ namespace API.DBAccess.Data
 
         public async Task<List<Warehouse>> GetWarehouses()
         {
-            return await context.Warehouses.ToListAsync();
+            return await context.Warehouses.Where(x=>!x.Deleted).ToListAsync();
         }
 
         public async Task<Warehouse> GetWarehouse(int id)

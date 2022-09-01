@@ -36,7 +36,7 @@ namespace API.DBAccess.Data
         public DbSet<ProductHistory> ProductHistories { get; set; }
         public DbSet<PhotoHistory> PhotoHistories { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
-
+        public DbSet<ProductAmount> ProductAmounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -181,6 +181,18 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<ProductAmount>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductAmounts)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductAmount>()
+                .HasOne(s => s.Warehouse)
+                .WithMany(l => l.ProductAmounts)
+                .HasForeignKey(s => s.WarehouseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
 
             //default values
@@ -221,6 +233,9 @@ namespace API.DBAccess.Data
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Warehouse>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductAmount>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }

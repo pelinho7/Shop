@@ -17,5 +17,13 @@ namespace API.DBAccess.Entities
         public bool Deleted { get; set; }
         [Required]
         public DateTime ModDate { get; set; }
+
+        public ICollection<ProductAmount> ProductAmounts { get; set; }
+
+
+        public bool ttt(){
+            if(Code == "W1") return true;
+            return false;
+        }
     }
 }

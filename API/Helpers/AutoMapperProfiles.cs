@@ -65,6 +65,15 @@ namespace API.Helpers
 
             CreateMap<Warehouse,WarehouseDto>();
             CreateMap<WarehouseDto,Warehouse>();
+            CreateMap<ProductAmount,ProductAmountDto>()
+            .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Warehouse.Code))
+            .ForMember(dest => dest.Label, opt => opt.MapFrom(src => src.Warehouse.Label));
+
+            CreateMap<Warehouse,ProductAmountDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.WarehouseId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
+            .ForMember(dest => dest.Label, opt => opt.MapFrom(src => src.Label));
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));
