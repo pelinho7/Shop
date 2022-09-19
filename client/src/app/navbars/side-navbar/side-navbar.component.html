@@ -1,11 +1,19 @@
 <button class="btn btn-outline-warning float-right"
 [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'':'d-none'" 
 (click)="closeNav()">x</button>
-<div class="list-group list-group-flush" style="clear: both;">
-  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Dashboard</a>
+<div class="list-group list-group-flush h-100" [ngClass]="loaded ? '' : 'h-100'" style="clear: both;">
+  <ngx-spinner name="side-navbar-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+  </ngx-spinner>
+  <div *ngIf="categoryService.categoriesTree$ | async">
+    <div class="row m-0" *ngFor="let categoryTreeItem of categoryService.categoriesTree$ | async">
+        <app-side-navbar-item style="width: 100%;" (expandReduceEvent)="expandReduce($event)" [categoryTreeItem]="categoryTreeItem"></app-side-navbar-item>
+    </div>
+</div>
+  <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Dashboard</a>
   <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Shortcuts</a>
   <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Overview</a>
   <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Events</a>
   <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Profile</a>
-  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Status</a>
+  <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Status</a> -->
 </div>

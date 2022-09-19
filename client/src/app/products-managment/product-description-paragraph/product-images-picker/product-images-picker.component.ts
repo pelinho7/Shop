@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ProductManagmentService } from 'src/app/_services/product-managment.service';
 import { ProductService } from 'src/app/_services/product.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class ProductImagesPickerComponent implements OnInit {
 
   public selectedUrl:string='';
   constructor(public bsModalRef: BsModalRef
-    ,public productService:ProductService) { }
+    ,public productService:ProductManagmentService) { }
 
   ngOnInit(): void {
   }

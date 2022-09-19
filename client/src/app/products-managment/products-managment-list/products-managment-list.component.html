@@ -1,5 +1,69 @@
-<div class="container-fluid">
-  <button type="button" class="btn btn-success w-100 mb-3" (click)="upsertProduct(null)">Add new product</button>
-  <button type="button" class="btn btn-success w-100 mb-3" (click)="upsertProduct(1)">Edit product</button>
+<div class="container-fluid" *ngIf="loaded">
+  <form class="border mt-2 p-2 rounded"  id="productsManagmentFiltrationForm" [formGroup]="productsManagmentFiltrationForm">
+    <div class="form-row">
+        <div class="form-group col-12 col-md-4 mb-0">
+            <label class="">Code:</label>
+            <app-text-input class="mb-0" maxlength="30" [formControl]='productsManagmentFiltrationForm.controls["code"]' [label]='"Code"'></app-text-input>
+          </div>
+        <div class="form-group col-4 col-md-2 mb-0">
+            <label class="">Category:</label>
+            <app-select [formControl]='productsManagmentFiltrationForm.controls["categoryId"]' [keyValueMap]='categoryMap' [label]='"Category"'></app-select>
+        </div>
+        <div class="form-group col-4 col-md-2 mb-0">
+            <label class="">Items per page:</label>
+            <app-select [formControl]='productsManagmentFiltrationForm.controls["itemsPerPage"]' [keyValueMap]='productService.itemsPerPage' [label]='"Items per page"'></app-select>
+        </div>
+        <div class="form-group mt-auto col-4 col-md-2">
+            <button type="submit" form="attributesFiltrationForm" class="btn btn-primary w-100" (click)="filter()">Filter</button>
+        </div>
+        <div class="form-group mt-auto col-12 col-md-2">
+            <button type="button" class="btn btn-success w-100" (click)="upsertProduct(null)">Add new</button>
+        </div>
+    </div>
+</form>
 
+  <!-- <button type="button" class="btn btn-success w-100 mb-3" (click)="upsertProduct(null)">Add new product</button>
+  <button type="button" class="btn btn-success w-100 mb-3" (click)="upsertProduct(1)">Edit product</button> -->
+
+
+  <table class="table table-striped">
+    <thead>
+        <tr class="d-flex">
+          <th class="col-sm-3">Code</th>
+          <th class="col-sm-6">Name</th>
+          <th class="col-sm-3">Actions</th>
+        </tr>
+      </thead>
+    <tbody>
+        <tr class="d-flex" *ngFor="let product of productService.productsManagmentPage">
+            <td class="col-sm-3">{{product.code}}</td>
+            <td class="col-sm-6">{{product.name}}</td>
+            <td class="col-sm-3 d-flex justify-content-start">
+                <button class="btn btn-primary d-inline-block background-btn mr-1"
+                popover="Edit" triggers="mouseenter:mouseleave" (click)="upsertProduct(product.id)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-danger d-inline-block background-btn mr-1"
+                  popover="Delete"
+                  triggers="mouseenter:mouseleave" (click)="deleteProduct(product.id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>       
+                  </button>
+
+                    <!-- <button type="button" class="btn btn-outline-info"
+                    popover="History"
+                    triggers="mouseenter:mouseleave" (click)="showHistory(product.id)">
+                        <i class="fa fa-history" aria-hidden="true"></i>
+                      </button> -->
+            </td>
+          </tr>
+    </tbody>
+  </table>
+
+  <div id="pagination-panel" class="d-flex justify-content-center">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
+            [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+</div>
 </div>

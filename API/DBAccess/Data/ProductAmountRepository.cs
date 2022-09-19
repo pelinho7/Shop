@@ -31,7 +31,7 @@ namespace API.DBAccess.Data
 
         public async void UpdateProductAmount(ProductAmount productAmount)
         {
-            var pa = await  context.ProductAmounts.FirstOrDefaultAsync(x=>x.WarehouseId == productAmount.WarehouseId && x.ProductId == productAmount.ProductId);
+            var pa = await context.ProductAmounts.FirstOrDefaultAsync(x=>x.WarehouseId == productAmount.WarehouseId && x.ProductId == productAmount.ProductId);
             if(pa==null){
                context.ProductAmounts.Add(productAmount);      
             }

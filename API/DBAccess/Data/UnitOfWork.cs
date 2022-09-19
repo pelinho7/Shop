@@ -46,6 +46,11 @@ namespace API.DBAccess.Data
         public IPhotoHistoryRepository PhotoHistoryRepository => new PhotoHistoryRepository(context, mapper);
         public IWarehouseRepository WarehouseRepository => new WarehouseRepository(context, mapper);
         public IProductAmountRepository ProductAmountRepository => new ProductAmountRepository(context, mapper);
+        public IDiscountRepository DiscountRepository => new DiscountRepository(context, mapper);
+        public IProductTextAttributeRepository ProductTextAttributeRepository => new ProductTextAttributeRepository(context, mapper);
+        public IProductNumberAttributeRepository ProductNumberAttributeRepository => new ProductNumberAttributeRepository(context, mapper);
+        public IProductNumberAttributeHistoryRepository ProductNumberAttributeHistoryRepository => new ProductNumberAttributeHistoryRepository(context, mapper);
+        public IProductTextAttributeHistoryRepository ProductTextAttributeHistoryRepository => new ProductTextAttributeHistoryRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

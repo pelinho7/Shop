@@ -45,9 +45,9 @@ const routes: Routes = [
         children:[
           {path:'attributes',component:AttributesListComponent},
           {path:'categories',component:CategoriesListComponent},
-          {path:'products-management',component:ProductsManagmentListComponent},
-          {path:'products-management/create',component:ProductManagmentComponent},
-          {path:'products-management/edit/:id',component:ProductManagmentComponent},
+          {path:'products-managment',component:ProductsManagmentListComponent},
+          {path:'products-managment/create',component:ProductManagmentComponent},
+          {path:'products-managment/edit/:id',component:ProductManagmentComponent},
           {path:'warehouses',component:WarehousesListComponent},
         ]
       },

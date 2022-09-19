@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { map,take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { RegisterComponent } from '../account/register/register.component';
@@ -87,7 +87,7 @@ export class CategoryService {
       ))
     }
     else{
-      return this.categoriesTree$;
+      return of(currentCategories);
     }
   }
 

@@ -17,7 +17,10 @@ namespace API.DBAccess.Entities
         public DateTime ModDate { get; set; }
         public int ProductId { get; set; }
         public Product Product{get;set;}
+        public double Price { get; set; }
+        public int? CategoryId { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
+        public Category Category { get; set; }
     }
 }

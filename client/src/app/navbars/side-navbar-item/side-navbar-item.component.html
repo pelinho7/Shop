@@ -1,0 +1,21 @@
+<div class="card border-0 w-100" [ngClass]="!categoryTreeItem.visible ? 'd-none' : ''">
+    <div class="card-header rounded border">
+        <div class="row align-items-center">
+            <div class="align-items-center d-flex flex-row w-100">
+                <a [ngClass]="categoryTreeItem.subCategories.length==0 ? 'invisible' : ''"  type="button"
+                class="btn float-left" popover="Expand" triggers="mouseenter:mouseleave" (click)="expandReduce(categoryTreeItem.id)">
+                <i [ngClass]="categoryTreeItem?.subCategories[0]?.visible ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" aria-hidden="true"></i>
+            </a>
+                <div class="d-inline">
+                    <a routerLink="/products/{{categoryTreeItem.code}}" class="m-auto">{{categoryTreeItem.label}}</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="ml-2 card-body p-0" style="min-height: 0;" *ngFor="let c of categoryTreeItem.subCategories">
+        <app-side-navbar-item (expandReduceEvent)="expandReduce($event)"
+        style="width: 100%;" class="w-100" [categoryTreeItem]="c"></app-side-navbar-item>
+    </div>
+</div>

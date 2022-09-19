@@ -23,6 +23,10 @@ namespace API.DBAccess.Entities
         public ICollection<CategoryLink> ParentCategoryLinks { get; set; }
         public ICollection<CategoryAttribute> CategoryAttributes { get; set; }
         public ICollection<CategoryHistory> CategoryHistories { get; set; }
+        public ICollection<Discount> Discounts { get; set; }
+        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductHistory> ProductHistories { get; set; }
+
         [NotMapped]
         public List<CategoryAttribute> ParentCategoriesAttributes { get; set; }
     }

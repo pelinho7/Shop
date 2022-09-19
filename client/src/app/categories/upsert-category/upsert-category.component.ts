@@ -46,7 +46,6 @@ export class UpsertCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.categoryAttributes.next(this.category.categoryAttributes);
     this.attributes= this.filterAddedAttributes(this.category.parentCategoriesAttributes.map(z=>z.attributeId));
-    console.log(this.category.parentCategoriesAttributes)
     this.attributesSelectArray=this.attributes;
 
     if(this.category.id>0){

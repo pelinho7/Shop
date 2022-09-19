@@ -56,11 +56,18 @@ namespace API.Helpers
             CreateMap<Category,CategoryDto>();
             CreateMap<Category,CategoryTreeItemDto>();
 
+            CreateMap<Product,ProductBasicDto>();
             CreateMap<Product,ProductDto>();
             CreateMap<Photo,PhotoDto>();
+            CreateMap<Product,UpsertProductDto>();
+            CreateMap<UpsertProductDto,Product>()
+            .ForMember(dest => dest.ProductAmounts, opt => opt.Ignore());
+            //.ForMember(dest=>dest.Discounts, opt => opt.MapFrom(src => src.ProductDiscounts));            CreateMap<ProductDto,Product>();
 
-            CreateMap<CategoryAttribute,ProductTextAttributeDto>();
+            CreateMap<CategoryAttribute,ProductTextAttributeDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0));
             CreateMap<CategoryAttribute,ProductNumberAttributeDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
             .ForMember(dest => dest.DecimalPlaces, opt => opt.MapFrom(src => src.Attribute!=null?src.Attribute.DecimalPlaces:0));
 
             CreateMap<Warehouse,WarehouseDto>();
@@ -68,12 +75,31 @@ namespace API.Helpers
             CreateMap<ProductAmount,ProductAmountDto>()
             .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Warehouse.Code))
             .ForMember(dest => dest.Label, opt => opt.MapFrom(src => src.Warehouse.Label));
+            CreateMap<ProductAmountDto,ProductAmount>();
 
             CreateMap<Warehouse,ProductAmountDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
             .ForMember(dest => dest.WarehouseId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
             .ForMember(dest => dest.Label, opt => opt.MapFrom(src => src.Label));
+
+            CreateMap<Discount,DiscountDto>();
+            CreateMap<DiscountDto,Discount>();
+
+            CreateMap<Product,ProductHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<ProductTextAttributeDto,ProductTextAttribute>();
+            CreateMap<ProductNumberAttributeDto,ProductNumberAttribute>();
+
+            CreateMap<ProductNumberAttribute,ProductNumberAttributeHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.ProductNumberAttributeId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<ProductTextAttribute,ProductTextAttributeHistory>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+            .ForMember(dest => dest.ProductTextAttributeId, opt => opt.MapFrom(src => src.Id));
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

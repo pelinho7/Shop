@@ -23,5 +23,10 @@ namespace API.DBAccess.Data
             this.context = context;
             this.mapper = mapper;
         }
+
+        public void AddProductHistory(Product product)
+        {
+            context.ProductHistories.Add(mapper.Map<Product,ProductHistory>(product));
+        }
     }
 }

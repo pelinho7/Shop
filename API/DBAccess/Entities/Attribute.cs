@@ -26,5 +26,9 @@ namespace API.DBAccess.Entities
         public ICollection<AttributeHistory> AttributeHistories { get; set; }
         public CategoryAttribute CategoryAttribute { get; set; }
         public List<CategoryAttributeHistory> CategoryAttributeHistories { get; set; }
+        public List<ProductTextAttribute> ProductTextAttributes { get; set; }
+        public List<ProductNumberAttribute> ProductNumberAttributes { get; set; }
+        public List<ProductTextAttributeHistory> ProductTextAttributeHistories { get; set; }
+        public List<ProductNumberAttributeHistory> ProductNumberAttributeHistories { get; set; }
     }
 }

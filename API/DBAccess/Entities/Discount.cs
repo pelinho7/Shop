@@ -16,6 +16,7 @@ namespace API.DBAccess.Entities
         public Product Product { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+        public bool Deleted { get; set; }
         [Required]
         public DateTime StartDate { get; set; }
         [Required]

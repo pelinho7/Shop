@@ -20,13 +20,22 @@ export class ImageImageParagraphTypeComponent implements OnInit {
   getParagraphContent(){
     var image1Content = this.imageOnlyParagraph1.getParagraphContent(false);
     var image2Content = this.imageOnlyParagraph2.getParagraphContent(false);
-    var imageOnlyParagraphsArray = this.element.nativeElement.querySelectorAll('app-image-only-paragraph-type');
-    imageOnlyParagraphsArray[0].insertAdjacentHTML('afterend', image1Content);
-    imageOnlyParagraphsArray[1].insertAdjacentHTML('afterend', image2Content);
-    imageOnlyParagraphsArray[0].remove();
-    imageOnlyParagraphsArray[1].remove();
+    // var imageOnlyParagraphsArray = this.element.nativeElement.querySelectorAll('app-image-only-paragraph-type');
+    // imageOnlyParagraphsArray[0].insertAdjacentHTML('afterend', image1Content);
+    // imageOnlyParagraphsArray[1].insertAdjacentHTML('afterend', image2Content);
+    // // imageOnlyParagraphsArray[0].remove();
+    // // imageOnlyParagraphsArray[1].remove();
 
-    var html = removeAngularTags(this.element.nativeElement.innerHTML)
+    // var html = removeAngularTags(this.element.nativeElement.innerHTML)
+
+    var html=`<div class="row">
+    <div class="col-12 col-md-6">
+        `+image1Content+`
+    </div>
+    <div class="col-12 col-md-6">
+        `+image2Content+` 
+    </div>
+</div>`
 
     return '<div class="paragraph image-image">'+html+'</div>';
   }

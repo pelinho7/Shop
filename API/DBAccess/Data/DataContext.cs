@@ -37,6 +37,11 @@ namespace API.DBAccess.Data
         public DbSet<PhotoHistory> PhotoHistories { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<ProductAmount> ProductAmounts { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<ProductNumberAttribute> ProductNumberAttributes { get; set; }
+        public DbSet<ProductNumberAttributeHistory> ProductNumberAttributeHistories { get; set; }
+        public DbSet<ProductTextAttribute> ProductTextAttributes { get; set; }
+        public DbSet<ProductTextAttributeHistory> ProductTextAttributeHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -193,7 +198,89 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.WarehouseId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Discount>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.Discounts)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Discount>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.Discounts)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Product>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.Products)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductHistory>()
+                .HasOne(s => s.Category)
+                .WithMany(l => l.ProductHistories)
+                .HasForeignKey(s => s.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductTextAttribute>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductTextAttributes)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductTextAttribute>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.ProductTextAttributes)
+                .HasForeignKey(s => s.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<ProductNumberAttribute>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductNumberAttributes)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductNumberAttribute>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.ProductNumberAttributes)
+                .HasForeignKey(s => s.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductNumberAttributeHistory>()
+                .HasOne(s => s.ProductNumberAttribute)
+                .WithMany(l => l.ProductNumberAttributeHistories)
+                .HasForeignKey(s => s.ProductNumberAttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductNumberAttributeHistory>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductNumberAttributeHistories)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductNumberAttributeHistory>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.ProductNumberAttributeHistories)
+                .HasForeignKey(s => s.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductTextAttributeHistory>()
+                .HasOne(s => s.ProductTextAttribute)
+                .WithMany(l => l.ProductTextAttributeHistories)
+                .HasForeignKey(s => s.ProductTextAttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductTextAttributeHistory>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.ProductTextAttributeHistories)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ProductTextAttributeHistory>()
+                .HasOne(s => s.Attribute)
+                .WithMany(l => l.ProductTextAttributeHistories)
+                .HasForeignKey(s => s.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //default values
             builder.Entity<AppUserHistory>()
@@ -236,6 +323,33 @@ namespace API.DBAccess.Data
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductAmount>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Discount>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductTextAttribute>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductNumberAttribute>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductTextAttribute>()
+                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductNumberAttribute>()
+                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductTextAttributeHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<ProductNumberAttributeHistory>()
+                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Product>()
+                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Product>()
                 .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }

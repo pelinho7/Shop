@@ -21,15 +21,25 @@ export class TextImageParagraphTypeComponent implements OnInit {
   getParagraphContent(){
     var imageContent = this.imageOnlyParagraph.getParagraphContent(false);
     var textContent = this.textOnlyParagraph.getParagraphContent(false);
+    // console.log(this.element.nativeElement.querySelector('app-image-only-paragraph-type'))
 
-    this.element.nativeElement.querySelector('app-image-only-paragraph-type').insertAdjacentHTML('afterend', imageContent);
-    this.element.nativeElement.querySelector('app-text-only-paragraph-type').insertAdjacentHTML('afterend', textContent);
+    // console.log(removeAngularTags(this.element.nativeElement.querySelector('app-image-only-paragraph-type').innerHTML))
+    // this.element.nativeElement.querySelector('app-image-only-paragraph-type').insertAdjacentHTML('afterend', imageContent);
+    // this.element.nativeElement.querySelector('app-text-only-paragraph-type').insertAdjacentHTML('afterend', textContent);
+    // this.element.nativeElement.querySelector('app-image-only-paragraph-type').remove();
+    // this.element.nativeElement.querySelector('app-text-only-paragraph-type').remove();
+    // var textHtml=removeAngularTags(this.element.nativeElement.querySelector('app-text-only-paragraph-type').innerHTML);
+    // var imageHtml=removeAngularTags(this.element.nativeElement.querySelector('app-image-only-paragraph-type').innerHTML);
+    //var html = removeAngularTags(this.element.nativeElement.innerHTML)
 
-    this.element.nativeElement.querySelector('app-image-only-paragraph-type').remove();
-    this.element.nativeElement.querySelector('app-text-only-paragraph-type').remove();
-
-    var html = removeAngularTags(this.element.nativeElement.innerHTML)
-
+    var html=`<div class="row">
+    <div class="col-12 col-md-6">
+        `+textContent+`
+    </div>
+    <div class="col-12 col-md-6">
+        `+imageContent+` 
+    </div>
+</div>`
     return '<div class="paragraph text-image">'+html+'</div>';
   }
 

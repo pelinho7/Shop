@@ -8,6 +8,6 @@ namespace API.DBAccess.Interfaces
 {
     public interface IProductHistoryRepository
     {
-
+        void AddProductHistory(Product product);
     }
 }

@@ -20,10 +20,10 @@
         </button>
         <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
             role="menu" aria-labelledby="button-animated">
-            <li role="menuitem"><a class="dropdown-item" routerLink='attributes'>Attributes</a>
-            <li role="menuitem"><a class="dropdown-item" routerLink='categories'>Categories</a>
-            <li role="menuitem"><a class="dropdown-item" routerLink='products-management'>Products</a></li>
-            <li role="menuitem"><a class="dropdown-item" routerLink='warehouses'>Warehouses</a></li>
+            <li role="menuitem"><a class="dropdown-item" [routerLink]="['/attributes']">Attributes</a>
+            <li role="menuitem"><a class="dropdown-item" [routerLink]="['/categories']">Categories</a>
+            <li role="menuitem"><a class="dropdown-item" [routerLink]="['/products-managment']">Products</a></li>
+            <li role="menuitem"><a class="dropdown-item" [routerLink]="['/warehouses']">Warehouses</a></li>
           </ul>
       </div>
     </div>

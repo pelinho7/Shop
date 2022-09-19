@@ -12,6 +12,9 @@ import { Pagination } from '../_models/pagination';
 import { Photo } from '../_models/photo';
 import { ProductAttributesWrapper } from '../_models/productAttributesWrapper';
 import { ProductAmount } from '../_models/productAmount';
+import { Discount } from '../_models/discount';
+import { ProductUpsert } from '../_models/productUpsert';
+import { ProductsManagmentFiltration } from '../_models/productsManagmentFiltration';
 
 
 @Injectable({
@@ -22,6 +25,15 @@ export class ProductService {
   dynamicControls:DynamicControl[]=[];
   products:Product[]=[];
   productManagmentPhotos:Photo[]=[];
+  productManagmentRequestParameters:string='';
+  productsManagmentPage:Product[];
+
+  public itemsPerPage = new Map([
+    [10, "10"],
+    [20, "20"],
+    [50, "50"],
+    [100, "100"],
+  ]);
 
   constructor(private http:HttpClient) { }
 
@@ -30,12 +42,12 @@ export class ProductService {
   }
 
   
-  uploadImages(images: File[]){
+  uploadImages(images: File[],productId:number){
     const formData = new FormData();
     for  (var i =  0; i <  images.length; i++)  {  
       formData.append("files",  images[i]);
   } 
-    return this.http.post<Photo[]>(this.baseUrl+'products/upload-images?productId=1',formData).pipe(
+    return this.http.post<Photo[]>(this.baseUrl+'products/upload-images?productId='+productId,formData).pipe(
       map((photos:Photo[])=>{
           return photos;
         })
@@ -105,8 +117,8 @@ export class ProductService {
   }
 
   createProduct(){
-    return this.http.post<Product>(this.baseUrl+'products/create-product',null).pipe(
-      map((product:Product)=>{
+    return this.http.post<ProductUpsert>(this.baseUrl+'products/create-product',null).pipe(
+      map((product:ProductUpsert)=>{
           return product;
         })
     )
@@ -115,6 +127,15 @@ export class ProductService {
   getProduct(id:number){
     return this.http.get<Product>(this.baseUrl+'products/get-product/'+id).pipe(
       map((product:Product)=>{
+          return product;
+        })
+    )
+  }
+
+  getUpsertProduct(id:number){
+    return this.http.get<ProductUpsert>(this.baseUrl+'products/get-product/'+id).pipe(
+      map((product:ProductUpsert)=>{
+        console.log(product)
           return product;
         })
     )
@@ -136,10 +157,18 @@ export class ProductService {
     )
   }
 
-  getProductAttributes(categoryId:number){
-    return this.http.get<ProductAttributesWrapper>(this.baseUrl+'products/get-product-attributes/'+categoryId).pipe(
+  getProductAttributes(categoryId:number,productId:number){
+    return this.http.get<ProductAttributesWrapper>(this.baseUrl+'products/get-product-attributes?categoryId='+categoryId+'&productId='+productId).pipe(
       map((productAttributesWrapper:ProductAttributesWrapper)=>{
           return productAttributesWrapper;
+        })
+    )
+  }
+
+  getProductDiscounts(productId:number){
+    return this.http.get<Discount[]>(this.baseUrl+'products/get-product-discounts/'+productId).pipe(
+      map((discounts:Discount[])=>{
+          return discounts;
         })
     )
   }
@@ -150,5 +179,46 @@ export class ProductService {
           return productAmounts;
         })
     )
+  }
+
+  updateProduct(model:ProductUpsert){
+    return this.http.post<ProductUpsert>(this.baseUrl+'products/update-product',model).pipe(
+      map((product:ProductUpsert)=>{
+          return product;
+        })
+    )
+  }
+
+  getProductsManagment(productsFiltration:ProductsManagmentFiltration){
+    //var parameters='';
+    this.productManagmentRequestParameters='';
+    let parametersArray: string[] = [];
+    if(productsFiltration.code!=null && productsFiltration.code.length>0){
+      parametersArray.push('code='+productsFiltration.code);
+    }
+    if(productsFiltration.categoryId!=null){
+      parametersArray.push('categoryId='+productsFiltration.categoryId);
+    }
+    if(productsFiltration.page!=null && productsFiltration.page!=1){
+      parametersArray.push('page='+productsFiltration.page);
+    }
+    if(productsFiltration.itemsPerPage!=null && productsFiltration.itemsPerPage!=10){
+      parametersArray.push('itemsPerPage='+productsFiltration.itemsPerPage);
+    }
+    if(parametersArray.length>0){
+      this.productManagmentRequestParameters='?'+parametersArray.join('&');
+    }
+
+    return this.http.get<any[]>(this.baseUrl+'products/get-products-managment'+this.productManagmentRequestParameters,{ observe: 'response'}).pipe(
+      map((response:any)=>{
+        if(response.body)
+          this.productsManagmentPage=response.body;
+
+        let pagination:Pagination=new Pagination();
+        if (response.headers.get('Pagination') !== null) {
+          pagination= JSON.parse(response.headers.get('Pagination') || '{}');
+        }
+        return pagination;
+      }));
   }
 }

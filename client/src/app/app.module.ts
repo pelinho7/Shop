@@ -53,6 +53,8 @@ import { ImageTextParagraphTypeComponent } from './products-managment/product-de
 import { ImageImageParagraphTypeComponent } from './products-managment/product-description-paragraph/paragraph-types/image-image-paragraph-type/image-image-paragraph-type.component';
 import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
 import { UpsertWarehouseComponent } from './warehouses/upsert-warehouse/upsert-warehouse.component';
+import { DiscountItemComponent } from './discounts/discount-item/discount-item.component';
+import { SideNavbarItemComponent } from './navbars/side-navbar-item/side-navbar-item.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +100,9 @@ import { UpsertWarehouseComponent } from './warehouses/upsert-warehouse/upsert-w
     ImageTextParagraphTypeComponent,
     ImageImageParagraphTypeComponent,
     WarehousesListComponent,
-    UpsertWarehouseComponent
+    UpsertWarehouseComponent,
+    DiscountItemComponent,
+    SideNavbarItemComponent
   ],
   imports: [
     BrowserModule,

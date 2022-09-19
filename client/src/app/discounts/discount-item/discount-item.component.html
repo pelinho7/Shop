@@ -1,0 +1,55 @@
+<div class="form-group w-100 border rounded p-3" [ngClass]="deleted?'disabled':''">
+    <div class="form-row">
+      <div class="col-12 col-sm-6 col-md-6 mb-3">
+        <label class="col-5 col-md-4 col-form-label pl-0">Discount:</label>
+        <input #numberInput [formControl]='formHelpersService.getControlFromGroup(formGroup,"value")' 
+        (change)="setDecimalPlaces($event)"
+        class="col-7 col-md-8 form-control d-inline" type="number" triggers="mouseenter:mouseleave" step="0.01">
+      </div>
+      <div class="col-12 col-sm-5 col-md-5 mb-3">
+        <label class="col-5 col-md-4 inline col-form-label pl-0">Type:</label>
+        <select class="form-control col-7 col-md-8 d-inline" (change)="typeChanged()" #typeSelect
+        [formControl]='formHelpersService.getControlFromGroup(formGroup,"type")'>
+          <option *ngFor="let keyValue of discountTypes| keyvalue:asIsOrder" let i = index [value]="keyValue.key">
+              {{keyValue.value}}
+          </option> 
+        </select>
+      </div>
+      <div class="col-sm-1 d-none d-sm-inline-block">
+        <button class="btn btn-outline-danger float-right" (click)="remove()">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-12 col-sm-6 mb-3">
+          <label class="col-5 col-md-4 col-form-label pl-0">Start date:</label>
+          <input #startDateInput type="text" [formControl]='formHelpersService.getControlFromGroup(formGroup,"startDateString")'
+          placeholder="Datepicker" (bsValueChange)="startDateChanged($event,endDateInput)"
+          class="form-control col-7 col-md-8 d-inline" [bsConfig]="datePickerConfig"
+          (bsValueChange)="onDateChange($event,'startDate')" bsDatepicker>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label class="col-5 col-md-4 col-form-label pl-0">End date:</label>
+          <input #endDateInput type="text" [formControl]='formHelpersService.getControlFromGroup(formGroup,"endDateString")'
+          placeholder="Datepicker" (bsValueChange)="endDateChanged($event,startDateInput)"
+          class="form-control col-7 col-md-8 d-inline" [bsConfig]="datePickerConfig"
+          (bsValueChange)="onDateChange($event,'endDate')" bsDatepicker>
+        </div>
+      </div>
+
+      <div class="col-12 d-sm-none m-0 p-0">
+        <button class="btn btn-outline-danger w-100 mt-3" (click)="remove()">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </div>
+
+
+        <!-- <input type="text" [formControl]='formHelpersService.getControlFromGroup(formGroup,"startDateString")'
+placeholder="Datepicker"
+class="form-control" [bsConfig]="datePickerConfig"
+(bsValueChange)="onDateChange($event,'startDate')"
+bsDatepicker> -->

@@ -28,7 +28,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(6929));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(6456));
 
                     b.Property<bool>("Obligatory")
                         .HasColumnType("INTEGER");
@@ -163,7 +163,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 368, DateTimeKind.Utc).AddTicks(3477));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 210, DateTimeKind.Utc).AddTicks(2763));
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -221,7 +221,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(9985));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(9775));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -262,7 +262,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(850));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(350));
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -296,7 +296,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(1559));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(1111));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -329,7 +329,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(2552));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(1644));
 
                     b.HasKey("Id");
 
@@ -365,7 +365,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(3728));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(2650));
 
                     b.HasKey("Id");
 
@@ -401,7 +401,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(3164));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(2175));
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("INTEGER");
@@ -432,6 +432,47 @@ namespace API.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("CategoryLinks");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(4397));
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.Photo", b =>
@@ -512,27 +553,42 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Code")
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(7654));
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("ModDate")
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(7901));
 
                     b.Property<string>("Name")
                         .HasMaxLength(60)
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
                     b.Property<bool>("Temporary")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -549,7 +605,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(4843));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(3850));
 
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
@@ -572,6 +628,9 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Code")
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
@@ -586,14 +645,167 @@ namespace API.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductNumberAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(5975));
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(5507));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductNumberAttributes");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductNumberAttributeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(7129));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductNumberAttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductNumberAttributeId");
+
+                    b.ToTable("ProductNumberAttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductTextAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(5757));
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(4926));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductTextAttributes");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductTextAttributeHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(6438));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductTextAttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductTextAttributeId");
+
+                    b.ToTable("ProductTextAttributeHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -637,7 +849,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(8788));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(8473));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -698,7 +910,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(9302));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(9117));
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -738,7 +950,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(7651));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(7132));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -767,7 +979,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 369, DateTimeKind.Utc).AddTicks(8192));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 211, DateTimeKind.Utc).AddTicks(7833));
 
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
@@ -803,7 +1015,7 @@ namespace API.Migrations
                     b.Property<DateTime>("ModDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2022, 8, 31, 9, 52, 18, 370, DateTimeKind.Utc).AddTicks(4310));
+                        .HasDefaultValue(new DateTime(2022, 9, 14, 14, 24, 37, 212, DateTimeKind.Utc).AddTicks(3260));
 
                     b.HasKey("Id");
 
@@ -1012,6 +1224,23 @@ namespace API.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.Discount", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("Discounts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("Discounts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.Photo", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.ProductHistory", null)
@@ -1046,6 +1275,16 @@ namespace API.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("API.DBAccess.Entities.Product", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("API.DBAccess.Entities.ProductAmount", b =>
                 {
                     b.HasOne("API.DBAccess.Entities.Product", "Product")
@@ -1067,13 +1306,112 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.DBAccess.Entities.ProductHistory", b =>
                 {
+                    b.HasOne("API.DBAccess.Entities.Category", "Category")
+                        .WithMany("ProductHistories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("API.DBAccess.Entities.Product", "Product")
                         .WithMany("ProductHistories")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Category");
+
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductNumberAttribute", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("ProductNumberAttributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("ProductNumberAttributes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductNumberAttributeHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("ProductNumberAttributeHistories")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("ProductNumberAttributeHistories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.ProductNumberAttribute", "ProductNumberAttribute")
+                        .WithMany("ProductNumberAttributeHistories")
+                        .HasForeignKey("ProductNumberAttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductNumberAttribute");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductTextAttribute", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("ProductTextAttributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("ProductTextAttributes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductTextAttributeHistory", b =>
+                {
+                    b.HasOne("API.DBAccess.Entities.Attribute", "Attribute")
+                        .WithMany("ProductTextAttributeHistories")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.Product", "Product")
+                        .WithMany("ProductTextAttributeHistories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.DBAccess.Entities.ProductTextAttribute", "ProductTextAttribute")
+                        .WithMany("ProductTextAttributeHistories")
+                        .HasForeignKey("ProductTextAttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductTextAttribute");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>
@@ -1214,6 +1552,14 @@ namespace API.Migrations
                     b.Navigation("CategoryAttribute");
 
                     b.Navigation("CategoryAttributeHistories");
+
+                    b.Navigation("ProductNumberAttributeHistories");
+
+                    b.Navigation("ProductNumberAttributes");
+
+                    b.Navigation("ProductTextAttributeHistories");
+
+                    b.Navigation("ProductTextAttributes");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.Category", b =>
@@ -1224,7 +1570,13 @@ namespace API.Migrations
 
                     b.Navigation("CategoryLinks");
 
+                    b.Navigation("Discounts");
+
                     b.Navigation("ParentCategoryLinks");
+
+                    b.Navigation("ProductHistories");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.CategoryAttribute", b =>
@@ -1239,6 +1591,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.DBAccess.Entities.Product", b =>
                 {
+                    b.Navigation("Discounts");
+
                     b.Navigation("PhotoHistories");
 
                     b.Navigation("Photos");
@@ -1246,11 +1600,29 @@ namespace API.Migrations
                     b.Navigation("ProductAmounts");
 
                     b.Navigation("ProductHistories");
+
+                    b.Navigation("ProductNumberAttributeHistories");
+
+                    b.Navigation("ProductNumberAttributes");
+
+                    b.Navigation("ProductTextAttributeHistories");
+
+                    b.Navigation("ProductTextAttributes");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ProductHistory", b =>
                 {
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductNumberAttribute", b =>
+                {
+                    b.Navigation("ProductNumberAttributeHistories");
+                });
+
+            modelBuilder.Entity("API.DBAccess.Entities.ProductTextAttribute", b =>
+                {
+                    b.Navigation("ProductTextAttributeHistories");
                 });
 
             modelBuilder.Entity("API.DBAccess.Entities.ShippingAddress", b =>

@@ -22,13 +22,22 @@ export class ImageTextParagraphTypeComponent implements OnInit {
     var imageContent = this.imageOnlyParagraph.getParagraphContent(false);
     var textContent = this.textOnlyParagraph.getParagraphContent(false);
 
-    this.element.nativeElement.querySelector('app-image-only-paragraph-type').insertAdjacentHTML('afterend', imageContent);
-    this.element.nativeElement.querySelector('app-text-only-paragraph-type').insertAdjacentHTML('afterend', textContent);
+    // this.element.nativeElement.querySelector('app-image-only-paragraph-type').insertAdjacentHTML('afterend', imageContent);
+    // this.element.nativeElement.querySelector('app-text-only-paragraph-type').insertAdjacentHTML('afterend', textContent);
 
-    this.element.nativeElement.querySelector('app-image-only-paragraph-type').remove();
-    this.element.nativeElement.querySelector('app-text-only-paragraph-type').remove();
+    // // this.element.nativeElement.querySelector('app-image-only-paragraph-type').remove();
+    // // this.element.nativeElement.querySelector('app-text-only-paragraph-type').remove();
 
-    var html = removeAngularTags(this.element.nativeElement.innerHTML)
+    // var html = removeAngularTags(this.element.nativeElement.innerHTML)
+
+    var html=`<div class="row">
+    <div class="col-12 col-md-6">
+        `+imageContent+`
+    </div>
+    <div class="col-12 col-md-6">
+        `+textContent+` 
+    </div>
+</div>`
 
     return '<div class="paragraph image-text">'+html+'</div>';
   }
