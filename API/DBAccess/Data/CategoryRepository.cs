@@ -42,7 +42,6 @@ namespace API.DBAccess.Data
         {
             return await context.Categories
             .Include(x=>x.CategoryAttributes.Where(z=>!z.Deleted && !z.Attribute.Deleted)).ThenInclude(x=>x.Attribute)
-            //.Include(x=>x.CategoryLinks).ThenInclude(x=>x.ParentCategory).ThenInclude(x=>x.CategoryAttributes.Where(z=>!z.Deleted))
             .FirstOrDefaultAsync(x=>x.Id == id);
         }
 

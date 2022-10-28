@@ -7,6 +7,7 @@ import { NewPasswordComponent } from './account/new-password/new-password.compon
 import { RegisterComponent } from './account/register/register.component';
 import { UserAgreementsComponent } from './account/user-agreements/user-agreements.component';
 import { AttributesListComponent } from './attributes/attributes-list/attributes-list.component';
+import { CartComponent } from './cart/cart/cart.component';
 import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
@@ -14,6 +15,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { HomeComponent } from './home/home.component';
 import { ProductManagmentComponent } from './products-managment/product-managment/product-managment.component';
 import { ProductsManagmentListComponent } from './products-managment/products-managment-list/products-managment-list.component';
+import { ProductComponent } from './products/product/product.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ShippingAddressesComponent } from './shippingAddresses/shipping-addresses/shipping-addresses.component';
 import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
@@ -29,6 +31,7 @@ const routes: Routes = [
   {path:'',component:HomeComponent},
   {path:'account',component:AccountDataComponent,canActivate:[AuthenticationGuard]},
   {path:'products/:category',component:ProductsListComponent},
+  {path:'product/:code',component:ProductComponent},
   {path:'account/login',component:LogInComponent},
   {path:'account/register',component:RegisterComponent},
   {path:'account/email-confirmation',component:EmailVerificationComponent},
@@ -52,6 +55,7 @@ const routes: Routes = [
         ]
       },
 
+      {path:'cart',component:CartComponent},
       {path:'account/data',component:AccountDataComponent},
       {path:'account/change-password',component:ChangePasswordComponent},
       {path:'account/user-agreements',component:UserAgreementsComponent},

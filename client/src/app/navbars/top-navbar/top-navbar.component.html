@@ -1,5 +1,5 @@
-<div class="d-none d-sm-block">
-    <h1>Shop</h1>
+<div class="d-none d-sm-block" id="shop-panel">
+    <h1 class="m-0">Shop</h1>
 </div>
 
 
@@ -42,8 +42,8 @@
     <div class="col-6 col-md-3 order-1 order-md-2">
       <div class="float-right">
         <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
-          <button class="btn btn-outline-success mr-1" routerLink='account/login'>Log In</button>
-          <button class="btn btn-outline-success" routerLink='account/register'>Register</button>
+          <button class="btn btn-outline-success mr-1" [routerLink]="['account/login']">Log In</button>
+          <button class="btn btn-outline-success" [routerLink]="['account/register']">Register</button>
         </div>
         <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
           <!-- <button class="btn btn-outline-success" (click)="logout()">Log Out</button> -->

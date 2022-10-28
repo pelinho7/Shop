@@ -55,6 +55,14 @@ import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses
 import { UpsertWarehouseComponent } from './warehouses/upsert-warehouse/upsert-warehouse.component';
 import { DiscountItemComponent } from './discounts/discount-item/discount-item.component';
 import { SideNavbarItemComponent } from './navbars/side-navbar-item/side-navbar-item.component';
+import { ProductsBreadcrumpsComponent } from './products/products-breadcrumps/products-breadcrumps.component';
+import { ProductComponent } from './products/product/product.component';
+import { ProductsListItemComponent } from './products/products-list-item/products-list-item.component';
+import { CartComponent } from './cart/cart/cart.component';
+import { UpsertProductOpinionComponent } from './products/opinions/upsert-product-opinion/upsert-product-opinion.component';
+import { ProductOpinionComponent } from './products/opinions/product-opinion/product-opinion.component';
+import { TextareaComponent } from './_forms/textarea/textarea.component';
+import { ProductOpinionsListComponent } from './products/opinions/product-opinions-list/product-opinions-list.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +110,15 @@ import { SideNavbarItemComponent } from './navbars/side-navbar-item/side-navbar-
     WarehousesListComponent,
     UpsertWarehouseComponent,
     DiscountItemComponent,
-    SideNavbarItemComponent
+    SideNavbarItemComponent,
+    ProductsBreadcrumpsComponent,
+    ProductComponent,
+    ProductsListItemComponent,
+    CartComponent,
+    UpsertProductOpinionComponent,
+    ProductOpinionComponent,
+    TextareaComponent,
+    ProductOpinionsListComponent
   ],
   imports: [
     BrowserModule,

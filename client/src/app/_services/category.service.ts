@@ -105,6 +105,16 @@ export class CategoryService {
     return categoryMap;
   }
 
+  getCategoryTree2Array(categories:CategoryTreeItem[],array:CategoryTreeItem[]){
+    categories.forEach(categoryItem => {
+      if(categoryItem.subCategories!=null){
+        this.getCategoryTree2Array(categoryItem.subCategories,array)
+      }
+      array.push(categoryItem)
+    });
+    return array;
+  }
+
   expandControl(parentId:number){
     let categoryTree:CategoryTreeItem[];
     this.categoriesTree$.pipe(take(1)).subscribe(x=>categoryTree=x);

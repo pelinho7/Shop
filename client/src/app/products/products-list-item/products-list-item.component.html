@@ -1,0 +1,27 @@
+<div class="col-12">
+    <div class="card mb-2 w-100">
+        <div class="card-header main-section-title" routerLink="/product/{{product.code}}">
+            {{product.name}}
+        </div>
+        <div class="card-body p-3 h-100">
+            <div class="row" style="min-height: 200px;">
+                <div class="col-6 h-100">
+                    <img *ngIf="product.mainPhotoUrl && product.mainPhotoUrl!=''" src="{{product.mainPhotoUrl}}"/>
+                    <img *ngIf="!product.mainPhotoUrl || product.mainPhotoUrl==''" src="/assets/images/empty image.png"/>
+                </div>
+                <div class="col-6" style="position: relative;">
+                    <p *ngIf="product.actualPrice"><span class="h2 text-danger">{{product.actualPrice.discountPrice |currency:'USD':'symbol-narrow'}}</span></p>
+                    <p><span [ngClass]="product.actualPrice?'h5 strikethrough':'h2'">{{product.price |currency:'USD':'symbol-narrow'}}</span></p>
+                    <p *ngIf="product.actualPrice"><span>(valid until {{product.actualPrice.discountEndDate |date: 'dd/MM/yyyy'}})</span></p>
+                    <a class="link-primary show" (click)="getProductAttributes($event)">Show parameters</a>
+                    <div class="parameters mb-5">
+                        <p *ngFor="let param of parameters|async"><span class="font-weight-bolder">{{param.label}}:</span> {{param.value}}</p>
+                    </div>
+                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

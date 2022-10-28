@@ -3,16 +3,21 @@
 </ngx-spinner>
 
 <app-top-navbar></app-top-navbar>
+<div class="container-fluid">
 
-<div class="row">
-  <div id="side-navbar" 
-  [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'overlay-menu':'col-sm-3'">
-      <app-side-navbar></app-side-navbar>
-  </div>
-  <div [ngClass]="(resizeWindowWatcherService.mobileMode$|async) || !(routeWatcherService.sideMenuPage$|async)?'col-12':'col-9'">
-    <router-outlet ></router-outlet>
+
+  <div class="row">
+    <div id="side-navbar" 
+    [ngClass]="(((resizeWindowWatcherService.mobileMode$|async) || !((routeWatcherService.homePage$|async))))?'overlay-menu':'col-sm-3'">
+        <app-side-navbar></app-side-navbar>
+    </div>
+    <div [ngClass]="(resizeWindowWatcherService.mobileMode$|async) || !(routeWatcherService.sideMenuPage$|async)?'col-12':'col-9'">
+      <router-outlet ></router-outlet>
+    </div>
   </div>
 </div>
+
+
 
 <!-- <div>
     <router-outlet></router-outlet>

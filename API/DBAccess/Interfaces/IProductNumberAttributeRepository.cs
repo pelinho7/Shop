@@ -10,6 +10,7 @@ namespace API.DBAccess.Interfaces
         void AddProductNumberAttribute(ProductNumberAttribute productNumberAttribute);
         void UpdateProductNumberAttribute(ProductNumberAttribute productNumberAttribute);
         Task<List<ProductNumberAttribute>> DeleteOldProductNumberAttributes(int productId, List<int> attributesIdsToSkip, DateTime modDate);
+        Task<List<ProductNumberAttribute>> GetAllProductNumberAttributes(int productId);
         Task<List<ProductNumberAttribute>> GetProductNumberAttributes(int productId, List<int> attributesIds);
     }
 }

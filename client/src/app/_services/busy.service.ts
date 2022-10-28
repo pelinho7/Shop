@@ -19,9 +19,12 @@ export class BusyService {
 
   idle(name:string){
     this.busyRequestCount--;
-    if(this.busyRequestCount<=0){
-      this.busyRequestCount=0;
-      this.spinnerService.hide(name);
-    }
+    //console.log(name+' ' +this.busyRequestCount)
+    //this.busyRequestCount=0;
+    this.spinnerService.hide(name);
+    // if(this.busyRequestCount<=0){
+    //   this.busyRequestCount=0;
+    //   this.spinnerService.hide(name);
+    // }
   }
 }

@@ -48,7 +48,7 @@ namespace API.DBAccess.Data
         public async Task<List<CategoryAttribute>> GetParentCategoriesAttributes(int categoryId)
         {
             return await context.CategoryLinks
-            .Include(x=>x.ParentCategory).ThenInclude(x=>x.CategoryAttributes.Where(z=>!z.Deleted)).ThenInclude(x=>x.Attribute)
+            .Include(x=>x.ParentCategory).ThenInclude(x=>x.CategoryAttributes.Where(z=>!z.Deleted).OrderBy(z=>z.Lp)).ThenInclude(x=>x.Attribute)
             .Where(x=>x.CategoryId == categoryId)
             .Select(x=>x.ParentCategory)
             .SelectMany(x=>x.CategoryAttributes)

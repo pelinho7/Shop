@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/_services/account.service';
+import { UrlService } from 'src/app/_services/url.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 @Component({
@@ -19,7 +20,8 @@ export class LogInComponent implements OnInit {
     private fb:UntypedFormBuilder,private modalService: BsModalService
     ,private accountService:AccountService
     ,private router:Router
-    ,private toastr:ToastrService) { }
+    ,private toastr:ToastrService
+    ,private urlService:UrlService) { }
 
   ngOnInit(): void {
     this.logInForm=this.fb.group({
@@ -30,7 +32,14 @@ export class LogInComponent implements OnInit {
 
   logIn(){
     this.accountService.logIn(this.logInForm.value).subscribe(user=>{
-      this.router.navigateByUrl('/');
+      var prevUrl = this.urlService.getPreviousUrl();
+      console.log(prevUrl)
+      if(prevUrl.length>0){
+        this.router.navigateByUrl(prevUrl);
+      }
+      else{
+        this.router.navigateByUrl('/');
+      }
     })
   }
 

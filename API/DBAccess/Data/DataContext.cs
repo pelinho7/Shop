@@ -42,6 +42,7 @@ namespace API.DBAccess.Data
         public DbSet<ProductNumberAttributeHistory> ProductNumberAttributeHistories { get; set; }
         public DbSet<ProductTextAttribute> ProductTextAttributes { get; set; }
         public DbSet<ProductTextAttributeHistory> ProductTextAttributeHistories { get; set; }
+        public DbSet<Opinion> Opinions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -139,9 +140,9 @@ namespace API.DBAccess.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Category>()
-                .HasOne(b=>b.ParentCategory)
+                .HasOne(b => b.ParentCategory)
                 .WithMany()
-                .HasForeignKey(b=>b.ParentCategoryId);
+                .HasForeignKey(b => b.ParentCategoryId);
 
             builder.Entity<CategoryHistory>()
                 .HasOne(s => s.Category)
@@ -233,7 +234,7 @@ namespace API.DBAccess.Data
                 .WithMany(l => l.ProductTextAttributes)
                 .HasForeignKey(s => s.AttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             builder.Entity<ProductNumberAttribute>()
                 .HasOne(s => s.Product)
                 .WithMany(l => l.ProductNumberAttributes)
@@ -282,75 +283,93 @@ namespace API.DBAccess.Data
                 .HasForeignKey(s => s.AttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Opinion>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.Opinions)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Opinion>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.Opinions)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //default values
             builder.Entity<AppUserHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Agreement>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<UserAgreement>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<UserAgreementHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ShippingAddress>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ShippingAddressHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Entities.Attribute>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<AttributeHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Category>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
-            
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
             builder.Entity<CategoryAttribute>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<CategoryHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<CategoryAttributeHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Warehouse>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductAmount>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Discount>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductTextAttribute>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductNumberAttribute>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductTextAttribute>()
-                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.CreateDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductNumberAttribute>()
-                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.CreateDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductTextAttributeHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<ProductNumberAttributeHistory>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Product>()
-                .Property(t=> t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.CreateDate).HasDefaultValue(DateTime.UtcNow);
 
             builder.Entity<Product>()
-                .Property(t=> t.ModDate).HasDefaultValue(DateTime.UtcNow);
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Opinion>()
+                .Property(t => t.CreateDate).HasDefaultValue(DateTime.UtcNow);
+
+            builder.Entity<Opinion>()
+                .Property(t => t.ModDate).HasDefaultValue(DateTime.UtcNow);
         }
     }
 }

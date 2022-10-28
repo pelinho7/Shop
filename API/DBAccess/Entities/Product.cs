@@ -33,6 +33,7 @@ namespace API.DBAccess.Entities
         public ICollection<ProductNumberAttribute> ProductNumberAttributes { get; set; }
         public ICollection<ProductTextAttributeHistory> ProductTextAttributeHistories { get; set; }
         public ICollection<ProductNumberAttributeHistory> ProductNumberAttributeHistories { get; set; }
+        public ICollection<Opinion> Opinions { get; set; }
 
         // [NotMapped]
         // public double ActualPrice {

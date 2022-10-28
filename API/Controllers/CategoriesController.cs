@@ -36,11 +36,10 @@ namespace API.Controllers
         }
 
 
-        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryTreeItemDto>>> GetCategories()
         {
-            //
+            
             var categories = await unitOfWork.CategoryRepository.GetCategories();
             var c=categories.Select(x=>mapper.Map<CategoryTreeItemDto>(x)).ToList();
             c=c.OrderBy(x=>x.ParentCategoryId).ToList();

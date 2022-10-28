@@ -10,6 +10,7 @@ export class SideNavbarItemComponent implements OnInit {
 
   @Input() categoryTreeItem:CategoryTreeItem;
   @Output() expandReduceEvent = new EventEmitter<number>();
+  @Output() selectedUrlEvent = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
@@ -19,4 +20,7 @@ export class SideNavbarItemComponent implements OnInit {
     this.expandReduceEvent.emit(id);
   }
 
+  selectedUrl(){
+    this.selectedUrlEvent.emit();
+  }
 }

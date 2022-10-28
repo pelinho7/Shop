@@ -27,17 +27,30 @@ export class LoadingInterceptor implements HttpInterceptor {
     this.routeSpinnerNameMap.set("categories","");
     this.routeSpinnerNameMap.set("warehouses/check-code-not-taken","");
     this.routeSpinnerNameMap.set("warehouses/upsert-warehouse","warehouse-spinner");
-
-    //this.routeSpinnerNameMap.set("attributes/get-all-attributes","category-spinner");
+    this.routeSpinnerNameMap.set("products/get-filters","products-filter-spinner");
+    this.routeSpinnerNameMap.set("products/get-product-full-data","main-spinner");
+    this.routeSpinnerNameMap.set("products/","products-list-spinner");
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     var spinnerName="main-spinner";
     var relativeUrl = request.url.replace(this.baseUrl,"")
     //remove data from url
+    console.log(relativeUrl)
+
     if(relativeUrl.indexOf('?')>=0){
       relativeUrl=relativeUrl.substring(0,relativeUrl.indexOf('?'));
     }
+    if(relativeUrl.includes("products/get-filters")){
+      relativeUrl="products/get-filters";
+    }//
+    else if(relativeUrl.includes("products/get-product-full-data")){
+      relativeUrl="products/get-product-full-data";
+    }
+    else if(relativeUrl.includes("products/")){
+      relativeUrl="products/";
+    }
+    
     //get name of spinner for current request
     if(this.routeSpinnerNameMap.has(relativeUrl)){
       spinnerName=this.routeSpinnerNameMap.get(relativeUrl);
@@ -46,7 +59,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     if(spinnerName.length>0){
       this.busyService.busy(spinnerName);
     }
-
+    
     return next.handle(request).pipe(
       //fake delay
       delay(1000),

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using API.DBAccess.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace API.DBAccess.Data
 {
@@ -10,11 +11,13 @@ namespace API.DBAccess.Data
     {
         private readonly DataContext context;
         private readonly IMapper mapper;
+        private readonly ILogger<UnitOfWork> logger;
 
-        public UnitOfWork(DataContext context, IMapper mapper)
+        public UnitOfWork(DataContext context, IMapper mapper,ILogger<UnitOfWork> logger)
         {
             this.context = context;
             this.mapper = mapper;
+            this.logger = logger;
         }
         public IUserRepository UserRepository => new UserRepository(context, mapper);
         public IUserHistoryRepository UserHistoryRepository => new UserHistoryRepository(context, mapper);
@@ -38,7 +41,7 @@ namespace API.DBAccess.Data
 
         public ICategoryLinkRepository CategoryLinkRepository => new CategoryLinkRepository(context, mapper);
 
-        public IProductRepository ProductRepository => new ProductRepository(context, mapper);
+        public IProductRepository ProductRepository => new ProductRepository(context, mapper,logger);
 
         public IPhotoRepository PhotoRepository => new PhotoRepository(context, mapper);
 
@@ -51,6 +54,7 @@ namespace API.DBAccess.Data
         public IProductNumberAttributeRepository ProductNumberAttributeRepository => new ProductNumberAttributeRepository(context, mapper);
         public IProductNumberAttributeHistoryRepository ProductNumberAttributeHistoryRepository => new ProductNumberAttributeHistoryRepository(context, mapper);
         public IProductTextAttributeHistoryRepository ProductTextAttributeHistoryRepository => new ProductTextAttributeHistoryRepository(context, mapper);
+        public IOpinionRepository OpinionRepository => new OpinionRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

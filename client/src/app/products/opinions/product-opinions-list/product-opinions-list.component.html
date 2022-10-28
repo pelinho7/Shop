@@ -1,0 +1,44 @@
+<div style="min-height: 200px;">
+    <ngx-spinner name="product-opinions-spinner" size="medium" [fullScreen]="false">
+        <h3>Loading...</h3>
+    </ngx-spinner>
+
+    <!-- <form class="border mt-2 p-2 rounded"  id="attributesFiltrationForm" [formGroup]="attributesFiltrationForm"> -->
+
+
+
+    <div class="d-flex justify-content-between mt-2">
+        <div>
+            <select [(ngModel)]="opinionService.sortingType"
+            class="form-control" 
+            triggers="mouseenter:mouseleave"
+            (change)="sortingTypeChanged()" #select>
+            <option *ngFor="let keyValue of opinionService.opinionSorting| keyvalue" let i = index [value]="keyValue.key"  
+                [attr.disabled] = "keyValue.key==null && hideNullValue?'disabled' : null"
+                [attr.hidden] = "keyValue.key==null && hideNullValue?'hidden' : null">
+                {{keyValue.value}}
+            </option> 
+        </select>
+        </div>
+
+        <button class="btn btn-outline-primary"
+            [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'" (click)="upsertOpinion(null)">
+            Add opinion</button>
+    </div>
+
+
+    <div *ngIf="opinionService.opinions.length==0 && loaded"
+        class="rounded w-100 border align-items-center justify-content-center d-flex mt-2"
+        style="height: 130px; font-size: 22px;">
+        No opinions have been added to the product yet
+    </div>
+
+    <div *ngIf="opinionService.opinions.length>0 && loaded">
+        <div *ngFor="let opinion of opinionService.opinions">
+            <app-product-opinion [opinion]="opinion"></app-product-opinion>
+        </div>
+        <button class="btn btn-outline-primary w-100"
+        [ngClass]="(opinionService.pagination.page<opinionService.pagination.totalPages)?'d-inline-block':'d-none'" (click)="showMore()">
+        Show more</button>
+    </div>
+</div>

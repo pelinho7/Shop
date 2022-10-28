@@ -13,3 +13,12 @@
 app-category-tree-item{
   width: 100%;
 }
+
+.carousel-indicators li{
+  margin-top: 10px;
+  border: black solid 2px;
+}
+
+span.active.bs-rating-star.ng-star-inserted {
+  color: orange;
+}

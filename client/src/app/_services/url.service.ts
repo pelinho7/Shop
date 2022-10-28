@@ -10,9 +10,12 @@ export class UrlService {
 
   setPreviousUrl(url:string){
     this.prevoiusUrl=url;
+    console.log('qq '+this.prevoiusUrl)
   }
 
   getPreviousUrl(){
-    return this.prevoiusUrl;
+    var url=this.prevoiusUrl;
+    this.prevoiusUrl='';
+    return url;
   }
 }

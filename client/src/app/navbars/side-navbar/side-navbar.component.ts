@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { BusyService } from 'src/app/_services/busy.service';
@@ -23,7 +24,8 @@ export class SideNavbarComponent implements OnInit {
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
     ,public routeWatcherService:RouteWatcherService
     ,public categoryService:CategoryService
-    ,private busyService:BusyService) { }
+    ,private busyService:BusyService
+    ,private router:Router) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -39,6 +41,10 @@ export class SideNavbarComponent implements OnInit {
 
   expandReduce(id:number){
     this.categoryService.expandControl(id);
+  }
+
+  selectedUrl(){
+    this.closeNav();
   }
 
   closeNav(){

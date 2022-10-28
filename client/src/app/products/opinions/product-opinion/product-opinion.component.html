@@ -1,0 +1,29 @@
+<div class="card mt-2 mb-2">
+    <div class="card-header">
+        <div class="d-flex align-items-center">
+            <h5 class="m-0"><span class="font-weight-bolder">{{opinion.userName}}</span> created:{{ opinion.createDate | date }}<span *ngIf="(opinion.createDate | date)!=(opinion.modDate | date)">;  modifed:{{ opinion.modDate | date }}</span></h5>
+            <rating class="ml-auto p-2" [readonly]="true" [ngModel]="opinion.rating" style="font-size: 24px;" [max]="6"></rating>
+          </div>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">{{opinion.title}}</h3>
+      <p class="card-text">{{opinion.content}}</p>
+    </div>
+    <div class="card-footer p-0 pl-3 pr-3" *ngIf="(accountService.currentUser$|async)?.username==opinion.userName">
+      <div class="d-flex align-items-center">
+
+        <button class="btn btn-default btn-sm">
+          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>   
+        </button>
+
+        <div class="ml-auto p-2">
+          <button class="btn btn-default btn-sm" (click)="edit(opinion)">
+            <i class="fa fa-pencil text-primary" aria-hidden="true"></i>       
+          </button>
+          <button class="btn btn-default btn-sm" (click)="remove(opinion.id)">
+            <i class="fa fa-trash" style="color: brown;" aria-hidden="true"></i>       
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

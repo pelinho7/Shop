@@ -15,6 +15,8 @@ using API.DBAccess.Interfaces;
 using AutoMapper;
 using API.DBAccess.Entities;
 using Microsoft.AspNetCore.Authorization;
+using API.DBAccess.Data;
+using System.Globalization;
 
 namespace API.Controllers
 {
@@ -217,60 +219,210 @@ namespace API.Controllers
             return Ok(productDto);
         }
 
-        [HttpGet("get-products/{category}")]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts3(string category, [ModelBinder(BinderType = typeof(DynamicModelBinder))] dynamic queries)
+        [HttpGet("get-product-full-data/{code}")]
+        public async Task<ActionResult<ProductFullDataDto>> GetProductFullData(string code,string location)
         {
-            var a = (Dictionary<string, object>)queries;
-            var b = a.Select(x => x.Key).ToList();
-            logger.LogError(category + " " + JsonSerializer.Serialize(a));
+            if (string.IsNullOrEmpty(code))
+                return BadRequest();
+
+            var product = await unitOfWork.ProductRepository.GetProductFullData(code);
+
+            if (product == null) return NotFound();
+
+            var productAttributesOrdered=await getProductParametersList(product.CategoryId.Value,location
+                ,product.ProductTextAttributes.ToList(),product.ProductNumberAttributes.ToList());
 
 
-            DynamicControl num1 = new DynamicControl("c11", "from", null, null);
-            DynamicControl num2 = new DynamicControl("c22", "to", null, null);
-            FilterAttribute f1 = new FilterAttribute("lab1", "number", new List<DynamicControl>() { num1, num2 });
-            DynamicControl num3 = new DynamicControl("c11a", "from", null, null);
-            DynamicControl num4 = new DynamicControl("c22a", "to", null, null);
-            FilterAttribute f1a = new FilterAttribute("lab1a", "number", new List<DynamicControl>() { num3, num4 });
+            var productDto = mapper.Map<ProductFullDataDto>(product);
+            productDto.Parameters=productAttributesOrdered.Select(x=>mapper.Map<ProductTextAttributeDto>(x)).ToList();
+            logger.LogError(JsonSerializer.Serialize(productDto));
+            return Ok(productDto);
+        }
 
 
-            DynamicControl text = new DynamicControl("c222", "text", "text", null);
-            FilterAttribute f2 = new FilterAttribute("text", "text", new List<DynamicControl>() { text });
+        [HttpGet("get-filters/{category}")]
+        public async Task<ActionResult<IEnumerable<FilterAttribute>>> GetFilters(string category)
+        {
+            // DynamicControl num1 = new DynamicControl("c11", "from", null, null);
+            // DynamicControl num2 = new DynamicControl("c22", "to", null, null);
+            // FilterAttribute f1 = new FilterAttribute("lab1", "number", new List<DynamicControl>() { num1, num2 });
+            // DynamicControl num3 = new DynamicControl("c11a", "from", null, null);
+            // DynamicControl num4 = new DynamicControl("c22a", "to", null, null);
+            // FilterAttribute f1a = new FilterAttribute("lab1a", "number", new List<DynamicControl>() { num3, num4 });
 
-            DynamicControl ch1 = new DynamicControl("ch1", "label", true, null);
-            DynamicControl ch2 = new DynamicControl("ch2", "label", true, null);
-            DynamicControl ch3 = new DynamicControl("ch3", "label", true, null);
-            DynamicControl ch4 = new DynamicControl("ch4", "label", true, null);
-            FilterAttribute f3 = new FilterAttribute("ch", "checkbox", new List<DynamicControl>() { ch1, ch2, ch3, ch4 });
 
-            List<DynamicSelectOption> options1 = new List<DynamicSelectOption>();
-            options1.Add(new DynamicSelectOption("1111", 1));
-            options1.Add(new DynamicSelectOption("222222", 2));
-            DynamicControl sel = new DynamicControl("sel", null, 2, options1);
-            FilterAttribute f4 = new FilterAttribute("select", "select", new List<DynamicControl>() { sel });
+            // DynamicControl text = new DynamicControl("c222", "text", "text", null);
+            // FilterAttribute f2 = new FilterAttribute("text", "text", new List<DynamicControl>() { text });
 
-            List<FilterAttribute> filterList = new List<FilterAttribute>();
-            filterList.Add(f1);
-            filterList.Add(f2);
-            filterList.Add(f3);
-            filterList.Add(f4);
-            filterList.Add(f1a);
+            // DynamicControl ch1 = new DynamicControl("ch1", "label", true, null);
+            // DynamicControl ch2 = new DynamicControl("ch2", "label", true, null);
+            // DynamicControl ch3 = new DynamicControl("ch3", "label", true, null);
+            // DynamicControl ch4 = new DynamicControl("ch4", "label", true, null);
+            // FilterAttribute f3 = new FilterAttribute("ch", "checkbox", new List<DynamicControl>() { ch1, ch2, ch3, ch4 });
 
-            ProductListData productListData = new ProductListData(filterList, new Pagination());
-            // var jo=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
-            // System.Console.WriteLine("aaaaa "+JsonSerializer.Serialize(productListData,jo));
-            // System.Console.WriteLine("bbbbb "+JsonSerializer.Serialize(productListData.FilterList,jo));
-            Response.AddHeader(productListData, "ProductListData");
-            //Response.AddHeader(filterList,"Filter");
-            List<ProductDto> p = new List<ProductDto>()
+            // List<DynamicSelectOption> options1 = new List<DynamicSelectOption>();
+            // options1.Add(new DynamicSelectOption("1111", 1));
+            // options1.Add(new DynamicSelectOption("222222", 2));
+            // DynamicControl sel = new DynamicControl("sel", null, 2, options1);
+            // FilterAttribute f4 = new FilterAttribute("select", "select", new List<DynamicControl>() { sel });
+
+            // List<FilterAttribute> filterList = new List<FilterAttribute>();
+            // filterList.Add(f1);
+            // filterList.Add(f2);
+            // filterList.Add(f3);
+            // filterList.Add(f4);
+            // filterList.Add(f1a);
+
+            var cat = await unitOfWork.CategoryRepository.GetCategoryByCode(category);
+            if (cat == null) return NotFound();
+            cat = await unitOfWork.CategoryRepository.GetCategory(cat.Id);
+            var parentCategoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetParentCategoriesAttributes(cat.Id);
+            List<CategoryAttribute> categoriesAttributes = new List<CategoryAttribute>();
+
+            var categoriesIds = await unitOfWork.CategoryLinkRepository.GetSubCategoriesIds(cat.Id);
+            categoriesIds.Add(cat.Id);
+
+            if (parentCategoriesAttributes != null)
             {
-            };
-
-            for (int i = 0; i < 20; i++)
+                categoriesAttributes.AddRange(parentCategoriesAttributes.OrderBy(x => x.AttributeId).ThenBy(x => x.Lp));
+            }
+            if (cat.CategoryAttributes != null)
             {
-                p.Add(new ProductDto() { Id = i });
+                categoriesAttributes.AddRange(cat.CategoryAttributes.OrderBy(x => x.Lp));
             }
 
-            return Ok(p);
+            List<FilterAttribute> filterList = new List<FilterAttribute>();
+            //adding default filtering elements
+            DynamicControl priceField1 = new DynamicControl($"0_{DefaultFilterParamEnum.Price.ToString().ToLower()}_from", "from", null, null);
+            DynamicControl priceField2 = new DynamicControl($"0_{DefaultFilterParamEnum.Price.ToString().ToLower()}_to", "to", null, null);
+            var priceFilter = new FilterAttribute("Price", "number", new List<DynamicControl>() { priceField1, priceField2 });
+            filterList.Add(priceFilter);
+
+            //categoriesAttributes=categoriesAttributes.OrderBy(x=>x.Lp).ToList();
+            foreach (var attribute in categoriesAttributes)
+            {
+                string extendedCode = $"{attribute.AttributeId}_{attribute.Attribute.FiltrationMode}_{attribute.Code}";
+                if (attribute.Attribute.FiltrationMode == (int)FiltrationModeEnum.Checkboxes)
+                {
+                    extendedCode = $"{attribute.AttributeId}_{attribute.Attribute.FiltrationMode}";
+                }
+                FilterAttribute attributeFilter = new FilterAttribute();
+                if (attribute.Attribute.Type == (int)AttributeTypeEnum.Text)
+                {
+                    if (attribute.Attribute.FiltrationMode == (int)FiltrationModeEnum.TextField)
+                    {
+                        DynamicControl textField = new DynamicControl(extendedCode, attribute.Label, "", null);
+                        attributeFilter = new FilterAttribute(attribute.Label, "text", new List<DynamicControl>() { textField });
+                    }
+                    else if (attribute.Attribute.FiltrationMode == (int)FiltrationModeEnum.Checkboxes)
+                    {
+                        var attributesValues = await unitOfWork.ProductTextAttributeRepository
+                        .GetProductsTextAttributeValues(attribute.Attribute.Id, categoriesIds);
+                        var groupedValues = attributesValues.GroupBy(x => x.Value)
+                        .Select(x => new { Value = x.Key, Count = x.Count() })
+                        .OrderByDescending(x => x.Count).ToList();
+                        var controls = new List<DynamicControl>();
+                        foreach (var value in groupedValues)
+                        {
+                            DynamicControl checkboxField = new DynamicControl($"{extendedCode}_{value.Value}", $"{value.Value} ({value.Count})", true, null);
+                            controls.Add(checkboxField);
+                        }
+
+                        attributeFilter = new FilterAttribute(attribute.Label, "checkbox", controls);
+                    }
+                }
+                else if (attribute.Attribute.Type == (int)AttributeTypeEnum.Number)
+                {
+                    DynamicControl numberField1 = new DynamicControl($"{extendedCode}_from", "from", null, null);
+                    DynamicControl numberField2 = new DynamicControl($"{extendedCode}_to", "to", null, null);
+                    attributeFilter = new FilterAttribute(attribute.Label, "number", new List<DynamicControl>() { numberField1, numberField2 });
+                }
+
+                if (attributeFilter != null)
+                {
+                    filterList.Add(attributeFilter);
+                }
+            }
+            return Ok(filterList);
+        }
+
+        [HttpGet("get-products/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductListItemDto>>> GetProducts(string category, [ModelBinder(BinderType = typeof(DynamicModelBinder))] dynamic queries)
+        {
+            var parameters = (Dictionary<string, object>)queries;
+            List<NumberAttributeFilter> numberAttributeFilters = new List<NumberAttributeFilter>();
+            List<CheckboxAttributeFilter> checkboxAttributeFilters = new List<CheckboxAttributeFilter>();
+            List<TextAttributeFilter> textAttributeFilters = new List<TextAttributeFilter>();
+            List<DefaultParamFilter> defaultParamFilters = new List<DefaultParamFilter>();
+            var cat = await unitOfWork.CategoryRepository.GetCategoryByCode(category);
+            var categoriesIds = await unitOfWork.CategoryLinkRepository.GetSubCategoriesIds(cat.Id);
+            categoriesIds.Add(cat.Id);
+            foreach (var param in parameters)
+            {
+                var paramParts = param.Key.Split("_").ToList();
+                if (paramParts == null || paramParts.Count() == 1)
+                {
+                    continue;
+                }
+                //0 means default filtering elements
+                int atrId = int.Parse(paramParts[0]);
+                if (atrId == 0)
+                {
+                    if (paramParts[1].ToString() == DefaultFilterParamEnum.Price.ToString().ToLower())
+                    {
+                        string fromTo = paramParts[paramParts.Count - 1].ToLower();
+                        defaultParamFilters.Add(new DefaultParamFilter(DefaultFilterParamEnum.Price, fromTo != "to", double.Parse(param.Value.ToString())));
+                    }
+                }
+                else
+                {
+                    int filtrationMode = int.Parse(paramParts[1]);
+                    if (filtrationMode == (int)FiltrationModeEnum.TwoNumericFields)
+                    {
+                        string fromTo = paramParts[paramParts.Count - 1].ToLower();
+                        numberAttributeFilters.Add(new NumberAttributeFilter(atrId, fromTo != "to", double.Parse(param.Value.ToString())));
+                    }
+                    else if (filtrationMode == (int)FiltrationModeEnum.Checkboxes)
+                    {
+                        var checkboxAtr = checkboxAttributeFilters.FirstOrDefault(x => x.AttributeId == atrId && x.Equal == bool.Parse(param.Value.ToString()));
+                        if (checkboxAtr == null)
+                        {
+                            checkboxAtr = new CheckboxAttributeFilter(atrId, bool.Parse(param.Value.ToString()));
+                            checkboxAttributeFilters.Add(checkboxAtr);
+                        }
+                        var atrValue = string.Join("_", paramParts.Skip(2));
+                        checkboxAtr.Values.Add(atrValue);
+                    }
+                    else if (filtrationMode == (int)FiltrationModeEnum.TextField)
+                    {
+                        textAttributeFilters.Add(new TextAttributeFilter(atrId, string.Join("_", paramParts.Skip(2))));
+                    }
+                }
+            }
+
+            // List<DynamicSelectOption> options1 = new List<DynamicSelectOption>();
+            // options1.Add(new DynamicSelectOption("1111", 1));
+            // options1.Add(new DynamicSelectOption("222222", 2));
+            // DynamicControl sel = new DynamicControl("sel", null, 2, options1);
+            // FilterAttribute f4 = new FilterAttribute("select", "select", new List<DynamicControl>() { sel });
+
+
+
+            var pagination = new Pagination();
+            if (parameters.ContainsKey("page"))
+            {
+                pagination.Page = int.Parse(parameters["page"].ToString());
+            }
+
+            var products = await unitOfWork.ProductRepository.GetProducts(pagination, categoriesIds
+            , defaultParamFilters, textAttributeFilters, numberAttributeFilters, checkboxAttributeFilters);
+            var productsDtos = products.Select(x => mapper.Map<ProductListItemDto>(x)).ToList();
+
+            pagination = new Pagination() { Page = products.CurrentPage, TotalPages = products.TotalPages };
+
+            Response.AddHeader(pagination, "Pagination");
+
+            return Ok(productsDtos);
         }
 
         [HttpPost("upload-images")]
@@ -362,6 +514,8 @@ namespace API.Controllers
             var productTextAttributes = await unitOfWork.ProductTextAttributeRepository.GetProductTextAttributes(productId, textAttributes.Select(x => x.AttributeId).ToList());
             var productNumberAttributes = await unitOfWork.ProductNumberAttributeRepository.GetProductNumberAttributes(productId, numericAttributes.Select(x => x.AttributeId).ToList());
 
+            //var productAttributesWrapperDto = createProductAttributesWrapper(productTextAttributes, productNumberAttributes);
+
             var textAttributesDto = textAttributes.Select(a => mapper.Map<ProductTextAttributeDto>(a)).ToList();
             textAttributesDto.ForEach(x =>
             {
@@ -380,7 +534,6 @@ namespace API.Controllers
                 var a = productNumberAttributes.FirstOrDefault(z => z.AttributeId == x.AttributeId);
                 if (a != null)
                 {
-                    logger.LogError(x.Value.ToString());
                     x.Id = a.Id;
                     x.Value = a.Value;
                 }
@@ -390,6 +543,103 @@ namespace API.Controllers
             productAttributesWrapperDto.ProductNumberAttributes = numericAttributesDto;
 
             return Ok(productAttributesWrapperDto);
+        }
+
+        [NonAction]
+        private async Task<List<ProductTextAttribute>> getProductParametersList(int categoryId,string location
+        ,List<ProductTextAttribute>productTextAttributes
+        ,List<ProductNumberAttribute>productNumberAttributes)
+        {
+            var parentCategoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetParentCategoriesAttributes(categoryId);
+            var categoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetCategoryAttributes(categoryId);
+            parentCategoriesAttributes.AddRange(categoriesAttributes.OrderBy(x => x.Lp));
+
+            var numberToTextAttributes = productNumberAttributes
+            .Select(x => new ProductTextAttribute() { Id = x.Id, Attribute = x.Attribute, AttributeId = x.AttributeId, Value = x.Value.ToString($"N{x.Attribute.DecimalPlaces}", new CultureInfo(location)) }).ToList();
+            productTextAttributes.AddRange(numberToTextAttributes);
+            List<ProductTextAttribute> productAttributesOrdered = new List<ProductTextAttribute>();
+            var orderDtos = parentCategoriesAttributes.Select(a => mapper.Map<ProductAttributeOrderDto>(a)).ToList();
+            for (int i = 1; i <= orderDtos.Count; i++)
+            {
+                var attributes = productTextAttributes.Where(x => x.AttributeId == orderDtos[i - 1].AttributeId).ToList();
+                if (attributes != null)
+                {
+                    productAttributesOrdered.AddRange(attributes);
+                }
+            }
+
+            return productAttributesOrdered;
+        }
+
+        [HttpGet("get-product-all-attributes")]
+        public async Task<ActionResult<IEnumerable<ProductTextAttributeDto>>> GetProductAllAttributes(
+            int categoryId, int productId, string location)
+        {
+            if (productId <= 0)
+                return BadRequest();
+
+            if (categoryId <= 0)
+                return BadRequest();
+
+            //get current values of attributes linked with current product
+            var productTextAttributes = await unitOfWork.ProductTextAttributeRepository.GetAllProductTextAttributes(productId);
+            var productNumberAttributes = await unitOfWork.ProductNumberAttributeRepository.GetAllProductNumberAttributes(productId);
+
+            // var parentCategoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetParentCategoriesAttributes(categoryId);
+            // var categoriesAttributes = await unitOfWork.CategoryAttributeRepository.GetCategoryAttributes(categoryId);
+            // parentCategoriesAttributes.AddRange(categoriesAttributes.OrderBy(x => x.Lp));
+
+            // var numberToTextAttributes = productNumberAttributes
+            // .Select(x => new ProductTextAttribute() { Id = x.Id, Attribute = x.Attribute, AttributeId = x.AttributeId, Value = x.Value.ToString($"N{x.Attribute.DecimalPlaces}", new CultureInfo(location)) }).ToList();
+            // productTextAttributes.AddRange(numberToTextAttributes);
+            // List<ProductTextAttribute> productAttributesOrdered = new List<ProductTextAttribute>();
+            // var orderDtos = parentCategoriesAttributes.Select(a => mapper.Map<ProductAttributeOrderDto>(a)).ToList();
+            // for (int i = 1; i <= orderDtos.Count; i++)
+            // {
+            //     //orderDtos[i - 1].Lp = i;
+            //     var attributes = productTextAttributes.Where(x => x.AttributeId == orderDtos[i - 1].AttributeId).ToList();
+            //     if (attributes != null)
+            //     {
+            //         productAttributesOrdered.AddRange(attributes);
+            //     }
+            // }
+            var productAttributesOrdered=await getProductParametersList(categoryId,location
+                ,productTextAttributes,productNumberAttributes);
+            var productAttributesDto = productAttributesOrdered.Select(a => mapper.Map<ProductTextAttributeDto>(a)).ToList();
+            return Ok(productAttributesDto);
+        }
+
+        [NonAction]
+        private ProductAttributesWrapperDto createProductAttributesWrapper(List<ProductTextAttribute> productTextAttributes
+        , List<ProductNumberAttribute> productNumberAttributes)
+        {
+            var textAttributesDto = productTextAttributes.Select(a => mapper.Map<ProductTextAttributeDto>(a)).ToList();
+            textAttributesDto.ForEach(x =>
+            {
+                var a = productTextAttributes.FirstOrDefault(z => z.AttributeId == x.AttributeId);
+                if (a != null)
+                {
+                    x.Id = a.Id;
+                    x.Value = a.Value;
+                }
+            });
+            var numericAttributesDto = productNumberAttributes.Select(a => mapper.Map<ProductNumberAttributeDto>(a)).ToList();
+
+            numericAttributesDto.ForEach(x =>
+            {
+                logger.LogError(x.AttributeId.ToString());
+                var a = productNumberAttributes.FirstOrDefault(z => z.AttributeId == x.AttributeId);
+                if (a != null)
+                {
+                    x.Id = a.Id;
+                    x.Value = a.Value;
+                }
+            });
+            ProductAttributesWrapperDto productAttributesWrapperDto = new ProductAttributesWrapperDto();
+            productAttributesWrapperDto.ProductTextAttributes = textAttributesDto;
+            productAttributesWrapperDto.ProductNumberAttributes = numericAttributesDto;
+
+            return productAttributesWrapperDto;
         }
 
         [HttpGet("get-product-amounts/{productId}")]

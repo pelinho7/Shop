@@ -28,27 +28,37 @@ namespace API.DBAccess.Data
         public async Task<List<ProductNumberAttribute>> DeleteOldProductNumberAttributes(int productId, List<int> attributesIdsToSkip, DateTime modDate)
         {
             var attributesToDelete = await context.ProductNumberAttributes
-            .Where(x=>x.ProductId==productId && !attributesIdsToSkip.Contains(x.AttributeId))
+            .Where(x => x.ProductId == productId && !attributesIdsToSkip.Contains(x.AttributeId))
             .ToListAsync();
-            attributesToDelete.ForEach(x=>{
-                x.Deleted=true;
-                x.ModDate=modDate;
-                });
-            return attributesToDelete;        
+            attributesToDelete.ForEach(x =>
+            {
+                x.Deleted = true;
+                x.ModDate = modDate;
+            });
+            return attributesToDelete;
+        }
+
+        public async Task<List<ProductNumberAttribute>> GetAllProductNumberAttributes(int productId)
+        {
+            return await context.ProductNumberAttributes
+            .Include(x=>x.Attribute)
+            .Where(x => x.ProductId == productId && !x.Deleted)
+            .ToListAsync();
         }
 
         public async Task<List<ProductNumberAttribute>> GetProductNumberAttributes(int productId, List<int> attributesIds)
         {
             return await context.ProductNumberAttributes
-            .Where(x=>x.ProductId==productId && !x.Deleted && attributesIds.Contains(x.AttributeId))
-            .ToListAsync();        }
+            .Where(x => x.ProductId == productId && !x.Deleted && attributesIds.Contains(x.AttributeId))
+            .ToListAsync();
+        }
 
         public async void UpdateProductNumberAttribute(ProductNumberAttribute productNumberAttribute)
         {
-            var pa = await context.ProductNumberAttributes.FirstOrDefaultAsync(x=>x.Id == productNumberAttribute.Id);
-            pa.Value=productNumberAttribute.Value;
-            pa.Deleted=productNumberAttribute.Deleted;
-            pa.ModDate=productNumberAttribute.ModDate;  
+            var pa = await context.ProductNumberAttributes.FirstOrDefaultAsync(x => x.Id == productNumberAttribute.Id);
+            pa.Value = productNumberAttribute.Value;
+            pa.Deleted = productNumberAttribute.Deleted;
+            pa.ModDate = productNumberAttribute.ModDate;
         }
     }
 }

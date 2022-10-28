@@ -20,6 +20,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import {MatTabsModule} from '@angular/material/tabs';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 @NgModule({
   declarations: [],
@@ -45,6 +48,9 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     NgxMatSelectSearchModule,
     AngularEditorModule,
     NgxDropzoneModule,
+    CarouselModule.forRoot(),
+    MatTabsModule,
+    RatingModule.forRoot()
   ],
   exports:[
     BsDropdownModule,
@@ -67,6 +73,9 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     NgxMatSelectSearchModule,
     AngularEditorModule,
     NgxDropzoneModule,
+    CarouselModule,
+    MatTabsModule,
+    RatingModule
   ]
 })
 export class SharedModule { }

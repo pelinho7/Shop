@@ -15,6 +15,10 @@ import { ProductAmount } from '../_models/productAmount';
 import { Discount } from '../_models/discount';
 import { ProductUpsert } from '../_models/productUpsert';
 import { ProductsManagmentFiltration } from '../_models/productsManagmentFiltration';
+import { ProductListItem } from '../_models/productListItem';
+import { getUsersLocale } from '../_helpers/historyHelpers';
+import { ProductTextAttribute } from '../_models/productTextAttribute';
+import { of } from 'rxjs';
 
 
 @Injectable({
@@ -23,7 +27,7 @@ import { ProductsManagmentFiltration } from '../_models/productsManagmentFiltrat
 export class ProductService {
   baseUrl=environment.apiUrl;
   dynamicControls:DynamicControl[]=[];
-  products:Product[]=[];
+  products:ProductListItem[]=[];
   productManagmentPhotos:Photo[]=[];
   productManagmentRequestParameters:string='';
   productsManagmentPage:Product[];
@@ -54,66 +58,71 @@ export class ProductService {
     )
   }
 
-  getProducts(dynamicControls:DynamicControl[],initPath:string=''){
-    // var response=this.memberCache.get(Object.values(userParams).join('-'))
-    // if(response){
-    //   return of(response);
-    // }
-
-    //let params=getPaginationHeaders(userParams.pageNumber,userParams.pageSize);
-
+  createProductsUrlParams(dynamicControls:DynamicControl[],pagination:Pagination){
     let path:string='';
     let params=new HttpParams();
     if(dynamicControls){
       dynamicControls.forEach(x=>{
-        //if(x.value!=null )
+        if(x.value == null || x.value === true) return;
         path+='&'+x.name+'='+x.value
         params=params.append(x.name,x.value);
       })
       if(path.length>0){
         path = '?' + path.substring(1);
       }
+      if(pagination && pagination.page>1){
+        let page='page='+pagination.page;
+        if(path.length==0){
+          path += '?';
+        }
+        else{
+          path += '&';
+        }
+        path+=page;
+      }
     }
+    return [path,params]
+  }
+
+  getProducts(category:string, dynamicControls:DynamicControl[],initPath:string=''
+  ,pagination:Pagination){
+    let path:string='';
+    let params=new HttpParams();
+
+    var paramsResult=this.createProductsUrlParams(dynamicControls,pagination)
+    path =paramsResult[0] as string;
+    params =paramsResult[1] as HttpParams;
 
     if(initPath.length>0){
       path=initPath;
     }
 
-    // const headers = new HttpHeaders()
-    //   .append('Content-Type', 'application/json')
-    //   .append('Access-Control-Allow-Headers', 'Content-Type')
-    //   .append('Access-Control-Allow-Methods', 'GET')
-    //   .append('Access-Control-Allow-Origin', '*');
-    
-    // params=params.append('minAge',3);
-    // params=params.append('maxAge',21);
-    // params=params.append('gender','dasdasd');
-    //params=params.append('orderBy',userParams.orderBy.toString());
-    return this.http.get<Product[]>(this.baseUrl+'products/get-products'+path,{ observe: 'response'}).pipe(
+    //console.log(path)
+    return this.http.get<ProductListItem[]>(this.baseUrl+'products/get-products/'+category+path,{ observe: 'response'}).pipe(
       map(response=>{
-        let products:Product[]=[];
+        let products:ProductListItem[]=[];
         if(response.body)
           products=response.body;
 
-        let filterAttributes:FilterAttribute[]=[]
-        let productListData:ProductListData;
+        //let filterAttributes:FilterAttribute[]=[]
+        //let productListData:ProductListData;
         let pagination:Pagination=new Pagination();
-        if (response.headers.get('ProductListData') !== null) {
-          productListData= JSON.parse(response.headers.get('ProductListData') || '{}');
+        if (response.headers.get('Pagination') !== null) {
+          // productListData= JSON.parse(response.headers.get('ProductListData') || '{}');
+          pagination= JSON.parse(response.headers.get('Pagination') || '{}');
+
           this.dynamicControls=[];
 
-          filterAttributes=productListData.filterAttributes;
-          filterAttributes.map(x=>x.dynamicControls).forEach(x=>this.dynamicControls= [...this.dynamicControls, ...x]);
-          pagination=productListData.pagination;
+          //filterAttributes=productListData.filterAttributes;
+          //filterAttributes.map(x=>x.dynamicControls).forEach(x=>this.dynamicControls= [...this.dynamicControls, ...x]);
+          //pagination=productListData.pagination;
         }  
-        
+
         this.products=products;
-        let result=new GetProductsResult(this.products,filterAttributes,pagination);
+        let result=new GetProductsResult(this.products,pagination,path);
         return result;
       })
     )
-
-    //return this.http.get<Product[]>(this.baseUrl+'products',{ params });
   }
 
   createProduct(){
@@ -127,6 +136,15 @@ export class ProductService {
   getProduct(id:number){
     return this.http.get<Product>(this.baseUrl+'products/get-product/'+id).pipe(
       map((product:Product)=>{
+          return product;
+        })
+    )
+  }
+
+  getProductFullData(code:string){
+    var location=getUsersLocale();
+    return this.http.get<ProductListItem>(this.baseUrl+'products/get-product-full-data/'+code+'?location='+location).pipe(
+      map((product:ProductListItem)=>{
           return product;
         })
     )
@@ -161,6 +179,22 @@ export class ProductService {
     return this.http.get<ProductAttributesWrapper>(this.baseUrl+'products/get-product-attributes?categoryId='+categoryId+'&productId='+productId).pipe(
       map((productAttributesWrapper:ProductAttributesWrapper)=>{
           return productAttributesWrapper;
+        })
+    )
+  }
+
+  getProductAllAttributes(categoryId:number,productId:number){
+    var product = this.products.find(x=>x.id == productId);
+    if(product.parameters!=null){
+      return of(product.parameters);
+    }
+
+    var location=getUsersLocale();
+
+    return this.http.get<ProductTextAttribute[]>(this.baseUrl+'products/get-product-all-attributes?categoryId='+categoryId+'&productId='+productId+'&location='+location).pipe(
+      map((productTextAttributes:ProductTextAttribute[])=>{
+        product.parameters=productTextAttributes;
+          return productTextAttributes;
         })
     )
   }

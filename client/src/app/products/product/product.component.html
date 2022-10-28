@@ -1,0 +1,67 @@
+<ngx-spinner name="main-spinner">
+    <h3>Loading...</h3>
+</ngx-spinner>
+
+<div class="container-fluid" *ngIf="product">
+    <div class="border rounded position-relative d-md-none badge-light" style="z-index: 100;" [style.top.px]="offset">
+        <div class="d-flex align-items-center flex-wrap">
+            <p class="p-1" *ngIf="product.actualPrice"><span class="h4 text-danger">{{product.actualPrice.discountPrice
+                    |currency:'USD':'symbol-narrow'}}</span></p>
+            <p class="p-1"><span [ngClass]="product.actualPrice?'h5 strikethrough':'h2'">{{product.price
+                    |currency:'USD':'symbol-narrow'}}</span></p>
+            <p class="p-1" *ngIf="product.actualPrice"><span>(valid until {{product.actualPrice.discountEndDate |date:
+                    'dd/MM/yyyy'}})</span></p>
+                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    </button>
+        </div>
+
+
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <carousel>
+                    <slide *ngFor="let photo of product.photos">
+                        <img src="{{photo.url}}">
+                    </slide>
+                </carousel>
+            </div>
+            <div class="col-4 position-sticky d-none d-md-block">
+                <div class="border p-2 rounded" style="position: relative;" [style.top.px]="offset">
+                    <p *ngIf="product.actualPrice"><span class="h4 text-danger">{{product.actualPrice.discountPrice
+                            |currency:'USD':'symbol-narrow'}}</span></p>
+                    <p><span [ngClass]="product.actualPrice?'h5 strikethrough':'h2'">{{product.price
+                            |currency:'USD':'symbol-narrow'}}</span></p>
+                    <p *ngIf="product.actualPrice"><span>(valid until {{product.actualPrice.discountEndDate |date:
+                            'dd/MM/yyyy'}})</span></p>
+                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-8 mt-5">
+                <mat-tab-group style="width: 100%;" dynamicHeight (selectedTabChange)="selectedTabChange($event)">
+                    <mat-tab label="Description">
+                        <div [innerHtml]="product.description" class="p-2"></div>
+                    </mat-tab>
+                    <mat-tab label="Parameters">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr *ngFor="let param of product.parameters">
+                                    <td>{{param.label}}</td>
+                                    <td>{{param.value}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </mat-tab>
+                    <mat-tab label="Opinions">
+                        <app-product-opinions-list #opinionsList [productId]="product.id"></app-product-opinions-list>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

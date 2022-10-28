@@ -10,9 +10,15 @@
     </div>
     
     <div id="list-main-panel" class="col-lg-8">
-        <div class="row" style="height: 50px;" *ngFor="let product of products">{{product.id}}</div>   
+        <app-products-breadcrumps></app-products-breadcrumps>
+        <ngx-spinner name="products-list-spinner" size="medium" [fullScreen]="false">
+            <h3>Loading...</h3>
+          </ngx-spinner>
+        <div class="row" *ngFor="let product of products">
+            <app-products-list-item [product]="product" style="width: 100%;"></app-products-list-item>
+        </div>   
         <div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="d-flex justify-content-center" *ngIf="pagination">
-            <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems"
+            <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
                     [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
                     (pageChanged)="pageChanged($event)"
                     previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">

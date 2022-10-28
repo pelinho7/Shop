@@ -1,11 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { of, pipe, ReplaySubject } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AccountData } from '../_models/accountData';
 import { User } from '../_models/user';
+import { UrlService } from './url.service';
 import { UserAgreementsService } from './user-agreements.service';
 
 @Injectable({
@@ -18,7 +20,9 @@ export class AccountService {
   accountData:AccountData=null;
 
   constructor(private http:HttpClient, private toastr:ToastrService
-    ,private userAgreementsService:UserAgreementsService) { }
+    ,private userAgreementsService:UserAgreementsService
+    ,private urlService:UrlService
+    ,private router:Router) { }
 
   logIn(model:any){
     return this.http.post<User>(this.baseUrl+'account/login',model).pipe(
@@ -52,8 +56,26 @@ export class AccountService {
   isTokenExpired(token:string){
     const expiry = (this.getDecodedToken(token)).exp;
     var ex=(Math.floor((new Date).getTime() / 1000)) >= expiry;
-    console.log('exp '+ex);
     return ex;
+  }
+
+  redirectIfTokenExpired(){
+    let cUser:User=null;
+    this.currentUser$.pipe(take(1)).subscribe(x=>cUser=x);
+    if(cUser) {
+      if(this.isTokenExpired(cUser.token)){
+        this.toastr.info('Token expired.');
+        this.urlService.setPreviousUrl(this.router.url);
+        this.logout();
+        this.router.navigateByUrl('account/login')
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    this.router.navigateByUrl('account/login')
+    return true;
   }
 
   register(model:any){

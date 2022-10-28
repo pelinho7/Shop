@@ -1,5 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FilterAttribute } from 'src/app/_models/filterAttribute';
+import { ProductsFilterService } from 'src/app/_services/products-filter.service';
 
 @Component({
   selector: 'app-products-filter',
@@ -26,9 +27,6 @@ export class ProductsFilterComponent implements OnInit {
     var mainPanelHeight = mainPanel?.getBoundingClientRect().height
 
     let position:string='relative';
-    // if(winScrollTop ===0){
-    //   position='relative'
-    // }
 
     this.submitBtnStyles.set('position',position);
     this.submitBtnStyles.set('top',Math.min(<number>mainPanelHeight,winScrollTop)+'px');
@@ -37,7 +35,7 @@ export class ProductsFilterComponent implements OnInit {
   @Input('filterAttributes') filterAttributes: FilterAttribute[];
   @Output() filter: EventEmitter<any> = new EventEmitter();
   visibleChecks=2; 
-  constructor() { }
+  constructor(public productsFilterService:ProductsFilterService) { }
 
   ngOnInit(): void {
     var mainPanel =document.getElementById('form-main-panel');

@@ -7,7 +7,9 @@
   </ngx-spinner>
   <div *ngIf="categoryService.categoriesTree$ | async">
     <div class="row m-0" *ngFor="let categoryTreeItem of categoryService.categoriesTree$ | async">
-        <app-side-navbar-item style="width: 100%;" (expandReduceEvent)="expandReduce($event)" [categoryTreeItem]="categoryTreeItem"></app-side-navbar-item>
+        <app-side-navbar-item style="width: 100%;" 
+        (expandReduceEvent)="expandReduce($event)" (selectedUrlEvent)="selectedUrl()"
+        [categoryTreeItem]="categoryTreeItem"></app-side-navbar-item>
     </div>
 </div>
   <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3 border" href="#!">Dashboard</a>
