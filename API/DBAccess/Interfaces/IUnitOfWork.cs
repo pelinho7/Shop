@@ -31,6 +31,9 @@ namespace API.DBAccess.Interfaces
         IProductNumberAttributeHistoryRepository ProductNumberAttributeHistoryRepository{get;}
         IProductTextAttributeHistoryRepository ProductTextAttributeHistoryRepository{get;}
         IOpinionRepository OpinionRepository{get;}
+        IOpinionLikeRepository OpinionLikeRepository{get;}
+        ICartRepository CartRepository{get;}
+        ICartLineRepository CartLineRepository{get;}
         
         Task<bool> Complete();
         Task<IDbContextTransaction> BeginTransaction();

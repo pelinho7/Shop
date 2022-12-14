@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from './_models/user';
 import { AccountService } from './_services/account.service';
+import { CartService } from './_services/cart.service';
 import { ResizeWindowWatcherService } from './_services/resize-window-watcher.service';
 import { RouteWatcherService } from './_services/route-watcher.service';
 
@@ -15,12 +16,17 @@ export class AppComponent implements OnInit {
   title = 'Shop';
   users:any;
 
-  constructor(private htttp:HttpClient,public resizeWindowWatcherService:ResizeWindowWatcherService
-    ,private router:Router,public routeWatcherService:RouteWatcherService,private accountService:AccountService){
+  constructor(private htttp:HttpClient
+    ,public resizeWindowWatcherService:ResizeWindowWatcherService
+    ,private router:Router
+    ,public routeWatcherService:RouteWatcherService
+    ,private accountService:AccountService
+    ,private cartService:CartService){
 
   }
   ngOnInit() {
     this.setCurrentUser();
+    this.loadCart();
   }
 
   setCurrentUser(){
@@ -29,5 +35,9 @@ export class AppComponent implements OnInit {
       let user:User = JSON.parse(userJson);
       this.accountService.setCurrentUser(user);
     }
+  }
+
+  loadCart(){
+    this.cartService.loadCart();//.subscribe(_=>{})
   }
 }

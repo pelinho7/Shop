@@ -28,5 +28,6 @@ namespace API.DBAccess.Entities
         public ICollection<ShippingAddress> ShippingAddresses { get; set; }
         public ICollection<ShippingAddressHistory> ShippingAddressHistories { get; set; }
         public ICollection<Opinion> Opinions { get; set; }
+        public ICollection<OpinionLike> OpinionLikes { get; set; }
     }
 }

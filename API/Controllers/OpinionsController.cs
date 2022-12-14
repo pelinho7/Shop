@@ -47,10 +47,11 @@ namespace API.Controllers
             if(opinionsParamDto.ItemsPerPage.HasValue){
                 pagination.ItemsPerPage=opinionsParamDto.ItemsPerPage.Value;
             }
-            logger.LogError(opinionsParamDto.SortingType.ToString());
+           
             var opinions = await unitOfWork.OpinionRepository.GetOpinions(opinionsParamDto.ProductId
             , (OpinionSortingTypeEnum)opinionsParamDto.SortingType,pagination);
             var opinionDtos=opinions.Select(x=> mapper.Map<OpinionDto>(x)).ToList();
+            //logger.LogError(JsonSerializer.Serialize(opinionDtos));
             Response.AddHeader(new Pagination(){Page=opinions.CurrentPage,TotalPages=opinions.TotalPages},"Pagination");
 
             return Ok(opinionDtos);

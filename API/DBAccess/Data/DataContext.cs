@@ -43,6 +43,9 @@ namespace API.DBAccess.Data
         public DbSet<ProductTextAttribute> ProductTextAttributes { get; set; }
         public DbSet<ProductTextAttributeHistory> ProductTextAttributeHistories { get; set; }
         public DbSet<Opinion> Opinions { get; set; }
+        public DbSet<OpinionLike> OpinionLikes { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartLine> CartLines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -294,6 +297,34 @@ namespace API.DBAccess.Data
                 .WithMany(l => l.Opinions)
                 .HasForeignKey(s => s.AppUserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<OpinionLike>()
+                .HasOne(s => s.AppUser)
+                .WithMany(l => l.OpinionLikes)
+                .HasForeignKey(s => s.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<OpinionLike>()
+                .HasOne(s => s.Opinion)
+                .WithMany(l => l.OpinionLikes)
+                .HasForeignKey(s => s.OpinionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CartLine>()
+                .HasOne(s => s.Cart)
+                .WithMany(l => l.CartLines)
+                .HasForeignKey(s => s.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CartLine>()
+                .HasOne(s => s.Product)
+                .WithMany(l => l.CartLines)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+
+            builder.Entity<OpinionLike>()
+                .HasIndex(p => new {p.AppUserId , p.OpinionId}).IsUnique();
 
             //default values
             builder.Entity<AppUserHistory>()

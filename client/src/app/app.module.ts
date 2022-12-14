@@ -63,6 +63,7 @@ import { UpsertProductOpinionComponent } from './products/opinions/upsert-produc
 import { ProductOpinionComponent } from './products/opinions/product-opinion/product-opinion.component';
 import { TextareaComponent } from './_forms/textarea/textarea.component';
 import { ProductOpinionsListComponent } from './products/opinions/product-opinions-list/product-opinions-list.component';
+import { CartItemComponent } from './cart/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { ProductOpinionsListComponent } from './products/opinions/product-opinio
     UpsertProductOpinionComponent,
     ProductOpinionComponent,
     TextareaComponent,
-    ProductOpinionsListComponent
+    ProductOpinionsListComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,7 @@ import { catchError, map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AccountData } from '../_models/accountData';
 import { User } from '../_models/user';
+import { OpinionService } from './opinion.service';
 import { UrlService } from './url.service';
 import { UserAgreementsService } from './user-agreements.service';
 
@@ -22,13 +23,16 @@ export class AccountService {
   constructor(private http:HttpClient, private toastr:ToastrService
     ,private userAgreementsService:UserAgreementsService
     ,private urlService:UrlService
-    ,private router:Router) { }
+    ,private router:Router
+    ,private opinionService:OpinionService) { }
 
   logIn(model:any){
     return this.http.post<User>(this.baseUrl+'account/login',model).pipe(
       map((user:User)=>{
         if(user !== null){
+          console.log(user)
           this.setCurrentUser(user);
+          this.opinionService.resetOpinionService();
         }
       })
     )
@@ -38,6 +42,7 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
     this.userAgreementsService.clear();
+    this.opinionService.resetOpinionService();
   }
 
   setCurrentUser(user:User){

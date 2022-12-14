@@ -36,6 +36,7 @@ const routes: Routes = [
   {path:'account/register',component:RegisterComponent},
   {path:'account/email-confirmation',component:EmailVerificationComponent},
   {path:'account/new-password',component:NewPasswordComponent},
+  {path:'cart/list',component:CartComponent},
   {
     path:'',
     runGuardsAndResolvers:'always',
@@ -55,13 +56,13 @@ const routes: Routes = [
         ]
       },
 
-      {path:'cart',component:CartComponent},
       {path:'account/data',component:AccountDataComponent},
       {path:'account/change-password',component:ChangePasswordComponent},
       {path:'account/user-agreements',component:UserAgreementsComponent},
       {path:'account/shipping-addresses',component:ShippingAddressesComponent},
     ]
   },
+  {path:'cart',component:CartComponent},
   {path:'not-found',component:NotFoundComponent},
   {path:'server-error',component:ServerErrorComponent},
   {path:'**',component:HomeComponent, pathMatch:'full'},

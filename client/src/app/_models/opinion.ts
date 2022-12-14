@@ -1,3 +1,5 @@
+import { OpinionLike } from "./opinionLike";
+
 export class Opinion {
     id: number=0;
     rating: number;
@@ -9,6 +11,8 @@ export class Opinion {
     userId: number=0;
     createDate: Date;
     modDate:Date;
+    currentUserOpinionLike:OpinionLike;
+    opinionLikesNumber:number;
     
     constructor(){}
 }

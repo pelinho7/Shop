@@ -84,6 +84,7 @@ namespace API.Controllers
 
             return new UserDto()
             {
+                UserId=user.Id,
                 Username = user.UserName,
                 Token = await tokenService.CreateToken(user)
             };

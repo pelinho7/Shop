@@ -12,6 +12,8 @@ namespace API.DTOs
         public bool Deleted { get; set; }
         public string UserName { get; set; }
         public int? UserId { get; set; }
+        public OpinionLikeDto CurrentUserOpinionLike { get; set; }
+        public int OpinionLikesNumber { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModDate { get; set; }
     }

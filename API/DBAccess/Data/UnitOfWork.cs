@@ -55,6 +55,9 @@ namespace API.DBAccess.Data
         public IProductNumberAttributeHistoryRepository ProductNumberAttributeHistoryRepository => new ProductNumberAttributeHistoryRepository(context, mapper);
         public IProductTextAttributeHistoryRepository ProductTextAttributeHistoryRepository => new ProductTextAttributeHistoryRepository(context, mapper);
         public IOpinionRepository OpinionRepository => new OpinionRepository(context, mapper);
+        public IOpinionLikeRepository OpinionLikeRepository => new OpinionLikeRepository(context, mapper);
+        public ICartRepository CartRepository => new CartRepository(context, mapper);
+        public ICartLineRepository CartLineRepository => new CartLineRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

@@ -1,1 +1,10 @@
-<p>cart works!</p>
+<ngx-spinner name="cart-list-spinner">
+    <h3>Loading...</h3>
+</ngx-spinner>
+<div class="container-fluid" *ngIf="(cartService.cart$|async)?.cartLines!=null">
+    <div class="mt-1 mb-1" *ngFor="let item of (cartService.cart$|async).cartLines">
+        <app-cart-item [cartLine]="item" [priceLoaded]="getPriceResult"></app-cart-item>
+    </div>
+</div>
+
+

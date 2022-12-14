@@ -17,7 +17,7 @@
                     <div class="parameters mb-5">
                         <p *ngFor="let param of parameters|async"><span class="font-weight-bolder">{{param.label}}:</span> {{param.value}}</p>
                     </div>
-                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                    <button class="btn btn-primary w-100 add-to-cart-btn" (click)="addToCart(product.id)">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
                     </button>
                 </div>

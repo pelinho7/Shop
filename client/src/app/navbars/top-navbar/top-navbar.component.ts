@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { LogInComponent } from 'src/app/account/log-in/log-in.component';
 import { AccountService } from 'src/app/_services/account.service';
+import { CartService } from 'src/app/_services/cart.service';
 import { ResizeWindowWatcherService } from 'src/app/_services/resize-window-watcher.service';
 import { RouteWatcherService } from 'src/app/_services/route-watcher.service';
 
@@ -17,9 +18,17 @@ export class TopNavbarComponent implements OnInit {
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
     ,public routeWatcherService:RouteWatcherService
     ,private modalService:BsModalService,private router:Router
-    ,public accountService:AccountService) { }
+    ,public accountService:AccountService
+    ,public cartService:CartService) { }
 
+  cartLinesCount:number
   ngOnInit(): void {
+    this.cartService.cart$.subscribe(x=>{
+      this.cartLinesCount=0;
+      x?.cartLines?.forEach((element) => {
+        this.cartLinesCount += element.quantity;
+      });
+    })
   }
 
   openSideNavbar(){
@@ -34,5 +43,11 @@ export class TopNavbarComponent implements OnInit {
   logout(){
     this.accountService.logout();
     this.router.navigateByUrl('/');
+  }
+
+  goToCart(){
+    if(this.cartLinesCount>0){
+      this.router.navigateByUrl('/cart');
+    }
   }
 }

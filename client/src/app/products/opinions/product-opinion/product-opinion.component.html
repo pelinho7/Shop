@@ -9,14 +9,17 @@
       <h3 class="card-title">{{opinion.title}}</h3>
       <p class="card-text">{{opinion.content}}</p>
     </div>
-    <div class="card-footer p-0 pl-3 pr-3" *ngIf="(accountService.currentUser$|async)?.username==opinion.userName">
+    <div class="card-footer p-0 pl-3 pr-3">
       <div class="d-flex align-items-center">
 
-        <button class="btn btn-default btn-sm">
-          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>   
+        <button class="btn btn-default btn-sm" (click)="like(opinion.id)"
+        [ngClass]="(accountService.currentUser$|async)?.userId!=opinion.userId ? 'disabled' : ''">
+          <i class="fa fa-thumbs-o-up" aria-hidden="true"
+          [ngClass]="(accountService.currentUser$|async)?.userId==opinion.userId && (accountService.currentUser$|async)?.userId==opinion.currentUserOpinionLike?.userId ? 'text-success' : ''"></i>   
+          <span *ngIf="opinion.opinionLikesNumber>0"> ({{opinion.opinionLikesNumber}})</span>
         </button>
 
-        <div class="ml-auto p-2">
+        <div class="ml-auto p-2" *ngIf="(accountService.currentUser$|async)?.userId==opinion.userId">
           <button class="btn btn-default btn-sm" (click)="edit(opinion)">
             <i class="fa fa-pencil text-primary" aria-hidden="true"></i>       
           </button>

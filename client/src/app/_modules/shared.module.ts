@@ -23,6 +23,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import {MatTabsModule} from '@angular/material/tabs';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   declarations: [],
@@ -50,7 +52,9 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     NgxDropzoneModule,
     CarouselModule.forRoot(),
     MatTabsModule,
-    RatingModule.forRoot()
+    RatingModule.forRoot(),
+    MatBadgeModule,
+    MatStepperModule,
   ],
   exports:[
     BsDropdownModule,
@@ -75,7 +79,9 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     NgxDropzoneModule,
     CarouselModule,
     MatTabsModule,
-    RatingModule
+    RatingModule,
+    MatBadgeModule,
+    MatStepperModule,
   ]
 })
 export class SharedModule { }

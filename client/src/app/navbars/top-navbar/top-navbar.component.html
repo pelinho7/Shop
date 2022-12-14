@@ -42,8 +42,8 @@
     <div class="col-6 col-md-3 order-1 order-md-2">
       <div class="float-right">
         <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
-          <button class="btn btn-outline-success mr-1" [routerLink]="['account/login']">Log In</button>
-          <button class="btn btn-outline-success" [routerLink]="['account/register']">Register</button>
+          <button class="btn btn-outline-success mr-1" routerLink="/account/login">Log In</button>
+          <button class="btn btn-outline-success" routerLink="/account/register">Register</button>
         </div>
         <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
           <!-- <button class="btn btn-outline-success" (click)="logout()">Log Out</button> -->
@@ -64,6 +64,11 @@
             </ul>
           </div>
         </div>
+        <button class="btn" (click)="goToCart()">
+          <i class="fa fa-shopping-cart" matBadgeOverlap="false" matBadgeSize="small" 
+        matBadge="{{cartLinesCount}}" 
+        [matBadgeHidden]="cartLinesCount==0"
+        matBadgeColor="warn" aria-hidden="true"></i></button>
       </div>
 
     </div>

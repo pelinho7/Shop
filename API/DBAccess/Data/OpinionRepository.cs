@@ -21,8 +21,8 @@ namespace API.DBAccess.Data
 
         public void AddOpinion(Opinion opinion)
         {
-            opinion.CreateDate=System.DateTime.UtcNow;
-            opinion.ModDate=opinion.CreateDate;
+            opinion.CreateDate = System.DateTime.UtcNow;
+            opinion.ModDate = opinion.CreateDate;
             context.Opinions.Add(opinion);
         }
 
@@ -38,6 +38,7 @@ namespace API.DBAccess.Data
         {
             var query = context.Opinions
             .Include(x => x.AppUser)
+            .Include(x => x.OpinionLikes)
             .Where(x => !x.Deleted)
             .AsQueryable();
 
@@ -48,6 +49,10 @@ namespace API.DBAccess.Data
             else if (sortingType == OpinionSortingTypeEnum.FromOldest)
             {
                 query = query.OrderBy(x => x.CreateDate);
+            }
+            else if (sortingType == OpinionSortingTypeEnum.FromMostPopular)
+            {
+                query = query.OrderByDescending(x => x.OpinionLikes.Count());
             }
             return await PagedList<Opinion>.CreateAsync(
                 query.AsNoTracking()

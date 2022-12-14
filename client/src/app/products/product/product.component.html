@@ -3,7 +3,7 @@
 </ngx-spinner>
 
 <div class="container-fluid" *ngIf="product">
-    <div class="border rounded position-relative d-md-none badge-light" style="z-index: 100;" [style.top.px]="offset">
+    <div class="border rounded position-relative d-md-none badge-light" style="z-index: 20;" [style.top.px]="offset">
         <div class="d-flex align-items-center flex-wrap">
             <p class="p-1" *ngIf="product.actualPrice"><span class="h4 text-danger">{{product.actualPrice.discountPrice
                     |currency:'USD':'symbol-narrow'}}</span></p>
@@ -11,7 +11,7 @@
                     |currency:'USD':'symbol-narrow'}}</span></p>
             <p class="p-1" *ngIf="product.actualPrice"><span>(valid until {{product.actualPrice.discountEndDate |date:
                     'dd/MM/yyyy'}})</span></p>
-                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                    <button class="btn btn-primary w-100 add-to-cart-btn" (click)="addToCart(product.id)">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     </button>
         </div>
@@ -35,7 +35,7 @@
                             |currency:'USD':'symbol-narrow'}}</span></p>
                     <p *ngIf="product.actualPrice"><span>(valid until {{product.actualPrice.discountEndDate |date:
                             'dd/MM/yyyy'}})</span></p>
-                    <button class="btn btn-primary w-100 add-to-cart-btn" routerLink="/cart">
+                    <button class="btn btn-primary w-100 add-to-cart-btn" (click)="addToCart(product.id)">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
                     </button>
                 </div>

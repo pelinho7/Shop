@@ -1,0 +1,42 @@
+<div class="d-flex align-items-center border row rounded" style="min-height: 95px;">
+    <div class="col-3 col-lg-2 mt-2 mb-2">
+        <img *ngIf="cartLine.photoUrl && cartLine.photoUrl!=''" src="{{cartLine.photoUrl}}" />
+        <img *ngIf="!cartLine.photoUrl || cartLine.photoUrl==''" src="/assets/images/empty image.png" />
+    </div>
+    <div class="m-0 col-9 col-lg-3 h5 mt-2 mb-2" style="font-size: 1rem;">{{cartLine.name}}</div>
+    <div class="col-4 col-sm-3 col-lg-2 h-100 mt-2 mb-2">
+        <ngx-spinner name="price-spinner" size="medium" [fullScreen]="false">
+        </ngx-spinner>
+        <div class="container d-flex h-100">
+            <div *ngIf="priceLoaded" class="row justify-content-center align-self-center d-block m-auto">
+                <div *ngIf="cartLine.actualPrice">{{cartLine.actualPrice.discountPrice |currency:'USD':'symbol-narrow'}}
+                </div>
+                <div [ngClass]="cartLine.actualPrice?'strikethrough':''">{{cartLine.price
+                    |currency:'USD':'symbol-narrow'}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 col-sm-4 col-lg-2 mt-2 mb-2">
+        <input [(ngModel)]="quantity" type='number' class="form-control" min="1" max="99"
+            (ngModelChange)="quantityChanged($event)">
+    </div>
+
+    <div class="col-4 col-sm-3 col-lg-2 h-100 mt-2 mb-2">
+        <ngx-spinner name="price-spinner" size="medium" [fullScreen]="false">
+        </ngx-spinner>
+        <div class="container d-flex h-100">
+            <div *ngIf="priceLoaded" class="row justify-content-center align-self-center d-block m-auto">
+                <div *ngIf="cartLine.actualPrice">{{cartLine.quantity*cartLine.actualPrice.discountPrice |currency:'USD':'symbol-narrow'}}
+                </div>
+                <div *ngIf="!cartLine.actualPrice">{{cartLine.quantity*cartLine.price |currency:'USD':'symbol-narrow'}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-2 col-lg-1 mt-2 mb-2">
+        <button class="btn btn-danger w-100" (click)="remove(cartLine.id)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>

@@ -14,6 +14,7 @@ export class OpinionService {
   public opinionSorting = new Map([
     [0, "From newest"],
     [1, "From oldest"],
+    [2, "From most popular"],
   ]);
   sortingType: number = 0;
   opinions: Opinion[] = [];
@@ -36,7 +37,6 @@ export class OpinionService {
     else {
       return this.http.put<any>(this.baseUrl + 'opinions', model).pipe(
         map((opinion: any) => {
-          console.log(opinion)
           var oldOpinionIndex = this.opinions.findIndex(x => x.id == opinion.id);
           this.opinions[oldOpinionIndex] = opinion;
           return opinion;
@@ -47,7 +47,17 @@ export class OpinionService {
 
   setSortingType(sortingType:number){
     this.sortingType=sortingType;
-    console.log()
+  }
+
+  resetOpinionService(){
+    this.productId = 0;
+    this.requestParameters = '';
+    this.pagination.page = 0;
+    this.sortingType=0;
+  }
+
+  getLoadedOpinionById(opinionId:number){
+    return this.opinions.find(x=>x.id==opinionId);
   }
 
   getOpinions(productId: number, reload: boolean = false) {
@@ -88,6 +98,7 @@ export class OpinionService {
         if (response.headers.get('Pagination') !== null) {
           pagination = JSON.parse(response.headers.get('Pagination') || '{}');
         }
+        
         this.pagination.totalPages = pagination.totalPages;
         return true;
       }));

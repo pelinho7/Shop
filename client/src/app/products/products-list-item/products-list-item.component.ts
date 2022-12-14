@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
+import { CartLine } from 'src/app/_models/cartLine';
 import { Product } from 'src/app/_models/product';
 import { ProductListItem } from 'src/app/_models/productListItem';
 import { ProductTextAttribute } from 'src/app/_models/productTextAttribute';
+import { CartService } from 'src/app/_services/cart.service';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { ProductService } from 'src/app/_services/product.service';
 
 @Component({
@@ -16,7 +19,9 @@ export class ProductsListItemComponent implements OnInit {
   public parameters: ReplaySubject<ProductTextAttribute[]> = new ReplaySubject<ProductTextAttribute[]>(1);
 
   constructor(private router:Router
-    ,private productService:ProductService) { }
+    ,private productService:ProductService
+    ,private cartService:CartService
+    ,private confirmService:ConfirmService) { }
 
   ngOnInit(): void {
   }
@@ -41,5 +46,18 @@ export class ProductsListItemComponent implements OnInit {
       event.srcElement.classList.remove('hide');
       this.parameters.next([]);
     }
+  }
+
+  addToCart(productId:number){
+    var cartLine=new CartLine();
+    cartLine.productId=productId;
+    cartLine.quantity=1;
+    this.cartService.addCartLine(cartLine).subscribe(_=>{
+      this.confirmService.confirm('', 'Product added to your cart. Do you want to go to your cart?','Yes','No').subscribe(result=>{
+        if(result){
+          this.router.navigateByUrl('/cart');
+        }
+      })
+    })
   }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using API.DBAccess.Entities;
 using API.DTOs;
 using API.Extensions;
+using API.Helpers.AutoMapper;
 using AutoMapper;
 
 namespace API.Helpers
@@ -118,9 +119,29 @@ namespace API.Helpers
 
             CreateMap<Opinion, OpinionDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => (src.AppUser == null)?null:(int?)src.AppUser.Id))
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => (src.AppUser == null)?null:src.AppUser.UserName));
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => (src.AppUser == null)?null:src.AppUser.UserName))
+            .ForMember(dest => dest.OpinionLikesNumber, opt => opt.MapFrom(src => src.OpinionLikes.Count()))
+            .ForMember(dest => dest.CurrentUserOpinionLike, opt => opt.MapFrom<CurrentUserOpinionLikeResolver>());
+
 
             CreateMap<OpinionDto, Opinion>();
+
+            CreateMap<OpinionLikeDto, OpinionLike>()
+            .ForMember(dest => dest.AppUserId, opt => opt.MapFrom(src => src.UserId));
+            CreateMap<OpinionLike, OpinionLikeDto>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.AppUserId));
+
+            CreateMap<CartDto, Cart>();
+            CreateMap<Cart, CartDto>();
+            CreateMap<CartLineDto, CartLine>()
+            .ForMember(dest => dest.CartId, opt => opt.MapFrom(src => Guid.Parse(src.CartId)));
+            CreateMap<CartLine, CartLineDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product==null?null:(double?)src.Product.Price))
+            .ForMember(dest => dest.ActualPrice, opt => opt.MapFrom<CartLinePriceResolver>())
+            .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom<CartLinePhotoResolver>())
+            .ForMember(dest => dest.CartId, opt => opt.MapFrom(src => src.CartId.ToString()));
+            
             // CreateMap<AppUser,MemberDto>()
             // .ForMember(dest=>dest.PhotoUrl,opt=>opt.MapFrom(src=>src.Photos.FirstOrDefault(x=>x.IsMain).Url))
             // .ForMember(dest=>dest.Age,opt=>opt.MapFrom(src=>src.DateOfBirth.CalculateAge()));

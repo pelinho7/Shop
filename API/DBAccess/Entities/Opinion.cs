@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.DBAccess.Entities
@@ -18,5 +19,7 @@ namespace API.DBAccess.Entities
         public DateTime CreateDate { get; set; }
         [Required]
         public DateTime ModDate { get; set; }
+
+        public ICollection<OpinionLike> OpinionLikes { get; set; }
     }
 }

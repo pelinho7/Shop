@@ -4,5 +4,6 @@ namespace API.Helpers
     {
         FromNewest,
         FromOldest,
+        FromMostPopular,
     }
 }

@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using API.DBAccess.Entities;
 using API.DTOs;
+using AutoMapper;
 
 namespace API.Helpers
 {
     public class ActualPriceCalculator
     {
+        // public ActualPriceCalculator(IMapper mapper)
+        // {
+            
+        // }
         public static ActualPriceDto Calculate(List<DiscountDto> discountsDtos, double basePrice)
         {
             var discount = discountsDtos?.FirstOrDefault();
@@ -25,5 +31,9 @@ namespace API.Helpers
                 return new ActualPriceDto() { DiscountPrice = Math.Round(discountPrice, 2), DiscountStartDate = discount.StartDate, DiscountEndDate = discount.EndDate };
             }
         }
+
+        // public ActualPriceDto Calculate(List<Discount> discounts, double basePrice){
+        //     return Calculate()
+        // }
     }
 }

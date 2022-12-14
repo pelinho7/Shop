@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/_services/account.service';
+import { OpinionService } from 'src/app/_services/opinion.service';
 import { UrlService } from 'src/app/_services/url.service';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
@@ -33,7 +34,6 @@ export class LogInComponent implements OnInit {
   logIn(){
     this.accountService.logIn(this.logInForm.value).subscribe(user=>{
       var prevUrl = this.urlService.getPreviousUrl();
-      console.log(prevUrl)
       if(prevUrl.length>0){
         this.router.navigateByUrl(prevUrl);
       }
